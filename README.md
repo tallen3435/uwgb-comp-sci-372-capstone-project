@@ -3,3 +3,4 @@ This is the repository for our COMP SCI 372 - Software Engineering Capstone Proj
 Contributors:  
         Joel Bowman
         Grafton Smith
+        Thomas Allen
