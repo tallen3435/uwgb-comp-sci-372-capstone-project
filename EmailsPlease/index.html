@@ -4,24 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Menu</title>
-    <link rel="stylesheet" href="mainStyle.css">
+    <link rel="stylesheet" href="indexStyle.css">
 </head>
-<body>
+<body class="win98-desktop">
 
-    <header>
-        <h1>Cybersecurity Training Game</h1>
-    </header>
+    <div class="desktop-icons">
 
-    <main class="menu">
-        <button onclick="location.href='gameScreen.html'">Start Game</button>
-        <button onclick="location.href='settings.html'">Settings</button>
-        <button onclick="location.href='aboutUs.html'">About Us</button>
-        <button onclick="location.href='legal.html'">Legal</button>
-    </main>
+        <a href="gameScreen.html" class="icon">
+            <img src="resources/images/Playgame_Icon.png" alt="Play Game">
+            <span>Play Game</span>
+        </a>
 
-    <footer>
-        <p>© 2026 Cybersecurity Training Game</p>
-    </footer>
+        <a href="settings.html" class="icon">
+            <img src="resources/images/Setting_Icon.png" alt="Play Game">
+            <span>Settings</span>
+        </a>
+
+        <a href="aboutUs.html" class="icon">
+            <img src="resources/images/AboutUs_Icon.png" alt="About Us">
+            <span>About Us</span>
+        </a>
+
+        <a href="legal.html" class="icon">
+            <img src="resources/images/Legal_Icon.png" alt="Legal">
+            <span>Legal</span>
+        </a>
+
+    </div>
+
+    <div class="taskbar">
+        <div class="start-button">Start</div>
+        <div class="taskbar-clock">3:45 PM</div>
+    </div>
 
 </body>
 </html>
+
