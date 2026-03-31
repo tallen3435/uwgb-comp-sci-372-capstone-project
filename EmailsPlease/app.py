@@ -1,8 +1,12 @@
 import os
 from flask import Flask, jsonify, request
 from google import genai
+from dotenv import load_dotenv
 
 app = Flask(__name__)
+
+# This loads the variables from the .env file into the system environment
+load_dotenv()
 
 # This is the 'handshake'. The code doesn't have the key,
 # it just knows where to look for it.
