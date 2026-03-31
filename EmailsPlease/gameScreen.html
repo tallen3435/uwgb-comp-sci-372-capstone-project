@@ -3,33 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Screen</title>
-    <link rel="stylesheet" href="mainStyle.css">
+    <title>Inbox</title>
+    <link rel="stylesheet" href="inboxstyle.css">
 </head>
 <body>
 
-<header>
-    <h1>Email Review Console</h1>
-    <p id="day-counter">Day: 1</p>
-    <p id="malware-counter">Malware: 0</p>
-</header>
+  <div class="container">
 
-<main>
-    <section id="email-container">
-        <!-- JS injects email here -->
-    </section>
+    <!--sidebar-->
+    <aside class="sidebar">
+      <!--<h2>Email's Please</h2>-->
+      <img src="resources/InBlindIcon.png" width="50%">
+      <ul>
+        <!--<li class="active">Inbox</li>-->
+        <li><a style="text-decoration: none;" href="index.html">Home</a></li>
+        <li><a style="text-decoration: none; "href="settings.html">Settings</a></li>
+        <li><a style="text-decoration: none;" href="TUTU.html">Help</a></li>
+        <li><a style="text-decoration: none;" href="legal.html">Legal</a></li>
+        <li><a style="text-decoration: none;" href="aboutUs.html">About Us</a></li>
+      </ul>
+    </aside> 
 
-    <section id="actions">
-        <button id="reply-btn">Reply</button>
-        <button id="ignore-btn">Ignore</button>
-        <button id="report-btn">Report</button>
-    </section>
-</main>
+    <!--main content-->
+    <main class="main">
 
-<footer>
-    <button onclick="location.href='index.html'">Return to Menu</button>
-</footer>
+      <!--top bar-->
+      <header class="topbar">
+        <h1>Inbox</h1>
+        <button>Contacts</button>
+      </header>
 
-<script src="script.js"></script>
+      <!--email List-->
+      <section class="email-list">
+
+        <div class="email">
+          <h3>Phishing Awareness Notice</h3>
+          <p>Due to recent security concerns...</p>
+        </div>
+
+        <div class="email">
+          <h3>Welcome to the Team!</h3>
+          <p>Congratulations on your new job at Malware inc!</p>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
 </body>
 </html>
