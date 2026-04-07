@@ -1,0 +1,350 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Teal Win98 desktop behind the window */
+.win98-desktop {
+    background-color: #008080;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "MS Sans Serif", "Microsoft Sans Serif", Arial, sans-serif;
+    font-size: 12px;
+    overflow: hidden;
+}
+
+/* ── Main Window ── */
+.outlook-window {
+    width: 98vw;
+    height: 96vh;
+    background: #c0c0c0;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid #404040;
+    border-bottom: 2px solid #404040;
+    box-shadow: 2px 2px 0 #000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ── Title Bar ── */
+.window-titlebar {
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: white;
+    padding: 3px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.window-title {
+    font-weight: bold;
+    font-size: 12px;
+    letter-spacing: 0.2px;
+}
+
+.window-controls {
+    display: flex;
+    gap: 2px;
+}
+
+.win-ctrl {
+    width: 16px;
+    height: 14px;
+    background: #c0c0c0;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+    border-right: 1px solid #404040;
+    border-bottom: 1px solid #404040;
+    font-size: 9px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    font-family: "MS Sans Serif", sans-serif;
+}
+
+.win-ctrl:active {
+    border-top: 1px solid #404040;
+    border-left: 1px solid #404040;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
+}
+
+.close-btn:hover {
+    background: #c00000;
+    color: white;
+}
+
+/* ── Menu Bar ── */
+.menubar {
+    background: #c0c0c0;
+    border-bottom: 1px solid #808080;
+    padding: 2px 4px;
+    display: flex;
+    gap: 0;
+    flex-shrink: 0;
+}
+
+.menu-item {
+    padding: 2px 8px;
+    cursor: default;
+}
+
+.menu-item:hover {
+    background: #000080;
+    color: white;
+}
+
+/* ── Toolbar ── */
+.toolbar {
+    background: #c0c0c0;
+    border-bottom: 2px solid #808080;
+    padding: 3px 4px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.toolbar-btn {
+    background: #c0c0c0;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-family: "MS Sans Serif", sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.toolbar-btn:hover {
+    background: #d4d4d4;
+}
+
+.toolbar-btn:active {
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    padding-top: 5px;
+    padding-left: 12px;
+}
+
+.toolbar-sep {
+    width: 1px;
+    height: 22px;
+    background: #808080;
+    margin: 0 4px;
+    box-shadow: 1px 0 0 white;
+}
+
+/* ── 3-Panel Layout ── */
+.main-panels {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    border-top: 1px solid #808080;
+}
+
+/* ── Left: Folder Panel ── */
+.folder-panel {
+    width: 160px;
+    flex-shrink: 0;
+    background: #c0c0c0;
+    border-right: 2px solid #808080;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.panel-header {
+    background: #c0c0c0;
+    border-bottom: 1px solid #808080;
+    padding: 3px 6px;
+    font-weight: bold;
+    font-size: 11px;
+    color: #000;
+}
+
+.folder-tree {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2px 0;
+}
+
+.folder-item {
+    padding: 3px 10px;
+    cursor: default;
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+.folder-item:hover {
+    background: #000080;
+    color: white;
+}
+
+.folder-item.active {
+    font-weight: bold;
+}
+
+/* ── Middle: Email List Panel ── */
+.email-list-panel {
+    width: 300px;
+    flex-shrink: 0;
+    background: white;
+    border-right: 2px solid #808080;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.email-list-header {
+    background: #c0c0c0;
+    border-bottom: 2px solid #808080;
+    display: flex;
+    flex-shrink: 0;
+}
+
+.email-list-header span {
+    padding: 3px 6px;
+    font-weight: bold;
+    font-size: 11px;
+    border-right: 1px solid #808080;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+    cursor: default;
+}
+
+.col-from    { width: 110px; flex-shrink: 0; }
+.col-subject { flex: 1; }
+.col-date    { width: 90px; flex-shrink: 0; }
+
+#email-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.email-row {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+    padding: 4px 0;
+    background: white;
+    font-size: 11px;
+}
+
+.email-row:hover {
+    background: #d0d8f0;
+}
+
+.email-row.selected {
+    background: #000080;
+    color: white;
+}
+
+.email-row.unread {
+    font-weight: bold;
+}
+
+.email-row-from {
+    width: 110px;
+    flex-shrink: 0;
+    padding: 0 6px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.email-row-subject {
+    flex: 1;
+    padding: 0 6px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.email-row-date {
+    width: 90px;
+    flex-shrink: 0;
+    padding: 0 6px;
+    white-space: nowrap;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+}
+
+/* ── Right: Reading Pane ── */
+.reading-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    overflow: hidden;
+}
+
+.email-fields {
+    background: #c0c0c0;
+    border-bottom: 2px solid #808080;
+    padding: 4px 8px;
+    flex-shrink: 0;
+}
+
+.field-row {
+    display: flex;
+    gap: 6px;
+    padding: 1px 0;
+    font-size: 12px;
+}
+
+.field-label {
+    font-weight: bold;
+    width: 56px;
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.email-body {
+    flex: 1;
+    padding: 12px 14px;
+    overflow-y: auto;
+    font-size: 13px;
+    line-height: 1.6;
+    background: white;
+}
+
+.no-email-msg {
+    color: #808080;
+    font-style: italic;
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* ── Status Bar ── */
+.statusbar {
+    background: #c0c0c0;
+    border-top: 2px solid #808080;
+    padding: 3px 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    flex-shrink: 0;
+}
+
+.statusbar-sep {
+    color: #808080;
+}

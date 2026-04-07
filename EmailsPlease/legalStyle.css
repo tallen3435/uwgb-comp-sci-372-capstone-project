@@ -1,300 +1,336 @@
-/* =============================================
-   SHARED BASE — legalStyle.css
-   Cybersecurity Awareness Training Game
-   ============================================= */
-
-/* ---------- Reset & Root ---------- */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-:root {
-    /* Legal page accent */
-    --red:        #cc0000;
-    --red-dark:   #990000;
-    --red-muted:  #fff5f5;
-
-    /* About page accent */
-    --cyan:       #00b8cc;
-    --cyan-dark:  #0099aa;
-    --cyan-muted: #f0fafb;
-
-    /* Neutrals */
-    --bg-light:   #ffffff;
-    --bg-soft:    #f4f4f4;
-    --border:     #dddddd;
-    --text-main:  #111111;
-    --text-sub:   #444444;
-
-    /* Typography */
-    --font-ui:    'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    --font-body:  Arial, sans-serif;
-    --font-mono:  'Courier New', Courier, monospace;
-}
-
-/* ---------- Full-page background gradient ----------
-   KEY FIX: background-attachment: fixed keeps the gradient
-   locked to the viewport so it always fills the screen
-   regardless of how far the user scrolls.
-   --------------------------------------------------- */
-html {
-    height: 100%;
-    /* Solid fallback = darkest gradient stop — visible if user overscrolls */
-    background-color: #454545;
-}
-
-body {
-    min-height: 100vh;
-    font-family: var(--font-body);
-    color: var(--text-main);
-    line-height: 1.6;
-
-    /* Gradient fixed to viewport — covers entire screen at all scroll depths */
-    background: linear-gradient(
-        to bottom,
-        #e5e5e5 0%,
-        #bfbfbf 30%,
-        #8c8c8c 60%,
-        #656565 80%,
-        #454545 100%
-    );
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-
-    /* Extra bottom padding ensures content never floats over the edge */
-    padding-bottom: 3rem;
-}
-
-/* ---------- Page wrapper (used in About page) ---------- */
-.page-wrapper {
+/* ── Teal Win98 desktop ── */
+.win98-desktop {
+    background-color: #008080;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: "MS Sans Serif", "Microsoft Sans Serif", Arial, sans-serif;
+    font-size: 12px;
+    overflow: hidden;
 }
 
-main {
-    flex: 1;
-    width: 100%;
+/* ── Dialog window shell ── */
+.win98-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);   /* JS replaces this with explicit px */
+    background: #c0c0c0;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid #404040;
+    border-bottom: 2px solid #404040;
+    box-shadow: 2px 2px 0 #000;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    min-width: 360px;
+    min-height: 260px;
+}
+
+.legal-dialog {
+    width: 660px;
+    height: 540px;
+}
+
+.about-dialog {
+    width: 520px;
+    height: 600px;
+}
+
+/* ── Resize handles ── */
+.resize-handle {
+    position: absolute;
+    z-index: 999;
+}
+
+/* Edges */
+.rh-n  { top: 0;    left: 6px;  right: 6px;  height: 5px; cursor: n-resize;  }
+.rh-s  { bottom: 0; left: 6px;  right: 6px;  height: 5px; cursor: s-resize;  }
+.rh-e  { right: 0;  top: 6px;   bottom: 6px; width: 5px;  cursor: e-resize;  }
+.rh-w  { left: 0;   top: 6px;   bottom: 6px; width: 5px;  cursor: w-resize;  }
+
+/* Corners */
+.rh-ne { top: 0;    right: 0;   width: 10px; height: 10px; cursor: ne-resize; }
+.rh-nw { top: 0;    left: 0;    width: 10px; height: 10px; cursor: nw-resize; }
+.rh-se { bottom: 0; right: 0;   width: 10px; height: 10px; cursor: se-resize; }
+.rh-sw { bottom: 0; left: 0;    width: 10px; height: 10px; cursor: sw-resize; }
+
+/* ── Title Bar ── */
+.dialog-titlebar {
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: white;
+    padding: 3px 4px;
+    display: flex;
     align-items: center;
-    padding: 2rem 1rem 3rem;
+    justify-content: space-between;
+    -webkit-user-select: none;
+    user-select: none;
+    flex-shrink: 0;
+    cursor: move;
 }
 
-
-/* =============================================
-   LEGAL / DISCLAIMER PAGE
-   ============================================= */
-
-.game-disclaimer {
-    max-width: 820px;
-    width: 100%;
-    padding: 2.5rem 2rem;
-    margin: 2rem auto;
-    border: 2px solid var(--red);
-    border-radius: 10px;
-    background-color: var(--red-muted);
-    font-family: var(--font-body);
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-}
-
-/* Disclaimer header */
-.dislcamer-header {
-    text-align: center;
-    font-family: var(--font-ui);
-    font-size: 2.4rem;
-    font-weight: 700;
-    color: var(--red);
-    margin-bottom: 1.5rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-}
-
-.game-disclaimer h2 {
-    color: var(--red);
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
-}
-
-.game-disclaimer h3 {
-    color: var(--red);
-    font-size: 1.1rem;
-    margin: 1.5rem 0 0.5rem;
-}
-
-.game-disclaimer p,
-.game-disclaimer li {
-    font-size: 0.97rem;
-    color: var(--text-main);
-    margin-bottom: 0.6rem;
-}
-
-.game-disclaimer ul {
-    padding-left: 1.4rem;
-    margin-bottom: 1rem;
-}
-
-.game-disclaimer li {
-    margin-bottom: 0.5rem;
-}
-
-/* Agree container */
-.agree-container {
-    margin-top: 2rem;
-    text-align: center;
-}
-
-.agree-container label {
-    font-size: 1.05rem;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.agree-container input[type="checkbox"] {
-    transform: scale(1.3);
-    accent-color: var(--red);
-    cursor: pointer;
-}
-
-#warningMsg {
-    color: var(--red);
+.dialog-title {
     font-weight: bold;
-    margin-top: 0.75rem;
+    font-size: 12px;
+}
+
+.dialog-controls {
+    display: flex;
+    gap: 2px;
+}
+
+.win-ctrl {
+    width: 16px;
+    height: 14px;
+    background: #c0c0c0;
+    color: #000;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+    border-right: 1px solid #404040;
+    border-bottom: 1px solid #404040;
+    font-size: 9px;
+    font-family: "MS Sans Serif", sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+}
+
+.win-ctrl:active {
+    border-top: 1px solid #404040;
+    border-left: 1px solid #404040;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
+}
+
+/* ── Dialog Body ── */
+.dialog-body {
+    padding: 12px 14px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.dialog-intro {
+    font-size: 12px;
+    color: #000;
+}
+
+/* ── Win98 Sunken Text Box (scrollable disclaimer) ── */
+.win98-textbox {
+    background: white;
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    padding: 10px 12px;
+    flex: 1;
+    min-height: 80px;
+    overflow-y: scroll;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #000;
+}
+
+.win98-textbox h2 {
+    font-size: 13px;
+    margin-bottom: 8px;
+    font-family: "MS Sans Serif", sans-serif;
+}
+
+.win98-textbox h3 {
+    font-size: 12px;
+    margin: 10px 0 4px;
+    font-family: "MS Sans Serif", sans-serif;
+}
+
+.win98-textbox p {
+    margin-bottom: 8px;
+}
+
+.win98-textbox ul {
+    padding-left: 18px;
+    margin-bottom: 8px;
+}
+
+.win98-textbox li {
+    margin-bottom: 4px;
+}
+
+.warning-text {
+    color: #cc0000;
+    font-weight: bold;
+}
+
+/* ── Agree row ── */
+.agree-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.agree-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.agree-label input[type="checkbox"] {
+    cursor: pointer;
+    width: 13px;
+    height: 13px;
+}
+
+.warning-msg {
+    color: #cc0000;
+    font-size: 11px;
     display: none;
 }
 
-/* Return button — Legal (red) */
-.return-button {
-    display: inline-block;
-    margin: 1.5rem auto 0;
-    padding: 0.75rem 2rem;
-    background-color: var(--red);
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    font-size: 1.05rem;
-    font-family: 'Trebuchet MS', var(--font-ui);
-    font-weight: 700;
+/* ── Standard Win98 Button ── */
+.win98-btn {
+    background: #c0c0c0;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
+    padding: 4px 20px;
+    font-size: 12px;
+    font-family: "MS Sans Serif", sans-serif;
     cursor: pointer;
-    letter-spacing: 0.5px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    transition: background-color 0.2s ease, transform 0.15s ease;
-    text-decoration: none;
+    min-width: 80px;
 }
 
-.return-button:hover {
-    background-color: var(--red-dark);
-    transform: scale(1.04);
+.win98-btn:active {
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    padding-top: 6px;
+    padding-left: 22px;
 }
 
-.return-button:active {
-    transform: scale(0.97);
+/* ── Dialog button row ── */
+.dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    padding: 4px 0 2px;
 }
 
-
-/* =============================================
-   ABOUT PAGE
-   ============================================= */
-
-.about-section {
-    max-width: 860px;
-    width: 100%;
-    padding: 2.5rem 2rem;
-    margin: 2rem auto;
-    background-color: var(--bg-light);
-    border-left: 6px solid var(--cyan);
-    border-radius: 10px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-    font-family: var(--font-body);
-    color: var(--text-main);
-    line-height: 1.7;
+/* ── About page: App banner ── */
+.about-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 14px 8px;
+    background: #c0c0c0;
+    border-bottom: 1px solid #808080;
 }
 
-/* About page header */
-.about-header {
-    text-align: center;
-    font-family: var(--font-ui);
-    font-size: 2.4rem;
-    font-weight: 700;
-    color: var(--cyan);
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+.about-icon {
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+    flex-shrink: 0;
 }
 
-/* Accent divider */
-.accent-divider {
-    border: none;
-    height: 3px;
-    background-color: var(--cyan);
-    margin: 2rem 0;
-    border-radius: 2px;
+.about-appname {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: "MS Sans Serif", sans-serif;
 }
 
-/* Team section */
-.team-section {
-    margin-top: 1rem;
+.about-appver {
+    font-size: 12px;
+    margin-top: 2px;
 }
 
-.team-section h2 {
-    text-align: center;
-    font-size: 1.7rem;
-    color: var(--cyan);
-    margin-bottom: 1.25rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.about-appcopy {
+    font-size: 11px;
+    color: #444;
+    margin-top: 2px;
 }
 
-/* Individual team member card */
-.team-member {
-    margin-bottom: 1.25rem;
-    padding: 1rem 1.25rem;
-    background-color: var(--cyan-muted);
-    border-left: 4px solid var(--cyan);
-    border-radius: 6px;
+.dialog-divider {
+    height: 2px;
+    background: #808080;
+    box-shadow: 0 1px 0 white;
 }
 
-.team-member h3 {
-    margin: 0 0 0.4rem;
-    font-size: 1.15rem;
-    color: #222222;
+.about-body {
+    gap: 10px;
+    overflow-y: auto;
 }
 
-.team-member p {
-    margin: 0.2rem 0;
-    font-size: 0.95rem;
-    color: var(--text-sub);
+/* ── Win98 Group Box ── */
+.win98-group {
+    border: 1px solid #808080;
+    border-top: 1px solid #808080;
+    padding: 14px 10px 10px;
+    position: relative;
+    box-shadow: inset 1px 1px 0 white;
 }
 
-/* Return button — About (cyan) */
-.return-button2 {
-    display: block;
-    margin: 2rem auto 0;
-    padding: 0.75rem 2rem;
-    background-color: var(--cyan);
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    font-size: 1.05rem;
-    font-family: 'Trebuchet MS', var(--font-ui);
-    font-weight: 700;
-    cursor: pointer;
-    letter-spacing: 0.5px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
-    transition: background-color 0.2s ease, transform 0.15s ease;
+.group-label {
+    position: absolute;
+    top: -8px;
+    left: 8px;
+    background: #c0c0c0;
+    padding: 0 4px;
+    font-size: 11px;
+    font-weight: bold;
 }
 
-.return-button2:hover {
-    background-color: var(--cyan-dark);
-    transform: scale(1.04);
+.win98-group p {
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 6px;
+    color: #000;
 }
 
-.return-button2:active {
-    transform: scale(0.97);
+.win98-group p:last-child {
+    margin-bottom: 0;
+}
+
+/* ── Team member list ── */
+.team-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.team-row {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 4px;
+    border-bottom: 1px solid #d0d0d0;
+    font-size: 12px;
+    gap: 1px;
+}
+
+.team-row:last-child {
+    border-bottom: none;
+}
+
+.team-row strong {
+    font-size: 12px;
+}
+
+.team-gh {
+    color: #000080;
+    font-size: 11px;
 }

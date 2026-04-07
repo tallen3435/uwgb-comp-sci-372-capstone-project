@@ -6,90 +6,94 @@
     <title>Legal Information</title>
     <link rel="stylesheet" href="legalStyle.css">
 </head>
-<body>
+<body class="win98-desktop">
 
-<main>
-    <section class="game-disclaimer">
-        <header>
-            <h1 class="dislcamer-header">Legal &amp; Disclaimers</h1>
-        </header>
+<div class="win98-dialog legal-dialog">
 
-        <h2>Important Disclaimer &amp; Safety Notice</h2>
+    <!-- Title Bar -->
+    <div class="dialog-titlebar">
+        <span class="dialog-title">&#9888; Legal &amp; Disclaimers &#8211; Emails Please</span>
+        <div class="dialog-controls">
+            <button type="button" class="win-ctrl">?</button>
+            <button type="button" class="win-ctrl" onclick="location.href='index.html'">&#10005;</button>
+        </div>
+    </div>
 
-        <p>
-            This cyber security training game is provided for educational and informational purposes only.
-            It simulates potentially harmful or deceptive emails (including phishing, spam, and other malicious content)
-            in a controlled environment to help users learn how to recognize and handle them safely.
-            This game is a fictional training tool designed for educational purposes. All email examples, characters,
-            and scenarios are simulated and do not represent real individuals or organizations.
-        </p>
+    <!-- Body -->
+    <div class="dialog-body">
 
-        <p>
-            By clicking "I Agree" or continuing to use this game, you acknowledge and agree to the following:
-        </p>
+        <p class="dialog-intro">Please read the following terms carefully before using this application.</p>
 
-        <ul>
-            <li>
-                <strong>Educational use only:</strong> The content in this game does not constitute professional, legal, security, or business advice.
-                You are responsible for how you apply any information learned here in real-world situations.
-            </li>
-            <li>
-                <strong>No real accounts or data:</strong> Do not enter real passwords, personal data, or sensitive information into this game.
-                Any accounts, emails, or credentials shown are fictional and for training purposes only.
-            </li>
-            <li>
-                <strong>Simulated threats:</strong> The game may include realistic examples of phishing, scams, and malicious emails.
-                These are simulations and should not be treated as real communications.
-            </li>
-        </ul>
+        <!-- Scrollable disclaimer text box -->
+        <div class="win98-textbox">
 
-        <h3>Health &amp; Age Warnings</h3>
+            <h2>Important Disclaimer &amp; Safety Notice</h2>
 
-        <ul>
-            <li>
-                <strong>Visual effects:</strong> This game may contain flashing elements, rapid visual changes, or high-contrast content.
-                If you have a history of photosensitive epilepsy or seizures, or have been advised to avoid such visual stimuli,
-                you should not play this game or should consult a medical professional before playing.
-            </li>
-            <li>
-                <strong>Mental well-being:</strong> Some scenarios may involve stress-inducing or anxiety-provoking content related to scams,
-                fraud, or security incidents. If you are currently experiencing significant mental health challenges or find such content distressing,
-                consider not playing or stopping immediately if you feel uncomfortable.
-            </li>
-            <li>
-                <strong>Age restriction:</strong> This game is intended for users who are at least 18 years old.
-                If you are under 18, you must not use this game without the consent and supervision of a parent or legal guardian,
-                and in accordance with applicable laws in your region.
-            </li>
-        </ul>
+            <p>
+                This cyber security training game is provided for educational and informational purposes only.
+                It simulates potentially harmful or deceptive emails (including phishing, spam, and other malicious content)
+                in a controlled environment to help users learn how to recognize and handle them safely.
+                This game is a fictional training tool designed for educational purposes. All email examples, characters,
+                and scenarios are simulated and do not represent real individuals or organizations.
+            </p>
 
-        <h3>Use at your own risk</h3>
+            <p>By using this application, you acknowledge and agree to the following:</p>
 
-        <p>
-            Your use of this game is entirely at your own risk. The creators, developers, and distributors of this game
-            make no guarantees regarding accuracy, completeness, or suitability of the content and are not liable for any loss,
-            damage, or consequences arising from your use of or reliance on this game.
-        </p>
+            <ul>
+                <li><strong>Educational use only:</strong> The content in this game does not constitute professional, legal,
+                    security, or business advice. You are responsible for how you apply any information learned here in real-world situations.</li>
+                <li><strong>No real accounts or data:</strong> Do not enter real passwords, personal data, or sensitive information
+                    into this game. Any accounts, emails, or credentials shown are fictional and for training purposes only.</li>
+                <li><strong>Simulated threats:</strong> The game may include realistic examples of phishing, scams, and malicious
+                    emails. These are simulations and should not be treated as real communications.</li>
+            </ul>
 
-        <p style="font-weight: bold; color: #cc0000;">
-            If you experience dizziness, visual disturbance, anxiety, or any discomfort while playing, stop immediately.
-        </p>
+            <h3>Health &amp; Age Warnings</h3>
 
-        <div class="agree-container">
-            <label>
+            <ul>
+                <li><strong>Visual effects:</strong> This game may contain flashing elements, rapid visual changes, or
+                    high-contrast content. If you have a history of photosensitive epilepsy or seizures, consult a medical
+                    professional before playing.</li>
+                <li><strong>Mental well-being:</strong> Some scenarios may involve stress-inducing or anxiety-provoking
+                    content related to scams, fraud, or security incidents. Stop immediately if you feel uncomfortable.</li>
+                <li><strong>Age restriction:</strong> This game is intended for users who are at least 18 years old.
+                    If you are under 18, you must not use this game without the consent and supervision of a parent or
+                    legal guardian.</li>
+            </ul>
+
+            <h3>Use At Your Own Risk</h3>
+
+            <p>
+                Your use of this game is entirely at your own risk. The creators, developers, and distributors of this
+                game make no guarantees regarding accuracy, completeness, or suitability of the content and are not
+                liable for any loss, damage, or consequences arising from your use of or reliance on this game.
+            </p>
+
+            <p class="warning-text">
+                If you experience dizziness, visual disturbance, anxiety, or any discomfort while playing, stop immediately.
+            </p>
+
+        </div>
+
+        <!-- Agreement area -->
+        <div class="agree-row">
+            <label class="agree-label">
                 <input type="checkbox" id="agreeCheck">
                 I have read and agree to the disclaimer
             </label>
-
-            <p id="warningMsg">You must read and accept the terms and services to continue.</p>
-
-            <br>
-
-            <button id="returnBtn" class="return-button">Back to Menu</button>
         </div>
-    </section>
-</main>
 
+        <p id="warningMsg" class="warning-msg">You must read and accept the terms to continue.</p>
+
+        <!-- Footer buttons -->
+        <div class="dialog-buttons">
+            <button type="button" class="win98-btn" id="returnBtn">Back to Menu</button>
+        </div>
+
+    </div>
+</div>
+
+<script src="win98Window.js"></script>
 <script>
     const checkbox  = document.getElementById('agreeCheck');
     const returnBtn = document.getElementById('returnBtn');
@@ -99,7 +103,9 @@
         if (!checkbox.checked) {
             warningMsg.style.display = 'block';
         } else {
-            location.href = 'index.html';
+            localStorage.setItem('termsAccepted', 'true');
+            const from = new URLSearchParams(window.location.search).get('from');
+            location.href = from === 'game' ? 'gameScreen.html' : 'index.html';
         }
     });
 </script>
