@@ -42,7 +42,7 @@ def handle_email_generation():
 
         # Call the Gemini API with structured output and safety overrides
         response = client.models.generate_content(
-            model="gemini-2.0-flash",
+            model="gemini-3.1-flash-lite-preview",
             contents=prompt,
             config={
                 "response_mime_type": "application/json",
