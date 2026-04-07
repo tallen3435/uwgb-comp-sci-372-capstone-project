@@ -3,91 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emails Please</title>
-    <link rel="stylesheet" href="gameScreen.css">
+    <title>Game Screen</title>
+    <link rel="stylesheet" href="mainStyle.css">
 </head>
 <body class="win98-desktop">
 
-<div class="outlook-window">
+<header>
+    <h1>Email Review Console</h1>
+    <p id="day-counter">Day: 1</p>
+    <p id="malware-counter">Malware: 0</p>
+</header>
 
-    <!-- Title Bar -->
-    <div class="window-titlebar">
-        <span class="window-title">&#128139; Inbox - Emails Please</span>
-        <div class="window-controls">
-            <button type="button" class="win-ctrl">_</button>
-            <button type="button" class="win-ctrl">&#9633;</button>
-            <button type="button" class="win-ctrl close-btn" onclick="location.href='index.html'">&#10005;</button>
-        </div>
-    </div>
+<main>
+    <section id="email-container">
+        <!-- JS injects email here -->
+    </section>
 
-    <!-- Menu Bar -->
-    <div class="menubar">
-        <span class="menu-item">File</span>
-        <span class="menu-item">Edit</span>
-        <span class="menu-item">View</span>
-        <span class="menu-item">Go</span>
-        <span class="menu-item">Tools</span>
-        <span class="menu-item">Help</span>
-    </div>
+    <section id="actions">
+        <button id="reply-btn">Reply</button>
+        <button id="ignore-btn">Ignore</button>
+        <button id="report-btn">Report</button>
+    </section>
+</main>
 
-    <!-- Toolbar -->
-    <div class="toolbar">
-        <button type="button" class="toolbar-btn" id="reply-btn">&#8617; Reply</button>
-        <div class="toolbar-sep"></div>
-        <button type="button" class="toolbar-btn" id="ignore-btn">&#128465; Delete</button>
-        <div class="toolbar-sep"></div>
-        <button type="button" class="toolbar-btn" id="report-btn">&#9888; Report Phish</button>
-        <div class="toolbar-sep"></div>
-        <button type="button" class="toolbar-btn" onclick="location.href='index.html'">&#8962; Main Menu</button>
-    </div>
+<footer>
+    <button onclick="location.href='index.html'">Return to Menu</button>
+</footer>
 
-    <!-- 3-Panel Layout -->
-    <div class="main-panels">
-
-        <!-- Left: Folder Tree -->
-        <div class="folder-panel">
-            <div class="panel-header">Folders</div>
-            <div class="folder-tree">
-                <div class="folder-item active">&#128228; Inbox <span id="unread-count"></span></div>
-                <div class="folder-item">&#128229; Sent Items</div>
-                <div class="folder-item">&#128465; Deleted Items</div>
-                <div class="folder-item">&#128196; Drafts</div>
-            </div>
-        </div>
-
-        <!-- Middle: Email List -->
-        <div class="email-list-panel">
-            <div class="email-list-header">
-                <span class="col-from">From</span>
-                <span class="col-subject">Subject</span>
-                <span class="col-date">Received</span>
-            </div>
-            <div id="email-list">
-                <!-- Populated by JS -->
-            </div>
-        </div>
-
-        <!-- Right: Reading Pane -->
-        <div class="reading-pane">
-            <div class="email-fields" id="email-header"></div>
-            <div class="email-body" id="email-container">
-                <p class="no-email-msg">Select a message from the list to read it.</p>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Status Bar -->
-    <div class="statusbar">
-        <span id="day-counter">Day: 1</span>
-        <span class="statusbar-sep">|</span>
-        <span id="malware-counter">Malware: 0</span>
-        <span class="statusbar-sep">|</span>
-        <span id="status-msg">Ready</span>
-    </div>
-
-</div>
-
-<script src="animationsScript.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
