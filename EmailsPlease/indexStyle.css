@@ -1,75 +1,201 @@
 /* Desktop background */
 .win98-desktop {
     background: url('resources/images/win98_wallpaper.jpg');
-    background-size: cover;
+    background-size: 100% 100%;
     height: 100vh;
     margin: 0;
     font-family: "MS Sans Serif", sans-serif;
     overflow: hidden;
+    padding-bottom: 60px;
 }
 
-/* Desktop icons container */
-.desktop-icons {
+/* Title header on desktop */
+.desktop-header {
     position: absolute;
-    top: 50%;
+    top: 20px;
     left: 50%;
-    transform: translate(-50%, -55%);
-    display: grid;
-    grid-template-columns: repeat(2, 140px); /* match new icon width */
-    gap: 50px 80px; /* more spacing */
-    text-align: center;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 25px;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
 }
 
-
-/* Individual icon */
-.icon {
-    width: 140px; /* wider icon block */
-    text-align: center;
+.desktop-header h1 {
+    margin: 0;
+    font-size: 64px;
     color: white;
-    text-decoration: none;
-    font-size: 24px; /* chunkier label text */
     font-weight: bold;
-    filter: drop-shadow(2px 2px 0px black);
+    text-shadow: 3px 3px 1px black;
+    font-family: "MS Sans Serif", sans-serif;
 }
 
-.icon img {
-    width: 128px; /* bigger icon image */
-    height: 128px;
-    image-rendering: pixelated;
-    margin-bottom: 8px;
-}
-
-
-
-/* Taskbar */
+/* ── Taskbar ── */
 .taskbar {
-    position: fixed; /* instead of absolute */
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 40px;
+    height: 50px;
     background: #c0c0c0;
     border-top: 2px solid white;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 10px;
+    padding: 0 8px 0 8px;
     box-shadow: inset 0 2px #808080;
-    z-index: 999; /* ensures it never hides behind anything */
+    z-index: 100;
+    box-sizing: border-box;
 }
 
-
-/* Start button */
-.start-button {
-    background: #c0c0c0;
-    border: 2px solid #808080;
-    padding: 5px 15px;
-    font-weight: bold;
+/* Begin icon button */
+.begin-icon {
     cursor: pointer;
-    box-shadow: inset -2px -2px white, inset 2px 2px #808080;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 2px;
+}
+
+.begin-icon img {
+    width: 90px;
+    height: 40px;
+    image-rendering: pixelated;
+    transition: transform 0.1s ease;
+    will-change: transform;
+}
+
+/* Bounce on hover */
+.begin-icon:hover img {
+    animation: icon-bounce 0.5s ease infinite;
+}
+
+/* Press down on click */
+.begin-icon:active img {
+    animation: none;
+    transform: scale(0.88);
+}
+
+/* Glow highlight when menu is open */
+.begin-icon.active img {
+    animation: none;
+    filter: brightness(1.2) drop-shadow(0 0 6px #ffffff);
+}
+
+@keyframes icon-bounce {
+    0%   { transform: translateY(0px); }
+    30%  { transform: translateY(-6px); }
+    60%  { transform: translateY(-2px); }
+    100% { transform: translateY(0px); }
 }
 
 /* Clock */
 .taskbar-clock {
+    background: #c0c0c0;
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    padding: 3px 10px;
     font-size: 14px;
+    font-family: "MS Sans Serif", sans-serif;
+    min-width: 80px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* ── Start Menu Popup ── */
+.start-menu {
+    display: none;
+    position: fixed;
+    bottom: 55px;
+    left: 4px;
+    width: 420px;
+    background: #c0c0c0;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
+    box-shadow: 4px 4px 0px #000;
+    z-index: 200;
+    flex-direction: row;
+}
+
+.start-menu.open {
+    display: flex;
+}
+
+/* Vertical blue sidebar — classic Win98 style */
+.start-menu-sidebar {
+    background: #000080;
+    width: 36px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.start-menu-sidebar span {
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: "MS Sans Serif", sans-serif;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 0px #000080;
+}
+
+/* Right side content */
+.start-menu-content {
+    flex: 1;
+    padding: 12px 16px 16px 16px;
+}
+
+.start-menu-label {
+    font-size: 11px;
+    color: #808080;
+    border-bottom: 1px solid #808080;
+    margin-bottom: 12px;
+    padding-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Icon grid inside the menu */
+.start-menu-icons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.menu-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: #000;
+    text-decoration: none;
+    font-size: 12px;
+    font-family: "MS Sans Serif", sans-serif;
+    padding: 10px 6px;
+    border: 2px solid transparent;
+}
+
+.menu-icon:hover {
+    background: #000080;
+    color: white;
+    border-top: 2px solid #0000c0;
+    border-left: 2px solid #0000c0;
+    border-right: 2px solid #000040;
+    border-bottom: 2px solid #000040;
+}
+
+.menu-icon img {
+    width: 64px;
+    height: 64px;
+    image-rendering: pixelated;
+    margin-bottom: 6px;
 }

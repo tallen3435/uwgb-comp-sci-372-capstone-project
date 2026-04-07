@@ -6,73 +6,91 @@
     <title>About Us</title>
     <link rel="stylesheet" href="legalStyle.css">
 </head>
-<body>
-<div class="page-wrapper">
+<body class="win98-desktop">
 
-    <main>
-        <section class="about-section">
-            <h1 class="about-header">About This Project</h1>
+<div class="win98-dialog about-dialog">
 
+    <!-- Title Bar -->
+    <div class="dialog-titlebar">
+        <span class="dialog-title">&#8505; About Emails Please</span>
+        <div class="dialog-controls">
+            <button type="button" class="win-ctrl">?</button>
+            <button type="button" class="win-ctrl" onclick="location.href='index.html'">&#10005;</button>
+        </div>
+    </div>
+
+    <!-- App Banner -->
+    <div class="about-banner">
+        <img src="resources/images/Playgame_Icon.png" alt="Emails Please Icon" class="about-icon">
+        <div class="about-appinfo">
+            <div class="about-appname">Emails Please</div>
+            <div class="about-appver">Version 1.0.0</div>
+            <div class="about-appcopy">UWGB Comp Sci 372 &mdash; Capstone Project</div>
+        </div>
+    </div>
+
+    <div class="dialog-divider"></div>
+
+    <!-- Body -->
+    <div class="dialog-body about-body">
+
+        <!-- About the project -->
+        <div class="win98-group">
+            <span class="group-label">About This Project</span>
             <p>
                 This project was created as part of the <strong>Comp Sci 372 Capstone</strong> at the
-                University of Wisconsin–Green Bay. The goal of the capstone is to design and develop
-                a meaningful software application that demonstrates both technical skill and real-world value.
+                University of Wisconsin&ndash;Green Bay. The goal is to design and develop a meaningful
+                software application that demonstrates both technical skill and real-world value.
             </p>
-
             <p>
-                For this project, we chose to focus on <strong>Cybersecurity Awareness</strong>—specifically,
-                helping users learn how to identify phishing attempts, spam messages, and legitimate emails.
-                Cyber threats continue to grow more sophisticated, and many successful attacks rely on
-                tricking everyday users rather than exploiting technical vulnerabilities.
+                We focused on <strong>Cybersecurity Awareness</strong>&mdash;helping users identify
+                phishing attempts, spam, and legitimate emails. This game provides a safe, interactive
+                environment where players practice spotting suspicious messages and build confidence
+                in navigating digital communication.
             </p>
+        </div>
 
-            <p>
-                This game provides a safe, interactive environment where players can practice spotting
-                suspicious messages, learn common red flags, and build confidence in navigating digital
-                communication. Instead of passively reading about cybersecurity, users learn by doing—making
-                decisions, reviewing simulated emails, and experiencing the consequences in a controlled setting.
-            </p>
+        <!-- Team members -->
+        <div class="win98-group">
+            <span class="group-label">Development Team</span>
+            <div class="team-list">
 
-            <p>
-                The project reflects the culmination of coursework in software engineering, web development,
-                and cybersecurity fundamentals. It showcases the importance of creating tools that are not only
-                technically sound, but also accessible, educational, and genuinely useful for everyday users.
-            </p>
-
-            <hr class="accent-divider">
-
-            <section class="team-section">
-                <h2>Meet the Team</h2>
-
-                <div class="team-member">
-                    <h3>Joel Bowman</h3>
-                    <p><strong>Email:</strong> bowmanjo@uwgb.edu</p>
-                    <p><strong>GitHub:</strong> github.com/Joey-The-Human</p>
+                <div class="team-row">
+                    <strong>Joel Bowman</strong>
+                    <span>bowmanjo@uwgb.edu</span>
+                    <span class="team-gh">github.com/Joey-The-Human</span>
                 </div>
 
-                <div class="team-member">
-                    <h3>Teammate Name</h3>
-                    <p><strong>Email:</strong> teammate@uwgb.edu</p>
-                    <p><strong>GitHub:</strong> github.com/theirusername</p>
+                <div class="team-row">
+                    <strong>Teammate Name</strong>
+                    <span>teammate@uwgb.edu</span>
+                    <span class="team-gh">github.com/theirusername</span>
                 </div>
 
-                <div class="team-member">
-                    <h3>Teammate Name</h3>
-                    <p><strong>Email:</strong> teammate@uwgb.edu</p>
-                    <p><strong>GitHub:</strong> github.com/theirusername</p>
+                <div class="team-row">
+                    <strong>Teammate Name</strong>
+                    <span>teammate@uwgb.edu</span>
+                    <span class="team-gh">github.com/theirusername</span>
                 </div>
 
-                <div class="team-member">
-                    <h3>Teammate Name</h3>
-                    <p><strong>Email:</strong> teammate@uwgb.edu</p>
-                    <p><strong>GitHub:</strong> github.com/theirusername</p>
+                <div class="team-row">
+                    <strong>Teammate Name</strong>
+                    <span>teammate@uwgb.edu</span>
+                    <span class="team-gh">github.com/theirusername</span>
                 </div>
-            </section>
 
-            <button onclick="location.href='index.html'" class="return-button2">Back to Menu</button>
-        </section>
-    </main>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer buttons -->
+    <div class="dialog-buttons">
+        <button type="button" class="win98-btn" onclick="location.href='index.html'">OK</button>
+    </div>
 
 </div>
+
+<script src="win98Window.js"></script>
 </body>
 </html>

@@ -8,35 +8,84 @@
 </head>
 <body class="win98-desktop">
 
-    <div class="desktop-icons">
+    <div class="desktop-header">
+        <h1>Emails Please</h1>
+    </div>
 
-        <a href="gameScreen.html" class="icon">
-            <img src="resources/images/Playgame_Icon.png" alt="Play Game">
-            <span>Play Game</span>
-        </a>
-
-        <a href="settings.html" class="icon">
-            <img src="resources/images/Setting_Icon.png" alt="Play Game">
-            <span>Settings</span>
-        </a>
-
-        <a href="aboutUs.html" class="icon">
-            <img src="resources/images/AboutUs_Icon.png" alt="About Us">
-            <span>About Us</span>
-        </a>
-
-        <a href="legal.html" class="icon">
-            <img src="resources/images/Legal_Icon.png" alt="Legal">
-            <span>Legal</span>
-        </a>
-
+    <!-- Start Menu Popup -->
+    <div class="start-menu" id="startMenu">
+        <div class="start-menu-sidebar">
+            <span>Emails Please</span>
+        </div>
+        <div class="start-menu-content">
+            <div class="start-menu-label">Applications</div>
+            <div class="start-menu-icons">
+                <a href="gameScreen.html" class="menu-icon" onclick="playGame(event)">
+                    <img src="resources/images/Playgame_Icon.png" alt="Play Game">
+                    <span>Play Game</span>
+                </a>
+                <a href="settings.html" class="menu-icon">
+                    <img src="resources/images/Setting_Icon.png" alt="Settings">
+                    <span>Settings</span>
+                </a>
+                <a href="aboutUs.html" class="menu-icon">
+                    <img src="resources/images/AboutUs_Icon.png" alt="About Us">
+                    <span>About Us</span>
+                </a>
+                <a href="legal.html" class="menu-icon">
+                    <img src="resources/images/Legal_Icon.png" alt="Legal">
+                    <span>Legal</span>
+                </a>
+            </div>
+        </div>
     </div>
 
     <div class="taskbar">
-        <div class="start-button">Start</div>
-        <div class="taskbar-clock">3:45 PM</div>
+        <div class="begin-icon" id="beginBtn">
+            <img src="resources/images/Begin_Icon.png" alt="Begin">
+        </div>
+        <div class="taskbar-clock" id="taskbarClock">12:00 PM</div>
     </div>
+
+    <script>
+        function playGame(e) {
+            e.preventDefault();
+            if (localStorage.getItem('termsAccepted') === 'true') {
+                location.href = 'gameScreen.html';
+            } else {
+                location.href = 'legal.html?from=game';
+            }
+        }
+    </script>
+
+    <script>
+        const menu = document.getElementById('startMenu');
+        const btn = document.getElementById('beginBtn');
+
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            menu.classList.toggle('open');
+            btn.classList.toggle('active');
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                menu.classList.remove('open');
+                btn.classList.remove('active');
+            }
+        });
+
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            document.getElementById('taskbarClock').textContent = hours + ':' + minutes + ' ' + ampm;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
 
 </body>
 </html>
-
