@@ -62,9 +62,13 @@ def handle_email_generation():
         # Basic error handling for the Software Engineering course project
         return jsonify({"error": str(e)}), 500
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+@app.route('/', methods=['GET'])
+def health_check():
+    return jsonify({
+        "status": "online",
+        "project": "Emails Please API",
+        "message": "Send a POST request to /api/generate-email to use the generator."
+    }), 200
     
 if __name__ == '__main__':
     # Run the server (Joel will likely use Gunicorn for the actual EC2 deployment)
