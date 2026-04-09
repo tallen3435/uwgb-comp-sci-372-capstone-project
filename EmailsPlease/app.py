@@ -63,16 +63,13 @@ def handle_email_generation():
         return jsonify({"error": str(e)}), 500
 
 @app.route('/', methods=['GET'])
-def index():
-    return render_template('index.html')
-"""
 def health_check():
     return jsonify({
         "status": "online",
         "project": "Emails Please API",
         "message": "Send a POST request to /api/generate-email to use the generator."
     }), 200
-"""
+
 
     
 if __name__ == '__main__':
