@@ -143,6 +143,24 @@
     padding-left: 12px;
 }
 
+.toolbar-btn:disabled {
+    color: #808080;
+    text-shadow: 1px 1px 0 white;
+    cursor: default;
+}
+
+.toolbar-btn:disabled:hover {
+    background: #c0c0c0;
+}
+
+.toolbar-btn:disabled:active {
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
+    padding: 3px 10px;
+}
+
 .toolbar-sep {
     width: 1px;
     height: 22px;
@@ -192,13 +210,23 @@
     font-size: 12px;
 }
 
+.folder-item[onclick] {
+    cursor: pointer;
+}
+
 .folder-item:hover {
     background: #000080;
     color: white;
 }
 
 .folder-item.active {
+    background: #000080;
+    color: white;
     font-weight: bold;
+}
+
+.folder-item.active:hover {
+    background: #000080;
 }
 
 /* ── Middle: Email List Panel ── */
@@ -347,4 +375,91 @@
 
 .statusbar-sep {
     color: #808080;
+}
+
+/* ── Initially hidden elements (JS reveals these at runtime) ── */
+#restore-sep,
+#restore-btn,
+#daySummary {
+    display: none;
+}
+
+/* ── Day Summary overlay ── */
+.summary-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+}
+
+.summary-dialog {
+    background: #c0c0c0;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid #404040;
+    border-bottom: 2px solid #404040;
+    box-shadow: 4px 4px 0 #000;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+}
+
+.summary-titlebar {
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 4px 8px;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.summary-body {
+    padding: 14px 16px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 2px 0;
+}
+
+.summary-divider {
+    height: 1px;
+    background: #808080;
+    box-shadow: 0 1px 0 white;
+    margin: 4px 0;
+}
+
+.summary-score {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.summary-hint {
+    margin-top: 8px;
+    font-size: 11px;
+    color: #444;
+    border-top: 1px solid #808080;
+    padding-top: 6px;
+    line-height: 1.4;
+}
+
+.summary-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px 16px 12px;
+}
+
+/* Restore button accent */
+.restore-btn {
+    color: #000080;
+    font-weight: bold;
 }

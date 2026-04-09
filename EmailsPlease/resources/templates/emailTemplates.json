@@ -1,0 +1,455 @@
+{
+  "version": "1.0",
+  "description": "Email templates for Emails Please. 10 legitimate, 10 phishing, 10 spam. Used as fallback when API is unavailable.",
+  "emails": [
+    {
+      "id": 1,
+      "type": "legit",
+      "from": "IT Department",
+      "address": "it-support@malwareinc.com",
+      "subject": "Mandatory Password Policy Update — Action Required by Friday",
+      "date": "Mon 3/14/2005 8:47 AM",
+      "body": "Dear Team,\n\nEffective this Friday, all employee passwords must meet our updated security requirements:\n\n- Minimum 12 characters\n- At least one uppercase letter, number, and symbol\n- Cannot reuse your last 5 passwords\n\nPlease update your password by logging into the company portal at intranet.malwareinc.com and navigating to Account Settings.\n\nContact the helpdesk at ext. 4400 if you need assistance.\n\nThank you,\nIT Support Team",
+      "redFlags": [],
+      "hint": "Legitimate IT emails direct you to internal company portals, not external links. The sender domain matches the company and contact info is provided."
+    },
+    {
+      "id": 2,
+      "type": "legit",
+      "from": "Sarah Mitchell — HR",
+      "address": "s.mitchell@malwareinc.com",
+      "subject": "2005 Benefits Enrollment Now Open",
+      "date": "Mon 3/14/2005 9:15 AM",
+      "body": "Hi everyone,\n\nOpen enrollment for 2005 employee benefits begins today and closes March 28th. This is your opportunity to review and update your health, dental, vision, and 401(k) elections.\n\nTo make changes, log into the HR portal at hr.malwareinc.com using your employee ID.\n\nIf you have questions, contact HR directly at hr@malwareinc.com or call ext. 2200.\n\nBest regards,\nSarah Mitchell\nHuman Resources",
+      "redFlags": [],
+      "hint": "Legitimate HR emails use internal portals and company email addresses. Deadlines are reasonable and contact information is provided."
+    },
+    {
+      "id": 3,
+      "type": "legit",
+      "from": "David Park — Manager",
+      "address": "d.park@malwareinc.com",
+      "subject": "Team Sync — Thursday 2:00 PM, Conference Room B",
+      "date": "Tue 3/15/2005 10:02 AM",
+      "body": "Hi team,\n\nReminder that our weekly sync is this Thursday at 2:00 PM in Conference Room B.\n\nAgenda:\n1. Q1 project status updates\n2. Client feedback from last week's demo\n3. Upcoming deadlines for April\n\nPlease come prepared with a 2-minute update on your current tasks. If you cannot attend, let me know in advance.\n\nSee you Thursday,\nDavid Park\nSenior Project Manager",
+      "redFlags": [],
+      "hint": "Internal meeting invites come from known colleagues with company email addresses and include specific location details."
+    },
+    {
+      "id": 4,
+      "type": "legit",
+      "from": "Finance — Accounts Payable",
+      "address": "ap@malwareinc.com",
+      "subject": "Invoice #4821 Requires Your Approval",
+      "date": "Tue 3/15/2005 11:30 AM",
+      "body": "Hello,\n\nInvoice #4821 from Contoso Supplies ($3,240.00) has been submitted for your approval.\n\nPlease review and approve or reject it by logging into the finance portal at finance.malwareinc.com > Pending Approvals.\n\nIf you have questions about this invoice, contact Accounts Payable at ap@malwareinc.com or ext. 3300.\n\nThank you,\nAccounts Payable Team",
+      "redFlags": [],
+      "hint": "Finance departments route approvals through internal portals and include invoice numbers and vendor details. No credential requests are made."
+    },
+    {
+      "id": 5,
+      "type": "legit",
+      "from": "IT Department",
+      "address": "it-support@malwareinc.com",
+      "subject": "Scheduled Maintenance — Sunday 2:00–6:00 AM",
+      "date": "Wed 3/16/2005 3:00 PM",
+      "body": "Dear All,\n\nWe will be performing scheduled server maintenance this Sunday, March 20th, from 2:00 AM to 6:00 AM.\n\nThe following services will be unavailable during this window:\n- Email\n- VPN access\n- The finance portal\n\nPlease plan accordingly. There is no action required from you.\n\nWe apologize for the inconvenience.\n\nIT Operations Team",
+      "redFlags": [],
+      "hint": "Maintenance notices are informational, require no action, and come from known IT addresses. No links or login requests are included."
+    },
+    {
+      "id": 6,
+      "type": "legit",
+      "from": "Legal Department",
+      "address": "legal@malwareinc.com",
+      "subject": "NDA for Project Orion — Please Review by EOD Friday",
+      "date": "Wed 3/16/2005 1:45 PM",
+      "body": "Hello,\n\nPlease find attached the Non-Disclosure Agreement for Project Orion. Legal has reviewed the document and it is ready for your signature.\n\nPlease review and return the signed copy to legal@malwareinc.com by end of business this Friday.\n\nIf you have any questions or require changes, contact the Legal team at ext. 5500.\n\nThank you,\nLegal Department",
+      "redFlags": [],
+      "hint": "Internal legal requests come from company domains and ask for signatures via established processes, not external sites."
+    },
+    {
+      "id": 7,
+      "type": "legit",
+      "from": "Facilities Management",
+      "address": "facilities@malwareinc.com",
+      "subject": "Office Closed — Good Friday, March 25th",
+      "date": "Thu 3/17/2005 9:00 AM",
+      "body": "Hi everyone,\n\nThis is a reminder that the office will be closed on Friday, March 25th in observance of Good Friday. Normal office hours resume Monday, March 28th.\n\nIf you need to access the building over the holiday weekend, please contact Security at ext. 1100 at least 24 hours in advance.\n\nHave a great long weekend!\n\nFacilities Management",
+      "redFlags": [],
+      "hint": "Office closure notices are informational and require no action. They come from known internal departments with no external links."
+    },
+    {
+      "id": 8,
+      "type": "legit",
+      "from": "David Park — Manager",
+      "address": "d.park@malwareinc.com",
+      "subject": "Your Q1 Performance Review — Scheduled for March 22nd",
+      "date": "Thu 3/17/2005 2:10 PM",
+      "body": "Hi,\n\nI've scheduled your Q1 performance review for Tuesday, March 22nd at 10:00 AM in my office (Room 214).\n\nPlease take a few minutes beforehand to reflect on:\n- Goals you set at the start of the quarter\n- Achievements and challenges\n- Development areas for Q2\n\nLooking forward to our conversation.\n\nDavid Park\nSenior Project Manager",
+      "redFlags": [],
+      "hint": "Performance review notices come from a known manager's email and include specific room and time details."
+    },
+    {
+      "id": 9,
+      "type": "legit",
+      "from": "IT Department",
+      "address": "it-support@malwareinc.com",
+      "subject": "Your Microsoft Office License Renewed — No Action Needed",
+      "date": "Fri 3/18/2005 8:00 AM",
+      "body": "Hello,\n\nThis is a confirmation that your Microsoft Office license has been automatically renewed for the 2005–2006 year. No action is required on your part.\n\nYour software will continue to work without interruption. If you experience any issues, please contact the helpdesk at ext. 4400.\n\nThank you,\nIT Department",
+      "redFlags": [],
+      "hint": "Legitimate license renewal notices are informational and explicitly state no action is needed. No login links are included."
+    },
+    {
+      "id": 10,
+      "type": "legit",
+      "from": "Sarah Mitchell — HR",
+      "address": "s.mitchell@malwareinc.com",
+      "subject": "Welcome — New Team Member Starting Monday",
+      "date": "Fri 3/18/2005 4:30 PM",
+      "body": "Hi team,\n\nPlease join me in welcoming Alex Rivera, who will be joining us as a Junior Developer starting this Monday, March 21st.\n\nAlex comes to us from Northstar Solutions and brings 3 years of experience in web development. Please make them feel welcome!\n\nWe'll have a brief team introduction at 9:30 AM Monday in the main conference room.\n\nBest,\nSarah Mitchell\nHuman Resources",
+      "redFlags": [],
+      "hint": "Welcome emails come from HR addresses, introduce specific people, and include verifiable details like start dates and meeting times."
+    },
+    {
+      "id": 11,
+      "type": "phish",
+      "from": "Bank of America Security",
+      "address": "security@bankofamerica-secure-alerts.net",
+      "subject": "URGENT: Your Account Has Been Suspended — Verify Now",
+      "date": "Mon 3/14/2005 9:47 AM",
+      "body": "Dear Valued Customer,\n\nWe have detected suspicious activity on your Bank of America account. Your account has been temporarily suspended to protect you.\n\nTo restore access, you must verify your identity within 24 hours or your account will be permanently closed.\n\nClick here to verify: http://bankofamerica-secure-alerts.net/verify\n\nBank of America Security Team",
+      "redFlags": [
+        "Sender domain is 'bankofamerica-secure-alerts.net' — not the real bankofamerica.com",
+        "Creates extreme urgency with a 24-hour deadline",
+        "Threatens permanent account closure",
+        "Link goes to an external non-bank domain",
+        "Generic greeting 'Dear Valued Customer'"
+      ],
+      "hint": "Real banks will never ask you to verify account details by clicking an email link. Always go directly to your bank's website by typing the address yourself."
+    },
+    {
+      "id": 12,
+      "type": "phish",
+      "from": "PayPal Support",
+      "address": "support@paypa1-accounts.com",
+      "subject": "Your PayPal Account Has Been Limited",
+      "date": "Mon 3/14/2005 11:22 AM",
+      "body": "Dear PayPal User,\n\nWe noticed unusual sign-in activity from an unrecognized device. Your account has been limited until we can verify your information.\n\nPlease confirm your details within 48 hours:\nhttp://paypa1-accounts.com/confirm\n\nFailure to verify will result in permanent account suspension.\n\nPayPal Account Services",
+      "redFlags": [
+        "Sender domain is 'paypa1-accounts.com' — the '1' replaces the letter 'l' in PayPal",
+        "Generic greeting 'Dear PayPal User'",
+        "Threatens permanent suspension",
+        "External link not from paypal.com",
+        "Urgency pressure with 48-hour window"
+      ],
+      "hint": "Look carefully at the sender's email domain. Attackers use lookalike domains like 'paypa1' (with a number 1) to impersonate trusted companies."
+    },
+    {
+      "id": 13,
+      "type": "phish",
+      "from": "IRS Refund Center",
+      "address": "refunds@irs-gov-refunds.com",
+      "subject": "Tax Refund of $1,847.00 Pending — Claim Within 72 Hours",
+      "date": "Tue 3/15/2005 8:03 AM",
+      "body": "NOTICE FROM THE INTERNAL REVENUE SERVICE:\n\nAfter a review of your 2004 federal tax return, you are eligible for a refund of $1,847.00.\n\nTo receive your refund, you must submit your banking information through our secure portal within 72 hours. After this window, the refund will be forfeited.\n\nClaim your refund: http://irs-gov-refunds.com/claim\n\nInternal Revenue Service\nRefund Processing Division",
+      "redFlags": [
+        "The IRS does not contact taxpayers by email — only by mail",
+        "Sender domain is 'irs-gov-refunds.com' — not irs.gov",
+        "Creates urgency with a 72-hour forfeiture deadline",
+        "Asks for banking information via email link",
+        "Unusually specific refund amount to seem credible"
+      ],
+      "hint": "The IRS only contacts taxpayers by postal mail. They will never email you asking for bank details or threatening to forfeit your refund."
+    },
+    {
+      "id": 14,
+      "type": "phish",
+      "from": "Microsoft Account Team",
+      "address": "account-security@microsoft-alerts.org",
+      "subject": "Unusual Sign-In Detected — Secure Your Account Now",
+      "date": "Tue 3/15/2005 2:31 PM",
+      "body": "Dear Microsoft User,\n\nWe detected a sign-in to your Microsoft account from:\nLocation: Kyiv, Ukraine\nDevice: Unknown Windows PC\nTime: 03/15/2005 14:18 UTC\n\nIf this was not you, your account may be compromised. Secure it immediately:\nhttp://microsoft-alerts.org/secure-account\n\nIf you do not act within 12 hours, your account will be locked for security purposes.\n\nMicrosoft Security Team",
+      "redFlags": [
+        "Sender domain is 'microsoft-alerts.org' — not microsoft.com",
+        "Fabricated location detail to create panic",
+        "12-hour deadline creates false urgency",
+        "Link does not go to microsoft.com",
+        "Generic 'Dear Microsoft User' greeting"
+      ],
+      "hint": "Microsoft security alerts come from microsoft.com addresses. Verify any security alert by going directly to account.microsoft.com — never click email links."
+    },
+    {
+      "id": 15,
+      "type": "phish",
+      "from": "CEO — Robert Haines",
+      "address": "r.haines@company-corp.net",
+      "subject": "Urgent Wire Transfer Needed — Confidential",
+      "date": "Wed 3/16/2005 7:58 AM",
+      "body": "Hi,\n\nI'm currently in a board meeting and need your immediate help. We need to complete a confidential wire transfer of $14,500 to a new vendor today.\n\nPlease process this to the following account:\nBank: First National\nRouting: 021000021\nAccount: 7834920011\n\nThis is time-sensitive. Please handle immediately and do not discuss with others until it is complete. I will explain more later.\n\nThanks,\nRobert Haines\nCEO",
+      "redFlags": [
+        "Sender domain is 'company-corp.net' — not the real company domain",
+        "Requests urgent wire transfer with no prior discussion",
+        "Asks for secrecy — 'do not discuss with others'",
+        "Pressure to act immediately without verification",
+        "Classic Business Email Compromise (BEC) pattern"
+      ],
+      "hint": "This is a Business Email Compromise (BEC) attack impersonating a CEO. Always verify wire transfer requests by phone using a known number — never process based on email alone."
+    },
+    {
+      "id": 16,
+      "type": "phish",
+      "from": "IT Helpdesk",
+      "address": "helpdesk@company-it-support.net",
+      "subject": "Your Email Account Will Be Deactivated",
+      "date": "Wed 3/16/2005 10:14 AM",
+      "body": "Dear Employee,\n\nOur records show your email account has exceeded its storage quota and will be deactivated within 24 hours unless you verify your credentials.\n\nPlease confirm your username and password by clicking below:\nhttp://company-it-support.net/email-verify\n\nFailure to verify will result in loss of access to all company systems.\n\nIT Helpdesk",
+      "redFlags": [
+        "Legitimate IT will never ask for your password by email",
+        "Sender domain does not match the real company domain",
+        "Threatens loss of access to create urgency",
+        "Asks you to click an external link and enter credentials",
+        "Generic 'Dear Employee' greeting"
+      ],
+      "hint": "No legitimate IT department will ever ask for your password via email. This is a credential harvesting attack."
+    },
+    {
+      "id": 17,
+      "type": "phish",
+      "from": "DocuSign",
+      "address": "dse@docusign-document-ready.com",
+      "subject": "You Have a Document Waiting for Your Signature",
+      "date": "Thu 3/17/2005 9:45 AM",
+      "body": "DocuSign Electronic Signature\n\nHello,\n\nRobert Haines has sent you a document to review and sign.\n\nDOCUMENT: Salary_Adjustment_Q2_2005.pdf\n\nPLEASE SIGN: http://docusign-document-ready.com/sign/8f3k2\n\nThis link expires in 48 hours.\n\nDo Not Share This Email — This message was sent to you by DocuSign on behalf of Robert Haines.",
+      "redFlags": [
+        "Sender domain is 'docusign-document-ready.com' — real DocuSign uses docusign.net or docusign.com",
+        "Enticing subject about a salary adjustment to make you curious",
+        "No company context or prior communication",
+        "External link not from docusign.com or docusign.net"
+      ],
+      "hint": "DocuSign sends from docusign.net or docusign.com. Always hover over links before clicking to check the real destination domain."
+    },
+    {
+      "id": 18,
+      "type": "phish",
+      "from": "LinkedIn",
+      "address": "security@linkedin-account-alerts.com",
+      "subject": "Someone Tried to Access Your LinkedIn Account",
+      "date": "Thu 3/17/2005 3:20 PM",
+      "body": "Hi,\n\nWe noticed someone tried to sign in to your LinkedIn account from an unrecognized device.\n\nIf this wasn't you, reset your password immediately to protect your account:\nhttp://linkedin-account-alerts.com/reset\n\nIf you don't reset within 24 hours, your account may be compromised.\n\nThe LinkedIn Team",
+      "redFlags": [
+        "Sender domain is 'linkedin-account-alerts.com' — not linkedin.com",
+        "Creates panic about an unauthorized access attempt",
+        "Link does not go to linkedin.com",
+        "24-hour deadline creates false urgency",
+        "Generic greeting with no name"
+      ],
+      "hint": "Real LinkedIn security emails come from linkedin.com addresses. Go directly to linkedin.com to check your account security settings."
+    },
+    {
+      "id": 19,
+      "type": "phish",
+      "from": "Amazon Order Notification",
+      "address": "order-confirm@arnazon-shipping.com",
+      "subject": "Your Amazon Order #114-8823901 Has Shipped",
+      "date": "Fri 3/18/2005 8:22 AM",
+      "body": "Hello Customer,\n\nYour recent Amazon order has shipped!\n\nOrder #114-8823901\nItem: Sony Handycam DCR-HC20 (x1)\nEstimated delivery: March 22-24\n\nTrack your package: http://arnazon-shipping.com/track/8823901\n\nIf you did not place this order, click here to cancel and secure your account:\nhttp://arnazon-shipping.com/cancel\n\nAmazon Customer Service",
+      "redFlags": [
+        "Sender domain is 'arnazon-shipping.com' — 'rn' looks like 'm' at a glance",
+        "Uses urgency of an unexpected order to provoke a click",
+        "Tracking and cancel links both go to the fake domain",
+        "Generic 'Hello Customer' — Amazon uses your name",
+        "Amazon order emails come from amazon.com, not third-party domains"
+      ],
+      "hint": "Amazon always addresses you by your full name. Check the sender domain carefully — 'arnazon' uses 'rn' to mimic the letter 'm'."
+    },
+    {
+      "id": 20,
+      "type": "phish",
+      "from": "Google Drive",
+      "address": "drive-share@google-docs-shared.com",
+      "subject": "Robert Haines Shared a File With You",
+      "date": "Fri 3/18/2005 11:05 AM",
+      "body": "Google Drive\n\nRobert Haines (r.haines@company.com) has shared the following file with you:\n\nQ2_Salary_Review_Confidential.xlsx\n\nOPEN IN GOOGLE DRIVE: http://google-docs-shared.com/open/q2review\n\nYou need to sign in with your Google account to view this file.",
+      "redFlags": [
+        "Sender domain is 'google-docs-shared.com' — not google.com or drive.google.com",
+        "Enticing confidential salary file to provoke curiosity",
+        "Link does not go to drive.google.com",
+        "Asks you to sign in — credential harvesting",
+        "Reuses a familiar name to seem trustworthy"
+      ],
+      "hint": "Google Drive sharing emails come from google.com. The share link will always go to drive.google.com — never a third-party domain."
+    },
+    {
+      "id": 21,
+      "type": "spam",
+      "from": "SlimFast Solutions",
+      "address": "offers@slimfast-solutions-deals.biz",
+      "subject": "Lose 30 Pounds in 30 Days — Guaranteed or Your Money Back!",
+      "date": "Mon 3/14/2005 6:02 AM",
+      "body": "DOCTORS HATE HIM!\n\nA Wisconsin man discovered a secret weight loss trick that Big Pharma doesn't want you to know.\n\nOur revolutionary SlimBlast formula melts fat OVERNIGHT while you sleep. No diet. No exercise. 100% natural.\n\nLIMITED TIME: Buy 2 bottles, get 3 FREE!\n\nOrder now at slimfast-solutions-deals.biz/order\n\nThis offer expires TONIGHT at midnight.\n\nTo unsubscribe reply STOP.",
+      "redFlags": [
+        "Unrealistic health claims — lose 30 pounds in 30 days",
+        "Conspiracy language — 'doctors hate him', 'Big Pharma'",
+        "Fake scarcity with a midnight expiration",
+        "Sender uses a .biz domain with a hyphenated name",
+        "Unsolicited commercial email"
+      ],
+      "hint": "Spam often uses extreme health claims, conspiracy language, and artificial scarcity. No legitimate product guarantees weight loss without diet or exercise."
+    },
+    {
+      "id": 22,
+      "type": "spam",
+      "from": "Mega Lottery International",
+      "address": "winner@mega-lottery-intl.org",
+      "subject": "CONGRATULATIONS — You Have Won $850,000.00!",
+      "date": "Mon 3/14/2005 7:18 AM",
+      "body": "CONGRATULATIONS!\n\nYou have been selected as the winner of the MEGA INTERNATIONAL LOTTERY 2005!\n\nPRIZE: $850,000.00 USD\n\nYour email was randomly chosen from 10,000,000 entries worldwide. To claim your prize, send the following to our claims office:\n\n- Full name\n- Address\n- Phone number\n- Copy of photo ID\n\nContact: claims@mega-lottery-intl.org\nRef: MLI-2005-8847\n\nCongratulations again!",
+      "redFlags": [
+        "You cannot win a lottery you did not enter",
+        "Asks for personal information including photo ID",
+        "Vague 'claims office' with no verifiable address",
+        "Sender uses .org domain for a supposed lottery",
+        "Classic advance-fee fraud setup"
+      ],
+      "hint": "You cannot win a lottery you never entered. This is a data harvesting scam — sending your ID will lead to identity theft."
+    },
+    {
+      "id": 23,
+      "type": "spam",
+      "from": "Prince Adebayo Okafor",
+      "address": "prince.okafor.trust@gmail.com",
+      "subject": "Strictly Confidential Business Proposal — $24.5 Million USD",
+      "date": "Tue 3/15/2005 5:44 AM",
+      "body": "Dearest Friend,\n\nI am Prince Adebayo Okafor, son of the late General Okafor of Nigeria. Following my father's passing, I have inherited $24.5 million USD which I must transfer out of the country urgently.\n\nI require a trusted foreign partner to help facilitate this transfer. In return you will receive 30% ($7.35 million) as compensation.\n\nThis is entirely legal and confidential. Please reply with your full name, bank details, and phone number to begin the process.\n\nGod Bless,\nPrince Adebayo Okafor",
+      "redFlags": [
+        "The classic 'Nigerian Prince' advance-fee fraud (419 scam)",
+        "Unsolicited contact from a stranger claiming enormous wealth",
+        "Requests bank account details",
+        "Sent from a free Gmail account",
+        "Promises unrealistically large reward for minimal effort"
+      ],
+      "hint": "The 'Nigerian Prince' scam is one of the oldest internet frauds. If you share bank details, you will eventually be asked to pay 'fees' before receiving money that never arrives."
+    },
+    {
+      "id": 24,
+      "type": "spam",
+      "from": "Canadian Pharmacy Direct",
+      "address": "deals@canada-pharma-direct.biz",
+      "subject": "Prescription Meds — 80% Off! No Prescription Needed",
+      "date": "Tue 3/15/2005 6:30 AM",
+      "body": "Save BIG on your medications!\n\nCanadianPharmacyDirect.biz offers:\n- Viagra: $1.20/pill\n- Ambien: $0.80/pill\n- OxyContin: $1.50/pill\n- Lipitor: $0.40/pill\n\nNO PRESCRIPTION REQUIRED. Discreet shipping. FDA approved (we claim).\n\nOrder today and save up to 80%!\nwww.canada-pharma-direct.biz\n\nTo stop emails reply REMOVE.",
+      "redFlags": [
+        "Selling prescription medication without a prescription is illegal",
+        "Fake FDA approval claim — 'we claim' is a tell",
+        "Extremely low prices indicate counterfeit or dangerous drugs",
+        "Sender uses a .biz domain",
+        "Unsolicited pharmaceutical advertising"
+      ],
+      "hint": "Purchasing prescription medication without a valid prescription is illegal and dangerous. These medications are often counterfeit."
+    },
+    {
+      "id": 25,
+      "type": "spam",
+      "from": "Work From Home Weekly",
+      "address": "opportunity@wfh-weekly-offers.net",
+      "subject": "Mom Earns $8,000/Month Stuffing Envelopes From Home!",
+      "date": "Wed 3/16/2005 5:55 AM",
+      "body": "SHOCKING: Stay-at-home mom reveals how she earns $8,000 every month from her kitchen table!\n\nNo experience needed. No boss. Work your own hours.\n\nAll you do is stuff envelopes and mail them! Companies pay TOP DOLLAR for this simple task.\n\nGet our starter kit for just $29.99:\nwww.wfh-weekly-offers.net/starterkit\n\nACT NOW — Only 47 starter kits left!\n\nUnsubscribe: reply with REMOVE.",
+      "redFlags": [
+        "Unrealistic income claims — $8,000 per month stuffing envelopes",
+        "Requires upfront payment for a 'starter kit'",
+        "Fake scarcity — 'only 47 kits left'",
+        "Classic work-at-home pyramid scheme pattern",
+        "Unsolicited job offer"
+      ],
+      "hint": "Work-from-home schemes that require an upfront payment are almost always scams. Legitimate employers never charge you to start working."
+    },
+    {
+      "id": 26,
+      "type": "spam",
+      "from": "CryptoWealth Insider",
+      "address": "tips@cryptowealth-insider.biz",
+      "subject": "This Coin Is About to 10X — Get In Before Tuesday",
+      "date": "Wed 3/16/2005 7:01 AM",
+      "body": "CRYPTO ALERT — URGENT!\n\nOur insider sources have identified a micro-cap coin that is about to EXPLODE 1,000% before Tuesday.\n\nThis is a once-in-a-decade opportunity. The whales are quietly accumulating. Once the news breaks, it will be too late.\n\nBuy MOONX token now at cryptowealth-insider.biz/buy before the window closes.\n\nDisclaimer: This is not financial advice. Past performance does not guarantee future results.\n\nUnsubscribe: remove@cryptowealth-insider.biz",
+      "redFlags": [
+        "Unverifiable 'insider' claims about price increases",
+        "Classic pump-and-dump scheme language",
+        "Artificial urgency — 'before Tuesday'",
+        "Contradictory disclaimer after making specific predictions",
+        "Unsolicited investment advice"
+      ],
+      "hint": "Cryptocurrency pump-and-dump schemes use insider language and urgency to get you to buy an asset the scammer already holds — when you buy, they sell."
+    },
+    {
+      "id": 27,
+      "type": "spam",
+      "from": "Amazon Gift Card Center",
+      "address": "giftcards@amazon-rewards-center.net",
+      "subject": "You've Been Selected for a $500 Amazon Gift Card!",
+      "date": "Thu 3/17/2005 6:12 AM",
+      "body": "SELECTED CUSTOMER!\n\nAmazon.com is rewarding loyal customers with a $500 gift card as part of our 10th Anniversary celebration!\n\nYou've been selected! Claim your card in 3 easy steps:\n1. Click the link below\n2. Complete a short 2-minute survey\n3. Enter your shipping address\n\nCLAIM NOW: http://amazon-rewards-center.net/claim\n\nOffer expires in 24 hours. Limited to the first 100 respondents.",
+      "redFlags": [
+        "Amazon does not randomly send gift cards to customers by email",
+        "Sender domain is 'amazon-rewards-center.net' — not amazon.com",
+        "Fake scarcity — 'first 100 respondents'",
+        "Survey step is used to collect personal data",
+        "24-hour expiration creates false urgency"
+      ],
+      "hint": "Legitimate Amazon promotions come from amazon.com. Free gift card offers that require surveys are data collection scams."
+    },
+    {
+      "id": 28,
+      "type": "spam",
+      "from": "Vegas Palace Online Casino",
+      "address": "bonus@vegaspalace-online.biz",
+      "subject": "Exclusive: $1,000 Welcome Bonus — Claim Before Midnight!",
+      "date": "Thu 3/17/2005 8:45 AM",
+      "body": "EXCLUSIVE OFFER FOR YOU!\n\nVegas Palace Online Casino is giving NEW members a $1,000 welcome bonus — absolutely FREE!\n\nDeposit just $20 and we'll match it 50x to give you $1,000 in casino credits.\n\nCLAIM BONUS: vegaspalace-online.biz/welcome\n\nTerms: 60x wagering requirement on bonus funds. Withdrawal restricted for 90 days. Valid for 24 hours only.\n\nUnsubscribe: opt-out@vegaspalace-online.biz",
+      "redFlags": [
+        "Unsolicited gambling advertisement",
+        "60x wagering requirement makes the bonus nearly impossible to cash out",
+        "90-day withdrawal restriction buried in fine print",
+        "Sender uses a .biz domain",
+        "Artificial midnight deadline"
+      ],
+      "hint": "Online casino bonuses with very high wagering requirements are designed so you statistically cannot withdraw. Always read the terms carefully."
+    },
+    {
+      "id": 29,
+      "type": "spam",
+      "from": "QuickLoans Refinance",
+      "address": "offers@quickloans-refinance-now.biz",
+      "subject": "Refinance Your Mortgage — Rates as Low as 1.9% — Act Today!",
+      "date": "Fri 3/18/2005 6:00 AM",
+      "body": "HOMEOWNERS — THIS IS URGENT!\n\nMortgage rates have dropped to a 40-year low. If you have a home loan over $100,000, you may qualify to save $400-$900/month!\n\nTake 60 seconds to check your rate:\nwww.quickloans-refinance-now.biz\n\nNo credit check. No obligation. Approval in minutes.\n\nThis offer is only available through March 20th.\n\nTo opt out: unsubscribe@quickloans-refinance-now.biz",
+      "redFlags": [
+        "Unsolicited financial offer sent to mass recipients",
+        "1.9% rate claim is unrealistically low",
+        "'No credit check' is a red flag for predatory lending",
+        "Sender uses a .biz domain with a hyphenated URL",
+        "Short deadline pressures quick decisions on major financial choices"
+      ],
+      "hint": "Legitimate mortgage lenders do not solicit through mass email. 'No credit check' loans typically come with extremely high hidden fees."
+    },
+    {
+      "id": 30,
+      "type": "spam",
+      "from": "Madam Rosa — PsychicNation",
+      "address": "reading@psychicnation-free.biz",
+      "subject": "Madam Rosa Sees Great Danger in Your Future — Read This Now",
+      "date": "Fri 3/18/2005 7:30 AM",
+      "body": "Dear Friend,\n\nMadam Rosa has had a powerful vision concerning YOU specifically. The stars indicate a period of great danger and financial loss unless you act.\n\nYour FREE personal reading reveals:\n- A betrayal by someone close to you\n- A financial opportunity you must not miss\n- The one decision that will change everything\n\nClaim your FREE reading (valued at $199):\nwww.psychicnation-free.biz/reading\n\nThis vision was meant for you alone. Do not ignore it.\n\nUnsubscribe: remove@psychicnation-free.biz",
+      "redFlags": [
+        "Vague predictions that could apply to anyone",
+        "Creates fear — 'great danger' — to provoke action",
+        "Claims to be personal but is a mass email",
+        "'Free' reading valued at $199 implies a future upsell",
+        "Sender uses a .biz domain"
+      ],
+      "hint": "Psychic spam uses vague fear-based predictions that seem personal but are sent to millions. The 'free' reading always leads to paid upsells."
+    }
+  ]
+}

@@ -3,33 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Screen</title>
-    <link rel="stylesheet" href="mainStyle.css">
+    <title>Emails Please</title>
+    <link rel="stylesheet" href="gameScreen.css">
 </head>
 <body class="win98-desktop">
 
-<header>
-    <h1>Email Review Console</h1>
-    <p id="day-counter">Day: 1</p>
-    <p id="malware-counter">Malware: 0</p>
-</header>
+<div class="outlook-window">
 
-<main>
-    <section id="email-container">
-        <!-- JS injects email here -->
-    </section>
+    <!-- Title Bar -->
+    <div class="window-titlebar">
+        <span class="window-title">&#128139; Inbox - Emails Please</span>
+        <div class="window-controls">
+            <button type="button" class="win-ctrl">_</button>
+            <button type="button" class="win-ctrl">&#9633;</button>
+            <button type="button" class="win-ctrl close-btn" onclick="location.href='index.html'">&#10005;</button>
+        </div>
+    </div>
 
-    <section id="actions">
-        <button id="reply-btn">Reply</button>
-        <button id="ignore-btn">Ignore</button>
-        <button id="report-btn">Report</button>
-    </section>
-</main>
+    <!-- Menu Bar -->
+    <div class="menubar">
+        <span class="menu-item">File</span>
+        <span class="menu-item">Edit</span>
+        <span class="menu-item">View</span>
+        <span class="menu-item">Go</span>
+        <span class="menu-item">Tools</span>
+        <span class="menu-item">Help</span>
+    </div>
 
-<footer>
-    <button onclick="location.href='index.html'">Return to Menu</button>
-</footer>
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button type="button" class="toolbar-btn" id="reply-btn">&#8617; Reply</button>
+        <div class="toolbar-sep"></div>
+        <button type="button" class="toolbar-btn" id="ignore-btn">&#128465; Delete</button>
+        <div class="toolbar-sep"></div>
+        <button type="button" class="toolbar-btn" id="report-btn">&#9888; Report Phish</button>
+        <div class="toolbar-sep" id="restore-sep"></div>
+        <button type="button" class="toolbar-btn restore-btn" id="restore-btn">&#8626; Restore to Inbox</button>
+        <div class="toolbar-sep"></div>
+        <button type="button" class="toolbar-btn" onclick="location.href='index.html'">&#8962; Main Menu</button>
+    </div>
 
-<script src="script.js"></script>
+    <!-- 3-Panel Layout -->
+    <div class="main-panels">
+
+        <!-- Left: Folder Tree -->
+        <div class="folder-panel">
+            <div class="panel-header">Folders</div>
+            <div class="folder-tree">
+                <div class="folder-item active" id="folder-inbox" onclick="switchFolder('inbox')">
+                    &#128228; Inbox <span id="unread-count"></span>
+                </div>
+                <div class="folder-item" id="folder-sent" onclick="switchFolder('sent')">
+                    &#128229; Sent Items <span id="sent-count"></span>
+                </div>
+                <div class="folder-item" id="folder-deleted" onclick="switchFolder('deleted')">
+                    &#128465; Deleted Items <span id="deleted-count"></span>
+                </div>
+                <div class="folder-item" id="folder-junk" onclick="switchFolder('junk')">
+                    &#128488; Junk Mail <span id="junk-count"></span>
+                </div>
+                <div class="folder-item">&#128196; Drafts</div>
+            </div>
+        </div>
+
+        <!-- Middle: Email List -->
+        <div class="email-list-panel">
+            <div class="email-list-header">
+                <span class="col-from">From</span>
+                <span class="col-subject">Subject</span>
+                <span class="col-date">Received</span>
+            </div>
+            <div id="email-list"></div>
+        </div>
+
+        <!-- Right: Reading Pane -->
+        <div class="reading-pane">
+            <div class="email-fields" id="email-header"></div>
+            <div class="email-body" id="email-container">
+                <p class="no-email-msg">Select a message from the list to read it.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Status Bar -->
+    <div class="statusbar">
+        <span id="day-counter">Day: 1</span>
+        <span class="statusbar-sep">|</span>
+        <span id="malware-counter">Malware: 0 / 3</span>
+        <span class="statusbar-sep">|</span>
+        <span id="score-display">Score: 0</span>
+        <span class="statusbar-sep">|</span>
+        <span id="status-msg">Loading...</span>
+    </div>
+
+    <!-- Day Summary Dialog (shown at end of each day) -->
+    <div class="summary-overlay" id="daySummary">
+        <div class="summary-dialog">
+
+            <div class="summary-titlebar">
+                &#9733; Day <span id="summaryDay">1</span> Complete
+            </div>
+
+            <div class="summary-body">
+                <div class="summary-row">
+                    <span>Emails this day</span>
+                    <span id="summaryTotal">0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Correct actions</span>
+                    <span id="summaryCorrect">0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Malware infections</span>
+                    <span id="summaryMalware">0 / 3</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-row summary-score">
+                    <span>Day Score</span>
+                    <span id="summaryDayScore">0 pts</span>
+                </div>
+                <div class="summary-row summary-score">
+                    <span>Total Score</span>
+                    <span id="summaryTotalScore">0 pts</span>
+                </div>
+                <p class="summary-hint">
+                    Tip: You can still browse Deleted Items and Junk Mail to restore any emails before continuing.
+                </p>
+            </div>
+
+            <div class="summary-footer">
+                <button type="button" class="toolbar-btn" id="next-day-btn">Next Day &#8594;</button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="animationsScript.js"></script>
 </body>
 </html>
