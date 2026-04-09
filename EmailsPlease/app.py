@@ -55,7 +55,7 @@ def handle_email_generation():
         )
 @app.route('/')
 def index():
-    return render_template('../index.html')
+    return render_template('index.html')
 
         # Return the structured JSON to the front-end game logic [cite: 107]
         return jsonify(response.parsed.dict()), 200
