@@ -53,9 +53,7 @@ def handle_email_generation():
                 ]
             }
         )
-@app.route('/')
-def index():
-    return render_template('index.html')
+
 
         # Return the structured JSON to the front-end game logic [cite: 107]
         return jsonify(response.parsed.dict()), 200
@@ -64,6 +62,10 @@ def index():
         # Basic error handling for the Software Engineering course project
         return jsonify({"error": str(e)}), 500
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+    
 if __name__ == '__main__':
     # Run the server (Joel will likely use Gunicorn for the actual EC2 deployment)
     app.run(host='0.0.0.0', port=5000)
