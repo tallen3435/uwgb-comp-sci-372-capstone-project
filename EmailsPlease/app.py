@@ -20,7 +20,7 @@ class SimulatedEmail(BaseModel):
     difficulty: str
     cues: List[str]
 
-@app.route("/")
+@app.route("/", methods=['GET'])
 def index():
     return render_template("index.html")
 
@@ -92,6 +92,7 @@ def handle_email_generation():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+"""
 @app.route('/', methods=['GET'])
 def health_check():
     return jsonify({
@@ -99,7 +100,7 @@ def health_check():
         "project": "Emails Please API",
         "message": "Send a POST request to /api/generate-email to use the generator."
     }), 200
-
+"""
 
     
 if __name__ == '__main__':
