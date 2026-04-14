@@ -180,8 +180,8 @@ function switchFolder(name) {
 
     const restoreBtn = document.getElementById('restore-btn');
     const restoreSep = document.getElementById('restore-sep');
-    if (restoreBtn) restoreBtn.style.display = inRestorable ? '' : 'none';
-    if (restoreSep) restoreSep.style.display = inRestorable ? '' : 'none';
+    if (restoreBtn) restoreBtn.style.display = inRestorable ? 'inline-block' : 'none';
+    if (restoreSep) restoreSep.style.display = inRestorable ? 'block' : 'none';
 
     renderEmailList();
 }

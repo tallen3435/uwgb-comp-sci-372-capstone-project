@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial — Emails Please</title>
+    <link rel="stylesheet" href="gameScreen.css">
+    <link rel="stylesheet" href="tutorial.css">
+</head>
+<body class="win98-desktop">
+<div class="outlook-window">
+
+    <!-- Title Bar -->
+    <div class="window-titlebar">
+        <span class="window-title">&#128139; Inbox &mdash; Emails Please [TUTORIAL]</span>
+        <div class="window-controls">
+            <button type="button" class="win-ctrl">_</button>
+            <button type="button" class="win-ctrl">&#9633;</button>
+            <button type="button" class="win-ctrl close-btn" onclick="location.href='index.html'">&#10005;</button>
+        </div>
+    </div>
+
+    <!-- Menu Bar -->
+    <div class="menubar">
+        <span class="menu-item">File</span>
+        <span class="menu-item">Edit</span>
+        <span class="menu-item">View</span>
+        <span class="menu-item">Go</span>
+        <span class="menu-item">Tools</span>
+        <span class="menu-item">Help</span>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button type="button" class="toolbar-btn" id="reply-btn" disabled>&#8617; Reply</button>
+        <div class="toolbar-sep"></div>
+        <button type="button" class="toolbar-btn" id="ignore-btn" disabled>&#128465; Delete</button>
+        <div class="toolbar-sep"></div>
+        <button type="button" class="toolbar-btn" id="report-btn" disabled>&#9888; Report Phish</button>
+        <div class="toolbar-sep" id="restore-sep"></div>
+        <button type="button" class="toolbar-btn restore-btn" id="restore-btn">&#8626; Restore to Inbox</button>
+        <div class="toolbar-sep"></div>
+        <button type="button" class="toolbar-btn" onclick="location.href='index.html'">&#8962; Main Menu</button>
+    </div>
+
+    <!-- 3-Panel Layout -->
+    <div class="main-panels">
+
+        <!-- Left: Folder Tree -->
+        <div class="folder-panel">
+            <div class="panel-header">Folders</div>
+            <div class="folder-tree">
+                <div class="folder-item active" id="folder-inbox" onclick="tutSwitchFolder('inbox')">
+                    &#128228; Inbox <span id="unread-count"></span>
+                </div>
+                <div class="folder-item" id="folder-sent" onclick="tutSwitchFolder('sent')">
+                    &#128229; Sent Items <span id="sent-count"></span>
+                </div>
+                <div class="folder-item" id="folder-deleted" onclick="tutSwitchFolder('deleted')">
+                    &#128465; Deleted Items <span id="deleted-count"></span>
+                </div>
+                <div class="folder-item" id="folder-junk" onclick="tutSwitchFolder('junk')">
+                    &#128488; Junk Mail <span id="junk-count"></span>
+                </div>
+                <div class="folder-item">&#128196; Drafts</div>
+            </div>
+        </div>
+
+        <!-- Middle: Email List -->
+        <div class="email-list-panel" id="email-list-panel">
+            <div class="email-list-header">
+                <span class="col-from">From</span>
+                <span class="col-subject">Subject</span>
+                <span class="col-date">Received</span>
+            </div>
+            <div id="email-list"></div>
+        </div>
+
+        <!-- Right: Reading Pane -->
+        <div class="reading-pane">
+            <div class="email-fields" id="email-header"></div>
+            <div class="email-body" id="email-container">
+                <p class="no-email-msg">Select a message from the list to read it.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Status Bar -->
+    <div class="statusbar">
+        <span id="day-counter">Day: 1</span>
+        <span class="statusbar-sep">|</span>
+        <span id="malware-counter">Malware: 0 / 3</span>
+        <span class="statusbar-sep">|</span>
+        <span id="score-display">Score: 0</span>
+        <span class="statusbar-sep">|</span>
+        <span id="status-msg">Tutorial Mode</span>
+    </div>
+
+    <!-- ── Tutorial Overlay Elements ─────────────────────────────────────────── -->
+    <!-- Full-screen dim used for no-target steps (welcome / complete)           -->
+    <div id="tut-overlay"></div>
+    <!-- Spotlight sits over the target; its box-shadow dims everything else     -->
+    <div id="tut-spotlight"></div>
+    <!-- Animated arrow pointing at the highlighted element                      -->
+    <div id="tut-arrow">&#9660;</div>
+    <!-- Instruction callout dialog                                              -->
+    <div id="tut-callout">
+        <div id="tut-callout-title">Welcome!</div>
+        <div id="tut-callout-text"></div>
+        <div class="tut-nav">
+            <span id="tut-step-label"></span>
+            <div class="tut-nav-btns">
+                <button type="button" id="tut-skip">Exit Tutorial</button>
+                <button type="button" id="tut-auto">Do It For Me</button>
+                <button type="button" id="tut-next">Next &#9654;</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="tutorialScript.js"></script>
+</body>
+</html>
