@@ -89,7 +89,7 @@ function getActionScore(emailType, action) {
 
 // ── Boot ─────────────────────────────────────────────────────────────────────
 window.onload = () => {
-    fetch('resources/templates/emailTemplates.json')
+    fetch('../resources/templates/emailTemplates.json')
         .then(r => r.json())
         .then(data => { emailPool = data.emails; })
         .catch(() => { emailPool = fallbackPool; })

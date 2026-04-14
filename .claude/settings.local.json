@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python app.py)",
+      "Bash(kill %1)",
+      "Bash(wait)",
+      "Bash(pip install:*)",
+      "Bash(pip show:*)",
+      "Bash(python -c \"import google; print\\(google.__path__\\)\")",
+      "Bash(pip list:*)",
+      "Bash(/c/Users/bowma/AppData/Local/Programs/Python/Python313/python.exe app.py)",
+      "Bash(curl -s http://localhost:5000 -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s http://localhost:5000 -o /dev/null -w \"HTTP %{http_code}\\\\n\")",
+      "Bash(curl -s http://localhost:5000/indexStyle.css -o /dev/null -w \"CSS HTTP %{http_code}\\\\n\")",
+      "Bash(curl -s http://localhost:5000/gameScreen.html -o /dev/null -w \"gameScreen HTTP %{http_code}\\\\n\")"
+    ]
+  }
+}

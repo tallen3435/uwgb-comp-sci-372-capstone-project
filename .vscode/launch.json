@@ -1,29 +1,59 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        {
-            "name": "Attach to Edge",
-            "port": 9222,
-            "request": "attach",
-            "type": "msedge",
-            "webRoot": "${workspaceFolder}"
-        },
         
         {
-            "type": "msedge",
+            // Python debugger — set breakpoints in app.py, then press F5
+            // Browser opens automatically at http://localhost:5000 when Flask is ready
+            "name": "Flask: EmailsPlease",
+            "type": "debugpy",
             "request": "launch",
-            "name": "Open index.html",
-            "file": "c:\\Users\\bowma\\OneDrive\\Documentos\\bank_manager\\uwgb-comp-sci-372-capstone-project\\EmailsPlease\\index.html"
+            "python": "C:\\Users\\bowma\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "program": "${workspaceFolder}/EmailsPlease/app.py",
+            "cwd": "${workspaceFolder}/EmailsPlease",
+            "env": {
+                "FLASK_ENV": "development",
+                "FLASK_DEBUG": "1"
+            },
+            "jinja": true,
+            "justMyCode": true,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "Running on http://[^\\s]+",
+                "uriFormat": "http://localhost:5000"
+            }
         },
         {
-            "type": "msedge",
+            // Full-stack: Python breakpoints in app.py AND JS breakpoints in the browser
+            // Flask starts first, then Edge launches with the debugger attached
+            "name": "Full Stack: Flask + Edge",
+            "type": "debugpy",
             "request": "launch",
-            "name": "Open index.html (Live Server)",
-            "url": "http://127.0.0.1:5500/EmailsPlease/index.html",
-            "webRoot": "${workspaceFolder}/EmailsPlease"
+            "python": "C:\\Users\\bowma\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "program": "${workspaceFolder}/EmailsPlease/app.py",
+            "cwd": "${workspaceFolder}/EmailsPlease",
+            "env": {
+                "FLASK_ENV": "development",
+                "FLASK_DEBUG": "1"
+            },
+            "jinja": true,
+            "justMyCode": true,
+            "serverReadyAction": {
+                "action": "debugWithEdge",
+                "pattern": "Running on http://[^\\s]+",
+                "webRoot": "${workspaceFolder}/EmailsPlease/templates",
+                "uriFormat": "http://localhost:5000"
+            }
+        },
+        {
+            // Attach JS debugger to an already-running Edge window
+            // Start Edge with: msedge.exe --remote-debugging-port=9222
+            "name": "Edge: Attach",
+            "type": "msedge",
+            "request": "attach",
+            "port": 9222,
+            "url": "http://localhost:5000",
+            "webRoot": "${workspaceFolder}/EmailsPlease/templates"
         }
     ]
 }
