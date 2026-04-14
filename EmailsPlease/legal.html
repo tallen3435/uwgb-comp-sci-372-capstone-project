@@ -105,7 +105,9 @@
         } else {
             localStorage.setItem('termsAccepted', 'true');
             const from = new URLSearchParams(window.location.search).get('from');
-            location.href = from === 'game' ? 'gameScreen.html' : 'index.html';
+            if (from === 'game')         location.href = 'gameScreen.html';
+            else if (from === 'tutorial') location.href = 'tutorial.html';
+            else                          location.href = 'index.html';
         }
     });
 </script>

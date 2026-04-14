@@ -1,0 +1,166 @@
+/* Give .outlook-window a positioning context so tutorial overlay elements
+   are contained within it rather than the viewport.                        */
+.outlook-window {
+    position: relative;
+}
+
+/* ── Full-screen dim: used for no-target steps (welcome / complete) ── */
+#tut-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 900;
+    pointer-events: none;
+    display: none;
+}
+
+/* ── Spotlight: positioned over the highlighted element.
+   The 9999px box-shadow creates the dark overlay over everything else.
+   pointer-events: none so clicks still reach the game UI beneath.     ── */
+#tut-spotlight {
+    position: absolute;
+    z-index: 901;
+    pointer-events: none;
+    border: 2px solid #FFD700;
+    border-radius: 2px;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65);
+    display: none;
+    transition: top 0.3s ease, left 0.3s ease,
+                width 0.3s ease, height 0.3s ease;
+}
+
+/* ── Animated arrow that points at the spotlight ── */
+#tut-arrow {
+    position: absolute;
+    z-index: 1001;
+    font-size: 22px;
+    color: #FFD700;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.9);
+    pointer-events: none;
+    display: none;
+    line-height: 1;
+    /* Horizontal centering is handled in JS by subtracting half the glyph
+       width from the computed left value, so keyframes only need translateY
+       — keeping the animation on the Compositor thread.                    */
+    will-change: transform;
+}
+
+/* Arrow above target (▼) — bounces downward toward target */
+#tut-arrow.down {
+    animation: tutBounceDown 0.65s ease-in-out infinite;
+}
+
+/* Arrow below target (▲) — bounces upward toward target */
+#tut-arrow.up {
+    animation: tutBounceUp 0.65s ease-in-out infinite;
+}
+
+@keyframes tutBounceDown {
+    0%, 100% { transform: translateY(0);   }
+    50%       { transform: translateY(5px); }
+}
+
+@keyframes tutBounceUp {
+    0%, 100% { transform: translateY(0);    }
+    50%       { transform: translateY(-5px); }
+}
+
+/* ── Instruction callout dialog ── */
+#tut-callout {
+    position: absolute;
+    z-index: 1002;
+    width: 340px;
+    background: #c0c0c0;
+    border-top:    2px solid #ffffff;
+    border-left:   2px solid #ffffff;
+    border-right:  2px solid #404040;
+    border-bottom: 2px solid #404040;
+    box-shadow: 4px 4px 0 #000000;
+    font-family: "MS Sans Serif", "Microsoft Sans Serif", Arial, sans-serif;
+    font-size: 12px;
+}
+
+#tut-callout-title {
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 4px 8px;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#tut-callout-text {
+    padding: 10px 12px 6px;
+    line-height: 1.55;
+    font-size: 12px;
+    color: #000;
+}
+
+#tut-callout-text b {
+    font-weight: bold;
+}
+
+.tut-tip {
+    color: #555;
+    font-style: italic;
+    font-size: 11px;
+}
+
+/* Nav bar at the bottom of the callout */
+.tut-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px 10px;
+    border-top: 1px solid #808080;
+    margin-top: 4px;
+    gap: 6px;
+}
+
+#tut-step-label {
+    color: #555;
+    font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.tut-nav-btns {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+/* Win98-style buttons inside the callout */
+#tut-skip,
+#tut-auto,
+#tut-next {
+    background: #c0c0c0;
+    border-top:    2px solid #ffffff;
+    border-left:   2px solid #ffffff;
+    border-right:  2px solid #808080;
+    border-bottom: 2px solid #808080;
+    font-family: "MS Sans Serif", sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 2px 9px;
+    white-space: nowrap;
+}
+
+#tut-skip { color: #444; }
+#tut-auto { color: #000080; font-weight: bold; display: none; }
+#tut-next { font-weight: bold; }
+
+#tut-skip:hover,
+#tut-auto:hover,
+#tut-next:hover { background: #d4d4d4; }
+
+#tut-skip:active,
+#tut-auto:active,
+#tut-next:active {
+    border-top:    2px solid #808080;
+    border-left:   2px solid #808080;
+    border-right:  2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+}

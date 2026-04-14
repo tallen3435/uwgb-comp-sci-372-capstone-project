@@ -199,3 +199,19 @@
     image-rendering: pixelated;
     margin-bottom: 6px;
 }
+
+/* Emoji icon used in place of an image (e.g. Tutorial entry) */
+.menu-icon-emoji {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    margin-bottom: 6px;
+    background: #c0c0c0;
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
+}

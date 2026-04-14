@@ -36,6 +36,10 @@
                     <img src="resources/images/Legal_Icon.png" alt="Legal">
                     <span>Legal</span>
                 </a>
+                <a href="tutorial.html" class="menu-icon" onclick="playTutorial(event)">
+                    <div class="menu-icon-emoji">&#128218;</div>
+                    <span>Tutorial</span>
+                </a>
             </div>
         </div>
     </div>
@@ -54,6 +58,15 @@
                 location.href = 'gameScreen.html';
             } else {
                 location.href = 'legal.html?from=game';
+            }
+        }
+
+        function playTutorial(e) {
+            e.preventDefault();
+            if (localStorage.getItem('termsAccepted') === 'true') {
+                location.href = 'tutorial.html';
+            } else {
+                location.href = 'legal.html?from=tutorial';
             }
         }
     </script>
