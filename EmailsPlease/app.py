@@ -20,6 +20,38 @@ class SimulatedEmail(BaseModel):
     difficulty: str
     cues: List[str]
 
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+@app.route("/gameScreen")
+def game_screen():
+    return render_template("gameScreen.html")
+
+@app.route("/aboutUs")
+def about_us():
+    return render_template("aboutUs.html")
+
+@app.route("/crashCourse")
+def crash_course():
+    return render_template("crashCourse.html")
+
+@app.route("/gameOver")
+def game_over():
+    return render_template("gameOver.html")
+
+@app.route("/legal")
+def legal():
+    return render_template("legal.html")
+
+@app.route("/settings")
+def settings():
+    return render_template("settings.html")
+
+@app.route("/tutorial")
+def tutorial():
+    return render_template("tutorial.html")
+
 @app.route('/api/generate-email', methods=['POST'])
 def handle_email_generation():
     """
