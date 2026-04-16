@@ -1,0 +1,176 @@
+/* ── Crash Course dialog size ── */
+.crash-dialog {
+    width: 720px;
+    height: 580px;
+}
+
+/* ── Tab strip ── */
+.tab-strip {
+    display: flex;
+    gap: 3px;
+    padding: 6px 8px 0;
+    background: #c0c0c0;
+    border-bottom: 2px solid #808080;
+    flex-shrink: 0;
+    box-shadow: 0 1px 0 white;
+}
+
+/* Individual tab button */
+.cc-tab {
+    padding: 4px 16px 5px;
+    background: #c0c0c0;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid #808080;
+    border-bottom: none;
+    font-size: 12px;
+    font-family: "MS Sans Serif", "Microsoft Sans Serif", Arial, sans-serif;
+    cursor: pointer;
+    position: relative;
+    bottom: -2px;
+    color: #000;
+    white-space: nowrap;
+}
+
+.cc-tab:hover:not(.active) {
+    background: #d4d4d4;
+}
+
+/* Active tab sits flush against the content area — no bottom border */
+.cc-tab.active {
+    background: #c0c0c0;
+    z-index: 10;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #c0c0c0;
+    font-weight: bold;
+}
+
+/* ── Tab content panels ── */
+.cc-panel {
+    display: none;
+    flex: 1;
+    padding: 10px 12px;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.cc-panel.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Scrollable content box inside each panel */
+.cc-panel .win98-textbox {
+    flex: 1;
+    overflow-y: scroll;
+}
+
+/* Tighten up heading spacing inside the course */
+.cc-panel .win98-textbox h2 {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #000080;
+    border-bottom: 1px solid #808080;
+    padding-bottom: 4px;
+}
+
+.cc-panel .win98-textbox h3 {
+    font-size: 12px;
+    margin: 12px 0 4px;
+    color: #000;
+    font-weight: bold;
+}
+
+.cc-panel .win98-textbox p {
+    margin-bottom: 6px;
+    line-height: 1.6;
+}
+
+.cc-panel .win98-textbox ul {
+    padding-left: 20px;
+    margin-bottom: 8px;
+}
+
+.cc-panel .win98-textbox li {
+    margin-bottom: 4px;
+    line-height: 1.5;
+}
+
+/* ── Inline superscript citations ── */
+sup.cite {
+    font-size: 9px;
+    line-height: 0;
+    vertical-align: super;
+    margin-left: 1px;
+}
+
+sup.cite a {
+    color: #000080;
+    text-decoration: none;
+    font-family: "MS Sans Serif", "Microsoft Sans Serif", Arial, sans-serif;
+    cursor: pointer;
+}
+
+sup.cite a:hover {
+    text-decoration: underline;
+    color: #0000cc;
+}
+
+/* Flash highlight when a ref is jumped to */
+@keyframes ref-flash {
+    0%   { background: #ffff88; }
+    70%  { background: #ffff88; }
+    100% { background: transparent; }
+}
+
+.ref-highlight {
+    animation: ref-flash 1.8s ease forwards;
+    border-radius: 2px;
+}
+
+/* ── IEEE reference list ── */
+.src-note {
+    font-size: 11px;
+    color: #555;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+.ieee-list {
+    list-style: decimal;
+    padding-left: 28px;
+    margin: 0;
+}
+
+.ieee-list li {
+    font-size: 12px;
+    line-height: 1.65;
+    margin-bottom: 10px;
+    color: #000;
+    padding-left: 4px;
+}
+
+.ieee-list li em {
+    font-style: italic;
+}
+
+/* ── Footer bar ── */
+.cc-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px 8px;
+    border-top: 1px solid #808080;
+    flex-shrink: 0;
+}
+
+.cc-progress {
+    font-size: 11px;
+    color: #444;
+    font-family: "MS Sans Serif", "Microsoft Sans Serif", Arial, sans-serif;
+}
+
+.cc-footer-btns {
+    display: flex;
+    gap: 6px;
+}

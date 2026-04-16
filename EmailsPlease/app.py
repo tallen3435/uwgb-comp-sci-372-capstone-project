@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from dotenv import load_dotenv
 from google import genai
@@ -60,15 +60,17 @@ def handle_email_generation():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/', methods=['GET'])
-def health_check():
-    return jsonify({
-        "status": "online",
-        "project": "Emails Please API",
-        "message": "Send a POST request to /api/generate-email to use the generator."
-    }), 200
+@app.route('/')
+def index():
+    return send_from_directory('templates', 'index.html')
 
+@app.route('/resources/<path:filename>')
+def serve_resource(filename):
+    return send_from_directory('resources', filename)
 
-    
+@app.route('/<path:filename>')
+def serve_template(filename):
+    return send_from_directory('templates', filename)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

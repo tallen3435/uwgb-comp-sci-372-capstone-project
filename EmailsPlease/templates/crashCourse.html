@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crash Course — Emails Please</title>
+    <link rel="stylesheet" href="legalStyle.css">
+    <link rel="stylesheet" href="crashCourse.css">
+</head>
+<body class="win98-desktop">
+
+<div class="win98-dialog crash-dialog">
+
+    <!-- Resize handles -->
+    <div class="resize-handle rh-n"></div>
+    <div class="resize-handle rh-s"></div>
+    <div class="resize-handle rh-e"></div>
+    <div class="resize-handle rh-w"></div>
+    <div class="resize-handle rh-ne"></div>
+    <div class="resize-handle rh-nw"></div>
+    <div class="resize-handle rh-se"></div>
+    <div class="resize-handle rh-sw"></div>
+
+    <!-- Title Bar -->
+    <div class="dialog-titlebar">
+        <span class="dialog-title">&#127891; Cybersecurity Crash Course &mdash; Emails Please</span>
+        <div class="dialog-controls">
+            <button type="button" class="win-ctrl">?</button>
+            <button type="button" class="win-ctrl" onclick="location.href='index.html'">&#10005;</button>
+        </div>
+    </div>
+
+    <!-- Tab Strip -->
+    <div class="tab-strip">
+        <button type="button" class="cc-tab active" onclick="switchTab(0)">&#128218; Introduction</button>
+        <button type="button" class="cc-tab" onclick="switchTab(1)">&#128163; Phishing</button>
+        <button type="button" class="cc-tab" onclick="switchTab(2)">&#128269; Red Flags</button>
+        <button type="button" class="cc-tab" onclick="switchTab(3)">&#128737; Prevention</button>
+        <button type="button" class="cc-tab" onclick="switchTab(4)">&#128196; Sources</button>
+    </div>
+
+    <!-- ── Tab 0: Introduction ─────────────────────────────────────────────── -->
+    <div class="cc-panel active" id="cc-tab-0">
+        <div class="win98-textbox">
+
+            <h2>What Is Cybersecurity?</h2>
+            <p>
+                Cybersecurity is the practice of protecting computers, networks, programs, and data from
+                digital attacks, unauthorized access, damage, or theft.<sup class="cite"><a onclick="gotoRef(4)">[4]</a></sup>
+                As our lives move increasingly online, cybersecurity has become a critical skill for
+                everyone &mdash; not just IT professionals.
+            </p>
+
+            <h3>Why Does It Matter?</h3>
+            <p>
+                Every year, cybercrime causes trillions of dollars in damage worldwide.<sup class="cite"><a onclick="gotoRef(5)">[5]</a></sup><sup class="cite"><a onclick="gotoRef(6)">[6]</a></sup>
+                Attacks target individuals, small businesses, hospitals, and governments alike.
+                A single successful phishing email can compromise an entire organization's data.
+            </p>
+
+            <h3>Common Cyber Threats</h3>
+            <ul>
+                <li><strong>Phishing:</strong> Deceptive emails or messages tricking you into revealing sensitive information or clicking malicious links.<sup class="cite"><a onclick="gotoRef(2)">[2]</a></sup></li>
+                <li><strong>Malware:</strong> Software designed to harm your device &mdash; includes viruses, ransomware, spyware, and trojans.<sup class="cite"><a onclick="gotoRef(10)">[10]</a></sup></li>
+                <li><strong>Ransomware:</strong> Malware that locks your files and demands payment for the decryption key.<sup class="cite"><a onclick="gotoRef(10)">[10]</a></sup></li>
+                <li><strong>Social Engineering:</strong> Manipulating people psychologically to give up confidential information.<sup class="cite"><a onclick="gotoRef(12)">[12]</a></sup></li>
+                <li><strong>Man-in-the-Middle (MitM):</strong> Attackers secretly intercept and possibly alter communication between two parties.<sup class="cite"><a onclick="gotoRef(4)">[4]</a></sup></li>
+                <li><strong>Credential Stuffing:</strong> Using leaked username/password lists from one breach to try to log into other services.<sup class="cite"><a onclick="gotoRef(6)">[6]</a></sup></li>
+            </ul>
+
+            <h3>The Human Factor</h3>
+            <p>
+                Over <strong>90% of successful cyberattacks</strong> begin with a human error &mdash; clicking a
+                bad link, using a weak password, or trusting an impersonator.<sup class="cite"><a onclick="gotoRef(1)">[1]</a></sup>
+                Technology alone cannot stop these attacks. Your awareness and habits are the most powerful defense.
+            </p>
+
+            <h3>The CIA Triad</h3>
+            <p>
+                Cybersecurity professionals organize their goals around three principles:<sup class="cite"><a onclick="gotoRef(4)">[4]</a></sup>
+            </p>
+            <ul>
+                <li><strong>Confidentiality:</strong> Only authorized people can access sensitive information.</li>
+                <li><strong>Integrity:</strong> Data is accurate and has not been tampered with.</li>
+                <li><strong>Availability:</strong> Systems and data are accessible when needed by authorized users.</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- ── Tab 1: Phishing ─────────────────────────────────────────────────── -->
+    <div class="cc-panel" id="cc-tab-1">
+        <div class="win98-textbox">
+
+            <h2>What Is Phishing?</h2>
+            <p>
+                Phishing is a type of social engineering attack where an attacker impersonates a trusted
+                entity &mdash; a bank, a colleague, or a well-known company &mdash; to trick you into handing over
+                credentials, financial information, or access to your systems.<sup class="cite"><a onclick="gotoRef(2)">[2]</a></sup><sup class="cite"><a onclick="gotoRef(12)">[12]</a></sup>
+            </p>
+
+            <h3>Types of Phishing Attacks</h3>
+            <ul>
+                <li>
+                    <strong>Email Phishing (most common):</strong> Mass emails sent to thousands of targets,
+                    impersonating brands like PayPal, Microsoft, or your bank.<sup class="cite"><a onclick="gotoRef(3)">[3]</a></sup>
+                </li>
+                <li>
+                    <strong>Spear Phishing:</strong> Targeted attacks customized for a specific individual
+                    using personal details (your name, job title, colleagues) gathered from social media.<sup class="cite"><a onclick="gotoRef(13)">[13]</a></sup>
+                </li>
+                <li>
+                    <strong>Whaling:</strong> Spear phishing aimed at senior executives (CEOs, CFOs) to
+                    authorize fraudulent wire transfers or expose corporate secrets.<sup class="cite"><a onclick="gotoRef(13)">[13]</a></sup>
+                </li>
+                <li>
+                    <strong>Smishing (SMS Phishing):</strong> Fake text messages claiming to be from your
+                    bank, delivery service, or government agency, containing malicious links.<sup class="cite"><a onclick="gotoRef(2)">[2]</a></sup>
+                </li>
+                <li>
+                    <strong>Vishing (Voice Phishing):</strong> Phone calls from fake &ldquo;tech support&rdquo; or IRS
+                    agents pressuring you to hand over information or purchase gift cards.<sup class="cite"><a onclick="gotoRef(9)">[9]</a></sup>
+                </li>
+                <li>
+                    <strong>Clone Phishing:</strong> A legitimate email you previously received is cloned,
+                    with attachments or links swapped for malicious versions.<sup class="cite"><a onclick="gotoRef(13)">[13]</a></sup>
+                </li>
+            </ul>
+
+            <h3>How Attackers Craft Phishing Emails</h3>
+            <p>Attackers study their targets and use specific psychological triggers:<sup class="cite"><a onclick="gotoRef(11)">[11]</a></sup><sup class="cite"><a onclick="gotoRef(12)">[12]</a></sup></p>
+            <ul>
+                <li><strong>Authority:</strong> &ldquo;Your account has been suspended by our security team.&rdquo;</li>
+                <li><strong>Urgency:</strong> &ldquo;You have 24 hours to verify your information or lose access.&rdquo;</li>
+                <li><strong>Fear:</strong> &ldquo;Unauthorized access was detected from your account.&rdquo;</li>
+                <li><strong>Greed:</strong> &ldquo;You have been selected to receive a $500 reward. Click to claim.&rdquo;</li>
+                <li><strong>Curiosity:</strong> &ldquo;Someone shared a document with you: Q4_Salaries.xlsx&rdquo;</li>
+                <li><strong>Familiarity:</strong> Impersonating a coworker or friend to lower your guard.</li>
+            </ul>
+
+            <h3>What Attackers Want</h3>
+            <ul>
+                <li>Login credentials (username &amp; password)<sup class="cite"><a onclick="gotoRef(1)">[1]</a></sup></li>
+                <li>Credit card or banking information<sup class="cite"><a onclick="gotoRef(6)">[6]</a></sup></li>
+                <li>Social Security / national ID numbers<sup class="cite"><a onclick="gotoRef(6)">[6]</a></sup></li>
+                <li>Access to install malware or ransomware<sup class="cite"><a onclick="gotoRef(10)">[10]</a></sup></li>
+                <li>Corporate network access via VPN credentials<sup class="cite"><a onclick="gotoRef(1)">[1]</a></sup></li>
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- ── Tab 2: Red Flags ────────────────────────────────────────────────── -->
+    <div class="cc-panel" id="cc-tab-2">
+        <div class="win98-textbox">
+
+            <h2>How to Spot a Phishing Email</h2>
+            <p>
+                Even sophisticated phishing emails contain clues that reveal their true nature.<sup class="cite"><a onclick="gotoRef(9)">[9]</a></sup><sup class="cite"><a onclick="gotoRef(14)">[14]</a></sup>
+                Train yourself to check for these red flags <em>before</em> clicking anything.
+            </p>
+
+            <h3>&#128233; Sender Address</h3>
+            <ul>
+                <li>The display name looks correct, but the actual email address is wrong.<sup class="cite"><a onclick="gotoRef(9)">[9]</a></sup><br>
+                    <em>Example: &ldquo;PayPal Support&rdquo; &lt;support@paypa1-secure.com&gt;</em></li>
+                <li>The domain is slightly misspelled (paypa<strong>1</strong>.com vs paypa<strong>l</strong>.com).<sup class="cite"><a onclick="gotoRef(14)">[14]</a></sup></li>
+                <li>The email comes from a free provider (Gmail, Yahoo) but claims to be your bank or employer.</li>
+                <li>The reply-to address differs from the sender address.<sup class="cite"><a onclick="gotoRef(13)">[13]</a></sup></li>
+            </ul>
+
+            <h3>&#127381; Urgency and Pressure</h3>
+            <ul>
+                <li>&ldquo;Act now or your account will be permanently closed.&rdquo;<sup class="cite"><a onclick="gotoRef(11)">[11]</a></sup></li>
+                <li>Artificial deadlines: &ldquo;You have 2 hours to respond.&rdquo;</li>
+                <li>Threats of legal action, fines, or account termination.</li>
+                <li>Pressure to bypass normal procedures (&ldquo;Don&rsquo;t tell your manager&rdquo;).<sup class="cite"><a onclick="gotoRef(12)">[12]</a></sup></li>
+            </ul>
+
+            <h3>&#128279; Suspicious Links</h3>
+            <ul>
+                <li>Hover over any link before clicking &mdash; the displayed URL and actual URL should match.<sup class="cite"><a onclick="gotoRef(9)">[9]</a></sup></li>
+                <li>Watch for URL shorteners (bit.ly, tinyurl) hiding the real destination.<sup class="cite"><a onclick="gotoRef(14)">[14]</a></sup></li>
+                <li>Look for extra subdomains: <em>paypal.login.evil-site.com</em> &mdash; the real domain is <em>evil-site.com</em>.<sup class="cite"><a onclick="gotoRef(14)">[14]</a></sup></li>
+                <li>Legitimate companies rarely ask you to click a link to &ldquo;verify&rdquo; login credentials.<sup class="cite"><a onclick="gotoRef(9)">[9]</a></sup></li>
+            </ul>
+
+            <h3>&#128196; Attachments</h3>
+            <ul>
+                <li>Never open unexpected attachments, especially .exe, .zip, .doc, .xls with macros, or .pdf files from unknown senders.<sup class="cite"><a onclick="gotoRef(2)">[2]</a></sup></li>
+                <li>Attackers often disguise malware as invoices, shipping notices, or HR documents.<sup class="cite"><a onclick="gotoRef(10)">[10]</a></sup></li>
+                <li>&ldquo;Enable macros to view this document&rdquo; is a classic malware delivery vector.<sup class="cite"><a onclick="gotoRef(10)">[10]</a></sup></li>
+            </ul>
+
+            <h3>&#9998; Content Quality</h3>
+            <ul>
+                <li>Generic greetings: &ldquo;Dear Customer,&rdquo; &ldquo;Dear User,&rdquo; instead of your actual name.<sup class="cite"><a onclick="gotoRef(13)">[13]</a></sup></li>
+                <li>Poor grammar, unusual capitalization, or awkward phrasing.<sup class="cite"><a onclick="gotoRef(9)">[9]</a></sup></li>
+                <li>Brand logos that look slightly off (wrong colors, blurry, stretched).<sup class="cite"><a onclick="gotoRef(14)">[14]</a></sup></li>
+                <li>Requests for information a real company already has (your password, SSN, full credit card).<sup class="cite"><a onclick="gotoRef(9)">[9]</a></sup></li>
+            </ul>
+
+            <h3>&#128272; Requests for Credentials or Payment</h3>
+            <ul>
+                <li>No legitimate company will ever ask for your password over email.<sup class="cite"><a onclick="gotoRef(9)">[9]</a></sup></li>
+                <li>Requests to pay via gift cards, wire transfer, or cryptocurrency are almost always scams.<sup class="cite"><a onclick="gotoRef(6)">[6]</a></sup></li>
+                <li>Fake login pages that look identical to real sites &mdash; always check the URL bar.<sup class="cite"><a onclick="gotoRef(14)">[14]</a></sup></li>
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- ── Tab 3: Prevention ───────────────────────────────────────────────── -->
+    <div class="cc-panel" id="cc-tab-3">
+        <div class="win98-textbox">
+
+            <h2>How to Protect Yourself</h2>
+            <p>
+                Awareness is your first line of defense. Combine good habits with the right tools to
+                significantly reduce your risk.<sup class="cite"><a onclick="gotoRef(4)">[4]</a></sup>
+            </p>
+
+            <h3>&#128161; Think Before You Click</h3>
+            <ul>
+                <li>Pause and ask: &ldquo;Was I expecting this email? Does this request make sense?&rdquo;<sup class="cite"><a onclick="gotoRef(9)">[9]</a></sup></li>
+                <li>When in doubt, go directly to the company&rsquo;s official website instead of clicking the link.<sup class="cite"><a onclick="gotoRef(9)">[9]</a></sup></li>
+                <li>Call the sender using a number you already know &mdash; not a number given in the suspicious email.<sup class="cite"><a onclick="gotoRef(2)">[2]</a></sup></li>
+            </ul>
+
+            <h3>&#128274; Use Strong, Unique Passwords</h3>
+            <ul>
+                <li>Use a different password for every account. A breach on one site won&rsquo;t cascade to others.<sup class="cite"><a onclick="gotoRef(7)">[7]</a></sup></li>
+                <li>Use a <strong>password manager</strong> (Bitwarden, 1Password, KeePass) to generate and store strong passwords.<sup class="cite"><a onclick="gotoRef(7)">[7]</a></sup></li>
+                <li>A strong password is long (16+ characters), random, and mixes letters, numbers, and symbols.<sup class="cite"><a onclick="gotoRef(7)">[7]</a></sup></li>
+            </ul>
+
+            <h3>&#128241; Enable Multi-Factor Authentication (MFA)</h3>
+            <ul>
+                <li>MFA requires a second verification step beyond your password &mdash; a code sent to your phone, an authenticator app, or a hardware key.<sup class="cite"><a onclick="gotoRef(8)">[8]</a></sup></li>
+                <li>Even if an attacker steals your password, they cannot log in without the second factor.<sup class="cite"><a onclick="gotoRef(8)">[8]</a></sup></li>
+                <li>Prefer authenticator apps (Google Authenticator, Authy) over SMS codes, which can be intercepted.<sup class="cite"><a onclick="gotoRef(7)">[7]</a></sup></li>
+            </ul>
+
+            <h3>&#128290; Keep Software Updated</h3>
+            <ul>
+                <li>Software updates patch security vulnerabilities that attackers exploit.<sup class="cite"><a onclick="gotoRef(4)">[4]</a></sup></li>
+                <li>Enable automatic updates for your OS, browser, and antivirus.<sup class="cite"><a onclick="gotoRef(4)">[4]</a></sup></li>
+                <li>Outdated software is one of the most common entry points for malware.<sup class="cite"><a onclick="gotoRef(5)">[5]</a></sup></li>
+            </ul>
+
+            <h3>&#128681; Report Suspicious Emails</h3>
+            <ul>
+                <li>Use your email client&rsquo;s &ldquo;Report Phishing&rdquo; or &ldquo;Mark as Spam&rdquo; button.<sup class="cite"><a onclick="gotoRef(2)">[2]</a></sup></li>
+                <li>Forward suspicious emails to <strong>reportphishing@apwg.org</strong> (Anti-Phishing Working Group).<sup class="cite"><a onclick="gotoRef(3)">[3]</a></sup></li>
+                <li>In a workplace, always notify your IT/security team &mdash; one report can protect hundreds of colleagues.<sup class="cite"><a onclick="gotoRef(2)">[2]</a></sup></li>
+                <li>Never reply to, unsubscribe from, or engage with a suspected phishing email.<sup class="cite"><a onclick="gotoRef(9)">[9]</a></sup></li>
+            </ul>
+
+            <h3>&#128421; Use Email Security Tools</h3>
+            <ul>
+                <li><strong>Spam filters:</strong> Most email providers have built-in spam detection &mdash; keep them enabled.<sup class="cite"><a onclick="gotoRef(2)">[2]</a></sup></li>
+                <li><strong>Antivirus software:</strong> Scans attachments and links for known threats.<sup class="cite"><a onclick="gotoRef(4)">[4]</a></sup></li>
+                <li><strong>DNS filtering:</strong> Blocks access to known malicious websites at the network level.<sup class="cite"><a onclick="gotoRef(4)">[4]</a></sup></li>
+                <li><strong>Browser extensions:</strong> Tools like uBlock Origin can block malicious ads and tracking scripts.</li>
+            </ul>
+
+            <h3>&#9989; Quick Self-Check Checklist</h3>
+            <ul>
+                <li>&#9744; Do I recognize this sender?</li>
+                <li>&#9744; Was I expecting this email?</li>
+                <li>&#9744; Does the sender&rsquo;s email address match the claimed organization?</li>
+                <li>&#9744; Does the link URL match what I expect when I hover over it?</li>
+                <li>&#9744; Is the email creating unusual urgency or pressure?</li>
+                <li>&#9744; Is it asking for credentials, payment, or personal info?</li>
+                <li>&#9744; If any box is unchecked &mdash; stop, verify through official channels before proceeding.<sup class="cite"><a onclick="gotoRef(9)">[9]</a></sup></li>
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- ── Tab 4: Sources ─────────────────────────────────────────────────── -->
+    <div class="cc-panel" id="cc-tab-4">
+        <div class="win98-textbox">
+
+            <h2>References</h2>
+            <p class="src-note">All sources are cited in IEEE format. Online sources were accessible as of April 2026. Click any superscript in the other tabs to jump directly to its reference.</p>
+
+            <ol class="ieee-list">
+
+                <li id="ref-1">
+                    Verizon, &ldquo;2023 Data Breach Investigations Report,&rdquo; Verizon Business, Basking Ridge, NJ, USA, 2023.
+                    [Online]. Available: https://www.verizon.com/business/resources/reports/dbir/.
+                    [Accessed: Apr. 16, 2026].
+                </li>
+
+                <li id="ref-2">
+                    Cybersecurity and Infrastructure Security Agency (CISA), &ldquo;Phishing,&rdquo; CISA, Washington, DC, USA, 2024.
+                    [Online]. Available: https://www.cisa.gov/topics/threats-and-hazards/phishing.
+                    [Accessed: Apr. 16, 2026].
+                </li>
+
+                <li id="ref-3">
+                    Anti-Phishing Working Group (APWG), &ldquo;Phishing Activity Trends Report, 4th Quarter 2023,&rdquo;
+                    APWG, Cambridge, MA, USA, 2024. [Online]. Available: https://apwg.org/trendsreports/.
+                    [Accessed: Apr. 16, 2026].
+                </li>
+
+                <li id="ref-4">
+                    National Institute of Standards and Technology (NIST), &ldquo;Cybersecurity Framework Version 2.0,&rdquo;
+                    NIST, Gaithersburg, MD, USA, Feb. 2024. [Online]. Available: https://www.nist.gov/cyberframework.
+                    [Accessed: Apr. 16, 2026].
+                </li>
+
+                <li id="ref-5">
+                    IBM Security, &ldquo;Cost of a Data Breach Report 2023,&rdquo; IBM Corp., Armonk, NY, USA, 2023.
+                    [Online]. Available: https://www.ibm.com/reports/data-breach.
+                    [Accessed: Apr. 16, 2026].
+                </li>
+
+                <li id="ref-6">
+                    Federal Bureau of Investigation (FBI), &ldquo;2023 Internet Crime Report,&rdquo;
+                    FBI Internet Crime Complaint Center (IC3), Washington, DC, USA, 2024.
+                    [Online]. Available: https://www.ic3.gov/Media/PDF/AnnualReport/2023_IC3Report.pdf.
+                    [Accessed: Apr. 16, 2026].
+                </li>
+
+                <li id="ref-7">
+                    P. A. Grassi, J. P. Garcia, and J. L. Fenton, &ldquo;Digital Identity Guidelines: Authentication
+                    and Lifecycle Management,&rdquo; NIST Special Publication 800-63B, National Institute of Standards
+                    and Technology, Gaithersburg, MD, USA, Jun. 2017, doi: 10.6028/NIST.SP.800-63b.
+                    [Online]. Available: https://doi.org/10.6028/NIST.SP.800-63b.
+                    [Accessed: Apr. 16, 2026].
+                </li>
+
+                <li id="ref-8">
+                    Cybersecurity and Infrastructure Security Agency (CISA), &ldquo;More Than a Password,&rdquo;
+                    CISA, Washington, DC, USA, 2023. [Online]. Available: https://www.cisa.gov/MFA.
+                    [Accessed: Apr. 16, 2026].
+                </li>
+
+                <li id="ref-9">
+                    Federal Trade Commission (FTC), &ldquo;How to Recognize and Avoid Phishing Scams,&rdquo;
+                    FTC Consumer Information, Washington, DC, USA, 2023.
+                    [Online]. Available: https://consumer.ftc.gov/articles/how-recognize-and-avoid-phishing-scams.
+                    [Accessed: Apr. 16, 2026].
+                </li>
+
+                <li id="ref-10">
+                    Cybersecurity and Infrastructure Security Agency (CISA), &ldquo;Ransomware Guide,&rdquo;
+                    CISA, Washington, DC, USA, Sep. 2020.
+                    [Online]. Available: https://www.cisa.gov/stopransomware/ransomware-guide.
+                    [Accessed: Apr. 16, 2026].
+                </li>
+
+                <li id="ref-11">
+                    R. B. Cialdini, <em>Influence: The Psychology of Persuasion</em>, rev. ed.
+                    New York, NY, USA: Harper Business, 2006.
+                </li>
+
+                <li id="ref-12">
+                    C. Hadnagy, <em>Social Engineering: The Science of Human Hacking</em>, 2nd ed.
+                    Indianapolis, IN, USA: Wiley, 2018.
+                </li>
+
+                <li id="ref-13">
+                    Microsoft Security, &ldquo;What is Phishing?,&rdquo; Microsoft, Redmond, WA, USA, 2024.
+                    [Online]. Available: https://www.microsoft.com/en-us/security/business/security-101/what-is-phishing.
+                    [Accessed: Apr. 16, 2026].
+                </li>
+
+                <li id="ref-14">
+                    Google, &ldquo;Protect Yourself From Phishing,&rdquo; Google Safety Center, Mountain View,
+                    CA, USA, 2024. [Online]. Available: https://safety.google/security/phishing/.
+                    [Accessed: Apr. 16, 2026].
+                </li>
+
+            </ol>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="dialog-buttons cc-footer">
+        <span class="cc-progress" id="cc-progress">Topic 1 of 4</span>
+        <div class="cc-footer-btns">
+            <button type="button" class="win98-btn" id="cc-prev" onclick="navTab(-1)" disabled>&#9664; Prev</button>
+            <button type="button" class="win98-btn" id="cc-next" onclick="navTab(1)">Next &#9654;</button>
+            <button type="button" class="win98-btn" onclick="location.href='index.html'">Close</button>
+        </div>
+    </div>
+
+</div>
+
+<script src="win98Window.js"></script>
+<script>
+    const TABS = 5;
+    let current = 0;
+
+    function switchTab(index) {
+        document.querySelectorAll('.cc-tab').forEach((t, i) => t.classList.toggle('active', i === index));
+        document.querySelectorAll('.cc-panel').forEach((p, i) => p.classList.toggle('active', i === index));
+        current = index;
+        const label = index === TABS - 1 ? 'Sources' : `Topic ${index + 1} of ${TABS - 1}`;
+        document.getElementById('cc-progress').textContent = label;
+        document.getElementById('cc-prev').disabled = index === 0;
+        document.getElementById('cc-next').disabled = index === TABS - 1;
+    }
+
+    function navTab(dir) {
+        const next = Math.max(0, Math.min(TABS - 1, current + dir));
+        switchTab(next);
+    }
+
+    function gotoRef(num) {
+        switchTab(4);
+        const el = document.getElementById('ref-' + num);
+        if (el) {
+            el.scrollIntoView({ block: 'center' });
+            el.classList.add('ref-highlight');
+            setTimeout(() => el.classList.remove('ref-highlight'), 1800);
+        }
+    }
+</script>
+
+</body>
+</html>
