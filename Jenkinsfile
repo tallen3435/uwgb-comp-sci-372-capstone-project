@@ -26,7 +26,7 @@ stage('Deploy') {
             pkill -f gunicorn || true
 
             # The special flag tells Jenkins NOT to kill Gunicorn when the job ends
-            JENKINS_NODE_COOKIE=dontKillMe nohup .venv/bin/gunicorn -w 2 -b 0.0.0.0:5000 EmailsPlease.app:app > gunicorn.log 2>&1 &
+            JENKINS_NODE_COOKIE=dontKillMe nohup .venv/bin/gunicorn -w 2 -b 127.0.0.1:8000 EmailsPlease.app:app > gunicorn.log 2>&1 &
         '''
     }
 }
