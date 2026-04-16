@@ -1,6 +1,6 @@
 /* Desktop background */
 .win98-desktop {
-    background: url('../resources/images/win98_wallpaper.jpg');
+    background: url('/resources/images/win98_wallpaper.jpg');
     background-size: 100% 100%;
     height: 100vh;
     margin: 0;
