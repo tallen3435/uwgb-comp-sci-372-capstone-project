@@ -92,10 +92,6 @@ def handle_email_generation():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/')
-def index():
-    return send_from_directory('templates', 'index.html')
-
 @app.route('/health', methods=['GET'])
 def health_check():
     return jsonify({
