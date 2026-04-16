@@ -23,7 +23,7 @@ stage('Deploy') {
     steps {
         sh '''
             # Kill old processes to free up the port
-            sudo pkill -f gunicorn || true
+             pkill -f gunicorn || true
 
             # The special flag tells Jenkins NOT to kill Gunicorn when the job ends
             JENKINS_NODE_COOKIE=dontKillMe nohup .venv/bin/gunicorn -w 2 -b 127.0.0.1:8000 EmailsPlease.app:app > gunicorn.log 2>&1 &
