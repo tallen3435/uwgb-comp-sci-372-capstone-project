@@ -8,7 +8,7 @@ from typing import List
 
 # 1. Initialize Environment and Flask
 load_dotenv()  # Loads GEMINI_API_KEY from .env
-app = Flask(__name__, static_folder=None)
+app = Flask(__name__)
 CORS(app)
 
 # 2. Define the Structured Data Schema
@@ -24,33 +24,7 @@ class SimulatedEmail(BaseModel):
 def index():
     return render_template("index.html")
 
-@app.route("/gameScreen")
-def game_screen():
-    return render_template("gameScreen.html")
 
-@app.route("/aboutUs")
-def about_us():
-    return render_template("aboutUs.html")
-
-@app.route("/crashCourse")
-def crash_course():
-    return render_template("crashCourse.html")
-
-@app.route("/gameOver")
-def game_over():
-    return render_template("gameOver.html")
-
-@app.route("/legal")
-def legal():
-    return render_template("legal.html")
-
-@app.route("/settings")
-def settings():
-    return render_template("settings.html")
-
-@app.route("/tutorial")
-def tutorial():
-    return render_template("tutorial.html")
 
 @app.route('/api/generate-email', methods=['POST'])
 def handle_email_generation():
@@ -106,6 +80,8 @@ def serve_resource(filename):
 
 @app.route('/<path:filename>')
 def serve_template(filename):
+    if filename.endswith('.html'):
+        return render_template(filename)
     return send_from_directory('templates', filename)
 
 if __name__ == '__main__':
