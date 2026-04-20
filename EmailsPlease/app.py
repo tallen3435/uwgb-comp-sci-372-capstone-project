@@ -30,58 +30,66 @@ def index():
 @app.route('/api/generate-email', methods=['POST'])
 def handle_email_generation():
     """
-    Primary endpoint for the 'Emails Please' game to request new content. [cite: 2, 31]
+    Primary endpoint for the 'Emails Please' game to request new content.
     """
     try:
-        # 3. Initialize the Gemini Client (lazy — so server starts without a key)
+        # Initialize the Gemini Client
         client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 
-        # Get user preferences from the front-end request
         data = request.get_json()
-        target_type = data.get('type', 'phishing')  # Default to phishing for training
+        target_type = data.get('type', 'phishing')
         difficulty = data.get('difficulty', 'medium')
-
-        # Define the list of sender personas
-        personas = [
-            "HR Manager demanding immediate completion of mandatory training",
-            "Company CEO or Executive requesting an urgent, confidential task",
-            "IT Support warning about a compromised account or password reset",
-            "External Vendor following up on an unpaid, overdue invoice",
-            "Friendly coworker sharing a link to a collaborative document",
-            "Automated Corporate System (e.g., Payroll, Microsoft 365, Slack alert)",
-            "Recruiter from another company offering a highly lucrative job",
-            "Thomas Allen (who is a coworker) asking if he wants to go out to lunch/dinner, sharing link to restaurant",
-            "Newsletter from University of Wisconsin-Green Bay Computer Science program",
-            "Reminder to complete mandatory education for the current year",
-            "List of job offers from Handshake/LinkedIn"
-        ]
-
-        # Randomly select one persona
-        selected_personas = random.choice(personas)
         company_name = "Malware Incorporated"
 
-        # Craft the prompt for the educational simulation [cite: 68, 75]
-        prompt = (
-            f"Generate a {difficulty} {target_type} email for a cybersecurity training game. "
-            f"The sender of this email should be acting as a: {selected_personas}. "
-            f"If phishing, include realistic social engineering tactics. [cite: 131, 151]"
-            f"If applicable, the company we are working for is: {company_name}"
-        )
+        if target_type == 'phishing':
+            # These personas focus on urgency, spoofing, and malicious links
+            personas = [
+                "HR Manager demanding immediate completion of mandatory training",
+                "Company CEO requesting an urgent, confidential financial task",
+                "IT Support warning about a compromised account or password reset",
+                "External Vendor following up on an unpaid, overdue invoice",
+                "Recruiter from another company offering a highly lucrative job",
+                "Spoofed coworker (Thomas Allen) asking for lunch and sharing a suspicious link to a 'menu'",
+                "Fake reminder to complete mandatory education with a 'login' link",
+                "Urgent Job Offer alert from a platform like Handshake or LinkedIn"
+            ]
+            selected_persona = random.choice(personas)
+            prompt = (
+                f"Generate a {difficulty} level phishing email for a cybersecurity training game. "
+                f"The sender is acting as a: {selected_persona}. "
+                f"Include realistic social engineering tactics like urgency, fear, or a suspicious call to action. "
+                f"The target company is: {company_name}"
+            )
+        else:
+            # These personas focus on boring, routine, and safe communications
+            personas = [
+                "The real University of Wisconsin-Green Bay Computer Science program newsletter",
+                "A standard automated reminder to complete yearly mandatory education",
+                "A routine list of job postings from Handshake or LinkedIn (no urgency)",
+                "Friendly coworker (Thomas Allen) actually asking if you want to go to lunch",
+                "Automated Corporate System sending a standard payroll or Slack alert",
+                "Coworker sharing a link to a collaborative document you were expecting"
+            ]
+            selected_persona = random.choice(personas)
+            prompt = (
+                f"Generate a {difficulty} level legitimate corporate email for a training simulation. "
+                f"The sender is: {selected_persona}. "
+                f"CRITICAL: This email must be mundane and safe. Do not include threats, urgency, or suspicious links. "
+                f"The company name is: {company_name}"
+            )
 
-        # Call the Gemini API with structured output and safety overrides
+        # Call the Gemini API with structured output
         response = client.models.generate_content(
             model="gemini-3.1-flash-lite-preview",
             contents=prompt,
             config={
                 "response_mime_type": "application/json",
                 "response_schema": SimulatedEmail,
-                # Essential: allows generation of simulated 'dangerous' content
                 "safety_settings": [
                     {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"}
                 ]
             }
         )
-
 
         return jsonify(response.parsed.dict()), 200
 
