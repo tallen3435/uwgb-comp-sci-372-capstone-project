@@ -1,4 +1,5 @@
 import os
+import random
 from flask import Flask, jsonify, request, send_from_directory, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -40,10 +41,31 @@ def handle_email_generation():
         target_type = data.get('type', 'phishing')  # Default to phishing for training
         difficulty = data.get('difficulty', 'medium')
 
+        # Define the list of sender personas
+        personas = [
+            "HR Manager demanding immediate completion of mandatory training",
+            "Company CEO or Executive requesting an urgent, confidential task",
+            "IT Support warning about a compromised account or password reset",
+            "External Vendor following up on an unpaid, overdue invoice",
+            "Friendly coworker sharing a link to a collaborative document",
+            "Automated Corporate System (e.g., Payroll, Microsoft 365, Slack alert)",
+            "Recruiter from another company offering a highly lucrative job",
+            "Thomas Allen (who is a coworker) asking if he wants to go out to lunch/dinner, sharing link to restaurant",
+            "Newsletter from University of Wisconsin-Green Bay Computer Science program",
+            "Reminder to complete mandatory education for the current year",
+            "List of job offers from Handshake/LinkedIn"
+        ]
+
+        # Randomly select one persona
+        selected_personas = random.choice(personas)
+        company_name = "Malware Incorporated"
+
         # Craft the prompt for the educational simulation [cite: 68, 75]
         prompt = (
             f"Generate a {difficulty} {target_type} email for a cybersecurity training game. "
+            f"The sender of this email should be acting as a: {selected_personas}. "
             f"If phishing, include realistic social engineering tactics. [cite: 131, 151]"
+            f"If applicable, the company we are working for is: {company_name}"
         )
 
         # Call the Gemini API with structured output and safety overrides
@@ -84,5 +106,6 @@ def serve_template(filename):
         return render_template(filename)
     return send_from_directory('templates', filename)
 
+# self-hosted server for debugging
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
