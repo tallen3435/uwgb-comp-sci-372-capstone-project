@@ -41,12 +41,6 @@ def save_leaderboard(data):
     with open(LEADERBOARD_FILE, "w") as f:
         json.dump(data, f, indent=2)
 
-@app.route("/", methods=['GET'])
-def index():
-    return render_template("index.html")
-
-
-
 # SQLite helper functions
 def init_db():
     with sqlite3.connect(DATABASE) as conn:
@@ -182,9 +176,9 @@ def handle_email_generation():
         new_email = response.parsed.dict()
 
         # --- STEP 3: SAVE TO DB ---
-        save_email_to_db(new_email), 200
+        save_email_to_db(target_type, new_email)
 
-        return jsonify(response.parsed.dict()), 200
+        return jsonify(new_email), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
