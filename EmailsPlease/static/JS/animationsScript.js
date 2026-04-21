@@ -436,8 +436,15 @@ function showFakeAd() {
     const box = document.createElement('div');
     box.className = 'ad-box';
 
+    const minSize = 150;
+    const maxSize = 600;
+
+    const size = Math.random() * (maxSize - minSize) + minSize;
+
+    const imgSrc = getRandomAdImage();
+
     box.innerHTML = `
-        <img src="../resources/images/popupad1.png" style="width:200px;">
+        <img src="${imgSrc}" style="width:${size}px">
         <br>
     `;
     const closeBtn = document.createElement('button');
@@ -485,4 +492,20 @@ function updateAdSystem() {
     adInterval = setInterval(() => {
         showFakeAd();
     }, intervalTime);
+}
+
+const adImages = [
+    "popupad1.png",
+    "popupad2.png",
+    "popupad3.png",
+    "popupad4.png",
+    "popupad5.gif",
+    "popupad6.png",
+    "popupad7.png",
+    "popupad8.png"
+];
+
+function getRandomAdImage() {
+    const choice = adImages[Math.floor(Math.random() * adImages.length)];
+    return `../resources/images/${choice}`;
 }
