@@ -1,5 +1,7 @@
 import os
 import random
+import sqlite3
+import json
 from flask import Flask, jsonify, request, send_from_directory, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -7,12 +9,17 @@ from google import genai
 from pydantic import BaseModel
 from typing import List
 
-# 1. Initialize Environment and Flask
+# Initialize Environment and Flask
 load_dotenv()  # Loads GEMINI_API_KEY from .env
 app = Flask(__name__)
 CORS(app)
 
-# 2. Define the Structured Data Schema
+# database config
+# define where the database will live
+# replace with absolute path in back-end to save from deployment updates (Jenkins)
+DATABASE = 'emails_please.db'
+
+# Define the Structured Data Schema
 class SimulatedEmail(BaseModel):
     sender: str
     subject: str
@@ -21,25 +28,86 @@ class SimulatedEmail(BaseModel):
     difficulty: str
     cues: List[str]
 
-@app.route("/", methods=['GET'])
-def index():
-    return render_template("index.html")
+# SQLite helper functions
+def init_db():
+    with sqlite3.connect(DATABASE) as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS emails (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                target_type TEXT,
+                difficulty TEXT,
+                sender TEXT,
+                subject TEXT,
+                body TEXT,
+                classification TEXT,
+                cues TEXT
+            )
+        ''')
+        conn.commit()
+
+def get_email_from_db(target_type, difficulty):
+    with sqlite3.connect(DATABASE) as conn:
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT * FROM emails
+            WHERE target_type = ? AND difficulty = ?
+            ORDER BY RANDOM() LIMIT 1
+        ''', (target_type, difficulty))
+
+        row = cursor.fetchone()
+        if row:
+            return {
+                "sender": row["sender"],
+                "subject": row["subject"],
+                "body": row["body"],
+                "classification": row["classification"],
+                "difficulty": row["difficulty"],
+                "cues": json.loads(row["cues"])
+            }
+        return None
+
+def save_email_to_db(target_type, email_data):
+    with sqlite3.connect(DATABASE) as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO emails (target_type, difficulty, sender, subject, body, classification, cues)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            target_type,
+            email_data["difficulty"],
+            email_data["sender"],
+            email_data["subject"],
+            email_data["body"],
+            email_data["classification"],
+            json.dumps(email_data["cues"])
+        ))
+        conn.commit()
 
 
-
+# API route
 @app.route('/api/generate-email', methods=['POST'])
 def handle_email_generation():
     """
     Primary endpoint for the 'Emails Please' game to request new content.
     """
     try:
-        # Initialize the Gemini Client
-        client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
-
         data = request.get_json()
         target_type = data.get('type', 'phishing')
         difficulty = data.get('difficulty', 'medium')
         company_name = "Malware Incorporated"
+
+        # --- STEP 1: CHECK THE DATABASE ---
+        existing_email = get_email_from_db(target_type, difficulty)
+
+        if existing_email:
+            print(f"✅ Served a cached {target_type} email from SQLite!")
+            return jsonify(existing_email), 200
+
+        # --- STEP 2: NOT IN DB, GENERATE WITH GEMINI ---
+        print(f"Generating a new unique {target_type} email via Gemini...")
+        client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 
         if target_type == 'phishing':
             # These personas focus on urgency, spoofing, and malicious links
@@ -83,6 +151,7 @@ def handle_email_generation():
             model="gemini-3.1-flash-lite-preview",
             contents=prompt,
             config={
+                "temperature": 0.85,  # ensures wider variety of email generation types
                 "response_mime_type": "application/json",
                 "response_schema": SimulatedEmail,
                 "safety_settings": [
@@ -91,10 +160,19 @@ def handle_email_generation():
             }
         )
 
+        new_email = response.parsed.dict()
+
+        # --- STEP 3: SAVE TO DB ---
+        save_email_to_db(new_email), 200
+
         return jsonify(response.parsed.dict()), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route("/", methods=['GET'])
+def index():
+    return render_template("index.html")
 
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -116,4 +194,6 @@ def serve_template(filename):
 
 # self-hosted server for debugging
 if __name__ == '__main__':
+    # Initialize the database table before the server boots up
+    init_db()
     app.run(host='0.0.0.0', port=5000, debug=True)
