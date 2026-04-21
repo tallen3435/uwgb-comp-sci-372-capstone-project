@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, jsonify, request, send_from_directory, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -11,6 +12,8 @@ load_dotenv()  # Loads GEMINI_API_KEY from .env
 app = Flask(__name__)
 CORS(app)
 
+LEADERBOARD_FILE = "leaderboard.json"
+
 # 2. Define the Structured Data Schema
 class SimulatedEmail(BaseModel):
     sender: str
@@ -19,6 +22,16 @@ class SimulatedEmail(BaseModel):
     classification: str  # "legitimate" or "phishing"
     difficulty: str
     cues: List[str]
+
+def load_leaderboard():
+    if not os.path.exists(LEADERBOARD_FILE):
+        return []
+    with open(LEADERBOARD_FILE, "r") as f:
+        return json.load(f)
+
+def save_leaderboard(data):
+    with open(LEADERBOARD_FILE, "w") as f:
+        json.dump(data, f, indent=2)
 
 @app.route("/", methods=['GET'])
 def index():
@@ -63,6 +76,45 @@ def handle_email_generation():
 
         return jsonify(response.parsed.dict()), 200
 
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/submit-score', methods=['POST'])
+def submit_score():
+    try:
+        data = request.get_json()
+        username = data.get('username', 'Anonymous')[:20]
+        score = int(data.get('score', 0))
+
+        board = load_leaderboard()
+
+        # Check if user already exists
+        existing = next((e for e in board if e["username"] == username), None)
+
+        if existing:
+            existing["score"] = max(existing["score"], score)
+        else:
+            board.append({
+                "username": username,
+                "score": score
+            })
+
+        # Sort and keep top 10
+        board = sorted(board, key=lambda x: x["score"], reverse=True)[:10]
+
+        save_leaderboard(board)
+
+        return jsonify({"status": "success"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/leaderboard', methods=['GET'])
+def get_leaderboard():
+    try:
+        return jsonify(load_leaderboard()), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
