@@ -8,7 +8,7 @@
             "name": "Flask: EmailsPlease",
             "type": "debugpy",
             "request": "launch",
-            "python": "C:\\Users\\bowma\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "python": "C:\\Users\\plant\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
             "program": "${workspaceFolder}/EmailsPlease/app.py",
             "cwd": "${workspaceFolder}/EmailsPlease",
             "env": {
@@ -29,7 +29,7 @@
             "name": "Full Stack: Flask + Edge",
             "type": "debugpy",
             "request": "launch",
-            "python": "C:\\Users\\bowma\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "python": "C:\\Users\\plant\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
             "program": "${workspaceFolder}/EmailsPlease/app.py",
             "cwd": "${workspaceFolder}/EmailsPlease",
             "env": {
