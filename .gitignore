@@ -706,5 +706,8 @@ FodyWeavers.xsd
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
+# Custom Capstone Database Files
+*.db
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,pycharm,visualstudio,python
 
