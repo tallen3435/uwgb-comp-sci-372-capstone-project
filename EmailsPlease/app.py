@@ -20,7 +20,7 @@ LEADERBOARD_FILE = "leaderboard.json"
 # database config
 # define where the database will live
 # replace with absolute path in back-end to save from deployment updates (Jenkins)
-DATABASE = 'emails_please.db'
+DATABASE = '/opt/emails_please_data/emails_please.db'
 
 # Define the Structured Data Schema
 class SimulatedEmail(BaseModel):
@@ -58,6 +58,8 @@ def init_db():
             )
         ''')
         conn.commit()
+# Initialize the database table before the server boots up
+init_db()
 
 def get_email_from_db(target_type, difficulty):
     with sqlite3.connect(DATABASE) as conn:
@@ -245,6 +247,4 @@ def serve_template(filename):
 
 # self-hosted server for debugging
 if __name__ == '__main__':
-    # Initialize the database table before the server boots up
-    init_db()
     app.run(host='0.0.0.0', port=5000, debug=True)
