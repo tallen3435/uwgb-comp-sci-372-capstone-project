@@ -1,10 +1,11 @@
 {
-  "version": "1.0",
-  "description": "Email templates for Emails Please. 10 legitimate, 10 phishing, 10 spam. Used as fallback when API is unavailable.",
+  "version": "1.1",
+  "description": "Email templates for Emails Please. 10 legitimate, 10 phishing, 10 spam. Tagged by difficulty: easy/medium/hard. Used as fallback when API is unavailable.",
   "emails": [
     {
       "id": 1,
       "type": "legit",
+      "difficulty": "medium",
       "from": "IT Department",
       "address": "it-support@malwareinc.com",
       "subject": "Mandatory Password Policy Update — Action Required by Friday",
@@ -16,6 +17,7 @@
     {
       "id": 2,
       "type": "legit",
+      "difficulty": "medium",
       "from": "Sarah Mitchell — HR",
       "address": "s.mitchell@malwareinc.com",
       "subject": "2005 Benefits Enrollment Now Open",
@@ -27,6 +29,7 @@
     {
       "id": 3,
       "type": "legit",
+      "difficulty": "easy",
       "from": "David Park — Manager",
       "address": "d.park@malwareinc.com",
       "subject": "Team Sync — Thursday 2:00 PM, Conference Room B",
@@ -38,6 +41,7 @@
     {
       "id": 4,
       "type": "legit",
+      "difficulty": "hard",
       "from": "Finance — Accounts Payable",
       "address": "ap@malwareinc.com",
       "subject": "Invoice #4821 Requires Your Approval",
@@ -49,6 +53,7 @@
     {
       "id": 5,
       "type": "legit",
+      "difficulty": "easy",
       "from": "IT Department",
       "address": "it-support@malwareinc.com",
       "subject": "Scheduled Maintenance — Sunday 2:00–6:00 AM",
@@ -60,6 +65,7 @@
     {
       "id": 6,
       "type": "legit",
+      "difficulty": "hard",
       "from": "Legal Department",
       "address": "legal@malwareinc.com",
       "subject": "NDA for Project Orion — Please Review by EOD Friday",
@@ -71,6 +77,7 @@
     {
       "id": 7,
       "type": "legit",
+      "difficulty": "easy",
       "from": "Facilities Management",
       "address": "facilities@malwareinc.com",
       "subject": "Office Closed — Good Friday, March 25th",
@@ -82,6 +89,7 @@
     {
       "id": 8,
       "type": "legit",
+      "difficulty": "hard",
       "from": "David Park — Manager",
       "address": "d.park@malwareinc.com",
       "subject": "Your Q1 Performance Review — Scheduled for March 22nd",
@@ -93,6 +101,7 @@
     {
       "id": 9,
       "type": "legit",
+      "difficulty": "medium",
       "from": "IT Department",
       "address": "it-support@malwareinc.com",
       "subject": "Your Microsoft Office License Renewed — No Action Needed",
@@ -104,6 +113,7 @@
     {
       "id": 10,
       "type": "legit",
+      "difficulty": "easy",
       "from": "Sarah Mitchell — HR",
       "address": "s.mitchell@malwareinc.com",
       "subject": "Welcome — New Team Member Starting Monday",
@@ -115,6 +125,7 @@
     {
       "id": 11,
       "type": "phish",
+      "difficulty": "easy",
       "from": "Bank of America Security",
       "address": "security@bankofamerica-secure-alerts.net",
       "subject": "URGENT: Your Account Has Been Suspended — Verify Now",
@@ -132,6 +143,7 @@
     {
       "id": 12,
       "type": "phish",
+      "difficulty": "easy",
       "from": "PayPal Support",
       "address": "support@paypa1-accounts.com",
       "subject": "Your PayPal Account Has Been Limited",
@@ -149,6 +161,7 @@
     {
       "id": 13,
       "type": "phish",
+      "difficulty": "medium",
       "from": "IRS Refund Center",
       "address": "refunds@irs-gov-refunds.com",
       "subject": "Tax Refund of $1,847.00 Pending — Claim Within 72 Hours",
@@ -166,6 +179,7 @@
     {
       "id": 14,
       "type": "phish",
+      "difficulty": "medium",
       "from": "Microsoft Account Team",
       "address": "account-security@microsoft-alerts.org",
       "subject": "Unusual Sign-In Detected — Secure Your Account Now",
@@ -183,6 +197,7 @@
     {
       "id": 15,
       "type": "phish",
+      "difficulty": "hard",
       "from": "CEO — Robert Haines",
       "address": "r.haines@company-corp.net",
       "subject": "Urgent Wire Transfer Needed — Confidential",
@@ -200,6 +215,7 @@
     {
       "id": 16,
       "type": "phish",
+      "difficulty": "medium",
       "from": "IT Helpdesk",
       "address": "helpdesk@company-it-support.net",
       "subject": "Your Email Account Will Be Deactivated",
@@ -217,6 +233,7 @@
     {
       "id": 17,
       "type": "phish",
+      "difficulty": "hard",
       "from": "DocuSign",
       "address": "dse@docusign-document-ready.com",
       "subject": "You Have a Document Waiting for Your Signature",
@@ -233,6 +250,7 @@
     {
       "id": 18,
       "type": "phish",
+      "difficulty": "hard",
       "from": "LinkedIn",
       "address": "security@linkedin-account-alerts.com",
       "subject": "Someone Tried to Access Your LinkedIn Account",
@@ -250,6 +268,7 @@
     {
       "id": 19,
       "type": "phish",
+      "difficulty": "hard",
       "from": "Amazon Order Notification",
       "address": "order-confirm@arnazon-shipping.com",
       "subject": "Your Amazon Order #114-8823901 Has Shipped",
@@ -267,6 +286,7 @@
     {
       "id": 20,
       "type": "phish",
+      "difficulty": "hard",
       "from": "Google Drive",
       "address": "drive-share@google-docs-shared.com",
       "subject": "Robert Haines Shared a File With You",
@@ -284,6 +304,7 @@
     {
       "id": 21,
       "type": "spam",
+      "difficulty": "easy",
       "from": "SlimFast Solutions",
       "address": "offers@slimfast-solutions-deals.biz",
       "subject": "Lose 30 Pounds in 30 Days — Guaranteed or Your Money Back!",
@@ -301,6 +322,7 @@
     {
       "id": 22,
       "type": "spam",
+      "difficulty": "easy",
       "from": "Mega Lottery International",
       "address": "winner@mega-lottery-intl.org",
       "subject": "CONGRATULATIONS — You Have Won $850,000.00!",
@@ -318,6 +340,7 @@
     {
       "id": 23,
       "type": "spam",
+      "difficulty": "easy",
       "from": "Prince Adebayo Okafor",
       "address": "prince.okafor.trust@gmail.com",
       "subject": "Strictly Confidential Business Proposal — $24.5 Million USD",
@@ -335,6 +358,7 @@
     {
       "id": 24,
       "type": "spam",
+      "difficulty": "medium",
       "from": "Canadian Pharmacy Direct",
       "address": "deals@canada-pharma-direct.biz",
       "subject": "Prescription Meds — 80% Off! No Prescription Needed",
@@ -352,6 +376,7 @@
     {
       "id": 25,
       "type": "spam",
+      "difficulty": "medium",
       "from": "Work From Home Weekly",
       "address": "opportunity@wfh-weekly-offers.net",
       "subject": "Mom Earns $8,000/Month Stuffing Envelopes From Home!",
@@ -369,6 +394,7 @@
     {
       "id": 26,
       "type": "spam",
+      "difficulty": "medium",
       "from": "CryptoWealth Insider",
       "address": "tips@cryptowealth-insider.biz",
       "subject": "This Coin Is About to 10X — Get In Before Tuesday",
@@ -386,6 +412,7 @@
     {
       "id": 27,
       "type": "spam",
+      "difficulty": "medium",
       "from": "Amazon Gift Card Center",
       "address": "giftcards@amazon-rewards-center.net",
       "subject": "You've Been Selected for a $500 Amazon Gift Card!",
@@ -403,6 +430,7 @@
     {
       "id": 28,
       "type": "spam",
+      "difficulty": "hard",
       "from": "Vegas Palace Online Casino",
       "address": "bonus@vegaspalace-online.biz",
       "subject": "Exclusive: $1,000 Welcome Bonus — Claim Before Midnight!",
@@ -420,6 +448,7 @@
     {
       "id": 29,
       "type": "spam",
+      "difficulty": "hard",
       "from": "QuickLoans Refinance",
       "address": "offers@quickloans-refinance-now.biz",
       "subject": "Refinance Your Mortgage — Rates as Low as 1.9% — Act Today!",
@@ -437,6 +466,7 @@
     {
       "id": 30,
       "type": "spam",
+      "difficulty": "hard",
       "from": "Madam Rosa — PsychicNation",
       "address": "reading@psychicnation-free.biz",
       "subject": "Madam Rosa Sees Great Danger in Your Future — Read This Now",

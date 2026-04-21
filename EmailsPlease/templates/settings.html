@@ -3,34 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings</title>
+    <title>Settings – Emails Please</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/mainStyle.css') }}">
 </head>
-<body>
+<body class="win98-desktop">
 
-<header>
-    <h1>Settings</h1>
-</header>
+<div class="settings-window">
 
-<main>
-    <section class="settings-section">
-        <label>
-            <input type="checkbox" id="sound-toggle">
-            Enable Sound Effects
-        </label>
+    <!-- Title Bar -->
+    <div class="window-titlebar">
+        <span class="window-title">&#9881; Settings</span>
+        <div class="window-controls">
+            <button type="button" class="win-ctrl" data-ctrl="min">_</button>
+            <button type="button" class="win-ctrl" data-ctrl="max">□</button>
+            <button type="button" class="win-ctrl close-btn" onclick="location.href='index.html'">&#10005;</button>
+        </div>
+    </div>
 
-        <label>
-            Difficulty:
-            <select id="difficulty-select">
-                <option value="easy">Easy</option>
-                <option value="normal">Normal</option>
-                <option value="hard">Hard</option>
-            </select>
-        </label>
-    </section>
+    <div class="settings-body">
 
-    <button onclick="location.href='index.html'">Back to Menu</button>
-</main>
+        <!-- Difficulty Section -->
+        <fieldset class="win98-fieldset">
+            <legend>Difficulty</legend>
+            <p class="difficulty-hint">Select how challenging the phishing emails will be.</p>
+
+            <div class="difficulty-cards">
+
+                <label class="diff-card" id="card-easy">
+                    <input type="radio" name="difficulty" value="easy">
+                    <div class="diff-card-inner">
+                        <div class="diff-title">&#128578; Easy</div>
+                        <div class="diff-subtitle">Cartoon Villain Mode</div>
+                        <div class="diff-desc">
+                            Scammers here are comically obvious. Expect emails from
+                            "PRINCE OF NIGERIA" offering you millions, pixelated logos,
+                            ALL-CAPS demands, and blatant misspellings. Even a golden
+                            retriever could spot these.
+                        </div>
+                        <div class="diff-tags">
+                            <span class="tag tag-green">Beginner Friendly</span>
+                            <span class="tag tag-green">Obvious Red Flags</span>
+                        </div>
+                    </div>
+                </label>
+
+                <label class="diff-card" id="card-medium">
+                    <input type="radio" name="difficulty" value="medium">
+                    <div class="diff-card-inner">
+                        <div class="diff-title">&#128528; Medium</div>
+                        <div class="diff-subtitle">Corporate Scammer Mode</div>
+                        <div class="diff-desc">
+                            Emails impersonate real companies with believable logos and
+                            plausible scenarios. A fake IT helpdesk, a shipping
+                            notification, a password reset. Red flags exist — but
+                            you'll need to pay attention to catch them.
+                        </div>
+                        <div class="diff-tags">
+                            <span class="tag tag-yellow">Some Experience Needed</span>
+                            <span class="tag tag-yellow">Subtle Red Flags</span>
+                        </div>
+                    </div>
+                </label>
+
+                <label class="diff-card" id="card-hard">
+                    <input type="radio" name="difficulty" value="hard">
+                    <div class="diff-card-inner">
+                        <div class="diff-title">&#128520; Hard</div>
+                        <div class="diff-subtitle">Elite Threat Actor Mode</div>
+                        <div class="diff-desc">
+                            Your company holds valuable data and the wolves know it.
+                            Expect perfectly crafted spear-phishing from names you
+                            recognize, spoofed domains one character off, and zero
+                            obvious mistakes. Only the sharpest eyes survive.
+                        </div>
+                        <div class="diff-tags">
+                            <span class="tag tag-red">Expert Level</span>
+                            <span class="tag tag-red">Near-Perfect Fakes</span>
+                        </div>
+                    </div>
+                </label>
+
+            </div>
+        </fieldset>
+
+        <!-- Sound Section -->
+        <fieldset class="win98-fieldset">
+            <legend>Audio</legend>
+            <label class="win98-checkbox">
+                <input type="checkbox" id="sound-toggle">
+                Enable Sound Effects
+            </label>
+        </fieldset>
+
+        <!-- Footer Buttons -->
+        <div class="settings-footer">
+            <button class="win98-btn" onclick="saveSettings()">&#10003; Apply</button>
+            <button class="win98-btn" onclick="location.href='index.html'">&#8962; Back to Menu</button>
+        </div>
+
+        <div id="save-msg" class="save-msg" style="display:none;">Settings saved!</div>
+
+    </div>
+</div>
+
+<script>
+    (function () {
+        var win    = document.querySelector('.settings-window');
+        var body   = document.querySelector('.settings-body');
+        var minBtn = document.querySelector('.win-ctrl[data-ctrl="min"]');
+        var maxBtn = document.querySelector('.win-ctrl[data-ctrl="max"]');
+
+        if (minBtn) {
+            minBtn.addEventListener('click', function () {
+                var hidden = body.style.display === 'none';
+                body.style.display = hidden ? '' : 'none';
+            });
+        }
+
+        if (maxBtn) {
+            maxBtn.addEventListener('click', function () {
+                var isMax = win.classList.toggle('maximized');
+                maxBtn.textContent = isMax ? '❐' : '□';
+            });
+        }
+    })();
+
+    function loadSettings() {
+        const difficulty = localStorage.getItem('difficulty') || 'medium';
+        const sound = localStorage.getItem('soundEnabled') !== 'false';
+
+        document.querySelector(`input[name="difficulty"][value="${difficulty}"]`).checked = true;
+        document.getElementById('sound-toggle').checked = sound;
+        highlightCard(difficulty);
+    }
+
+    function highlightCard(value) {
+        document.querySelectorAll('.diff-card').forEach(card => card.classList.remove('selected'));
+        const map = { easy: 'card-easy', medium: 'card-medium', hard: 'card-hard' };
+        if (map[value]) document.getElementById(map[value]).classList.add('selected');
+    }
+
+    document.querySelectorAll('input[name="difficulty"]').forEach(radio => {
+        radio.addEventListener('change', () => highlightCard(radio.value));
+    });
+
+    function saveSettings() {
+        const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
+        const sound = document.getElementById('sound-toggle').checked;
+
+        localStorage.setItem('difficulty', difficulty);
+        localStorage.setItem('soundEnabled', sound);
+
+        const msg = document.getElementById('save-msg');
+        msg.style.display = 'block';
+        setTimeout(() => msg.style.display = 'none', 2000);
+    }
+
+    loadSettings();
+</script>
+
+<div class="taskbar">
+    <div class="begin-icon" onclick="location.href='index.html'">
+        <img src="/resources/images/Begin_Icon.png" alt="Begin">
+    </div>
+    <div class="taskbar-windows">
+        <button class="taskbar-tab active"><img src="/resources/images/Setting_Icon.png" alt="Settings"></button>
+    </div>
+    <div class="taskbar-clock" id="taskbarClock">12:00 PM</div>
+</div>
+
+<script>
+    function updateClock() {
+        var now = new Date();
+        var h = now.getHours(), m = now.getMinutes().toString().padStart(2,'0');
+        var ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12;
+        document.getElementById('taskbarClock').textContent = h + ':' + m + ' ' + ampm;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+</script>
 
 </body>
 </html>

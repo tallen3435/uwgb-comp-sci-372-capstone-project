@@ -6,14 +6,107 @@
 
 /* ── Teal Win98 desktop ── */
 .win98-desktop {
-    background-color: #008080;
+    background: url('/resources/images/win98_wallpaper.jpg');
+    background-size: 100% 100%;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-bottom: 54px;
     font-family: "MS Sans Serif", "Microsoft Sans Serif", Arial, sans-serif;
     font-size: 12px;
     overflow: hidden;
+}
+
+/* ── Taskbar ── */
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: #c0c0c0;
+    border-top: 2px solid white;
+    box-shadow: inset 0 2px #808080;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.begin-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    flex-shrink: 0;
+}
+
+.begin-icon img {
+    width: 90px;
+    height: 40px;
+    image-rendering: pixelated;
+}
+
+.begin-icon:hover img { filter: brightness(1.1); }
+.begin-icon:active img { transform: scale(0.95); }
+
+.taskbar-windows {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+}
+
+.taskbar-tab {
+    height: 40px;
+    width: 48px;
+    padding: 4px;
+    background: #c0c0c0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
+}
+
+.taskbar-tab img {
+    width: 28px;
+    height: 28px;
+    image-rendering: pixelated;
+}
+
+.tab-emoji {
+    font-size: 22px;
+    line-height: 1;
+}
+
+.taskbar-tab.active {
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    background: #d0d0d0;
+}
+
+.taskbar-clock {
+    background: #c0c0c0;
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-family: "MS Sans Serif", Arial, sans-serif;
+    min-width: 80px;
+    text-align: center;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 /* ── Dialog window shell ── */
