@@ -16,6 +16,11 @@ let deletedItems = [];
 let junkMail     = [];
 let emailPool    = [];
 
+let username = '';
+
+let adInterval = null;
+let adActive = false;
+
 // ── Fallback pool ─────────────────────────────────────────────────────────────
 const fallbackPool = [
     {
@@ -89,6 +94,8 @@ function getActionScore(emailType, action) {
 
 // ── Boot ─────────────────────────────────────────────────────────────────────
 window.onload = () => {
+    username = prompt("Enter your username:") || "Anonymous";
+
     fetch('../resources/templates/emailTemplates.json')
         .then(r => r.json())
         .then(data => { emailPool = data.emails; })
@@ -128,6 +135,21 @@ function endDay() {
 
 function checkDayEnd() {
     if (!dayEnded && inbox.length === 0) endDay();
+}
+
+async function submitScore() {
+    try {
+        await fetch('/api/submit-score', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: username,
+                score: totalScore
+            })
+        });
+    } catch (err) {
+        console.error('Failed to submit score:', err);
+    }
 }
 
 // ── Summary dialog ────────────────────────────────────────────────────────────
@@ -302,6 +324,7 @@ function handleAction(action) {
     if (action === 'reply') {
         if (email.type === 'phish') {
             malware++;
+            updateAdSystem();
             setStatus('WARNING: Phishing reply to ' + email.address + '! Malware installed. (' + malware + '/3)');
         } else if (email.type === 'spam') {
             setStatus('Tip: Spam is best deleted, not replied to — but no harm done. (+0)');
@@ -326,6 +349,7 @@ function handleAction(action) {
                 ' reported! Sender: ' + email.address + ' (+' + score + ' pts)');
         } else {
             malware++;
+            updateAdSystem();
             setStatus('WARNING: ' + email.address + ' is a legitimate address. (' + malware + '/3)');
         }
         junkMail.push({ ...email, unread: false });
@@ -342,8 +366,11 @@ function handleAction(action) {
     updateUI();
 
     if (malware >= 3) {
-        location.href = 'gameOver.html';
-        return;
+        submitScore().finally(() => {
+            if (adInterval) clearInterval(adInterval);
+            location.href = 'gameOver.html';
+        });
+    return;
     }
 
     checkDayEnd();
@@ -390,3 +417,64 @@ document.addEventListener('click', e => {
         startDay();
     }
 });
+
+//pop up ads
+function showFakeAd() {
+    adActive = true;
+
+    const ad = document.createElement('div');
+    ad.className = 'fake-ad';
+
+    const box = document.createElement('div');
+    box.className = 'ad-box';
+
+    box.innerHTML = `
+        <img src="../resources/images/popupad1.png" style="width:200px;">
+        <br>
+    `;
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'Close';
+
+    // attach handler properly
+    closeBtn.addEventListener('click', closeFakeAd);
+
+    box.appendChild(closeBtn);
+
+    //Random position
+    const padding = 20;
+    const maxX = window.innerWidth - 260;  //box width approx
+    const maxY = window.innerHeight - 200; //box height approx
+
+    const x = Math.random() * (maxX - padding);
+    const y = Math.random() * (maxY - padding);
+
+    box.style.left = `${x}px`;
+    box.style.top = `${y}px`;
+
+    ad.appendChild(box);
+    document.body.appendChild(ad);
+}
+function closeFakeAd(e) {
+    const ad = e.target.closest('.fake-ad');
+    if (ad) ad.remove();
+    adActive = false;
+}
+function updateAdSystem() {
+    if (adInterval) clearInterval(adInterval);
+
+    let intervalTime = null;
+
+    if (malware === 1) {
+        intervalTime = 25000; // slow
+    } else if (malware === 2) {
+        intervalTime = 12000; // frequent
+    } else if (malware >= 3) {
+        intervalTime = 6000;  // very frequent
+    }
+
+    if (!intervalTime) return;
+
+    adInterval = setInterval(() => {
+        showFakeAd();
+    }, intervalTime);
+}

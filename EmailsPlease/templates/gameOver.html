@@ -15,7 +15,52 @@
 
         <button onclick="location.href='gameScreen.html'">Try Again</button>
         <button onclick="location.href='index.html'">Main Menu</button>
-    </div>
 
+        <h2 style="margin-top: 30px;">Leaderboard</h2>
+        <ul id="leaderboard-list" style="text-align: left; padding-left: 0; list-style: none;"></ul>
+    </div>
+<script>
+        async function loadLeaderboard() {
+            const list = document.getElementById('leaderboard-list');
+
+            try {
+                const res = await fetch('/api/leaderboard');
+                const board = await res.json();
+
+                list.innerHTML = '';
+
+                if (board.length === 0) {
+                    list.innerHTML = '<li>No scores yet.</li>';
+                    return;
+                }
+
+                const currentUser = localStorage.getItem('username');
+
+                board.forEach((entry, i) => {
+                    const li = document.createElement('li');
+
+                    let prefix = `${i + 1}.`;
+
+                    
+
+                    li.textContent = `${prefix} ${entry.username} — ${entry.score} pts`;
+
+                    //highlight current player
+                    if (entry.username === currentUser) {
+                        li.style.fontWeight = 'bold';
+                    }
+
+                    list.appendChild(li);
+                });
+
+            } catch (err) {
+                list.innerHTML = '<li>Error loading leaderboard.</li>';
+                console.error(err);
+            }
+        }
+
+        //Run on page load
+        window.onload = loadLeaderboard;
+    </script>
 </body>
 </html>

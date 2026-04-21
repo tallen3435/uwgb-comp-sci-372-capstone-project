@@ -1,7 +1,7 @@
 body {
     background: #0000ff;
     color: white;
-    font-family: Arial, sans-serif;
+    font-family: GoodOldDos, sans-serif;
     display: flex;
     justify-content: center; /*center horizontal*/
     align-items: center; /*center vertical*/
@@ -9,4 +9,8 @@ body {
 }
 .big {
     font-size: 70px;
+}
+@font-face {
+  font-family: GoodOldDos;
+  src: url('../fonts/Good\ Old\ DOS.ttf');
 }
