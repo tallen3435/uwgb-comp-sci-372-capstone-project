@@ -1,7 +1,25 @@
 {
     "version": "0.2.0",
     "configurations": [
-        
+        {
+            "name": "Flask: EmailsPlease (Joel)",
+            "type": "debugpy",
+            "request": "launch",
+            "python": "C:\\Users\\bowma\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+            "program": "${workspaceFolder}/EmailsPlease/app.py",
+            "cwd": "${workspaceFolder}/EmailsPlease",
+            "env": {
+                "FLASK_ENV": "development",
+                "FLASK_DEBUG": "1"
+            },
+            "jinja": true,
+            "justMyCode": true,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "Running on http://[^\\s]+",
+                "uriFormat": "http://localhost:5000"
+            }
+        },
         {
             // Python debugger — set breakpoints in app.py, then press F5
             // Browser opens automatically at http://localhost:5000 when Flask is ready

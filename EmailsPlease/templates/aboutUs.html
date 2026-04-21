@@ -14,7 +14,8 @@
     <div class="dialog-titlebar">
         <span class="dialog-title">&#8505; About Emails Please</span>
         <div class="dialog-controls">
-            <button type="button" class="win-ctrl">?</button>
+            <button type="button" class="win-ctrl" data-ctrl="min">_</button>
+            <button type="button" class="win-ctrl" data-ctrl="max">□</button>
             <button type="button" class="win-ctrl" onclick="location.href='index.html'">&#10005;</button>
         </div>
     </div>
@@ -91,6 +92,27 @@
 
 </div>
 
+<div class="taskbar">
+    <div class="begin-icon" onclick="location.href='index.html'">
+        <img src="/resources/images/Begin_Icon.png" alt="Begin">
+    </div>
+    <div class="taskbar-windows">
+        <button class="taskbar-tab active"><img src="/resources/images/AboutUs_Icon.png" alt="About Us"></button>
+    </div>
+    <div class="taskbar-clock" id="taskbarClock">12:00 PM</div>
+</div>
+
 <script src="{{ url_for('static', filename='JS/win98Window.js') }}"></script>
+<script>
+    function updateClock() {
+        var now = new Date();
+        var h = now.getHours(), m = now.getMinutes().toString().padStart(2,'0');
+        var ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12;
+        document.getElementById('taskbarClock').textContent = h + ':' + m + ' ' + ampm;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+</script>
 </body>
 </html>
