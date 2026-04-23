@@ -14,7 +14,6 @@ let inbox        = [];
 let sentItems    = [];
 let deletedItems = [];
 let junkMail     = [];
-let emailPool    = [];
 
 let username = '';
 
@@ -22,75 +21,6 @@ let adInterval = null;
 let adActive = false;
 
 let gameDifficulty = localStorage.getItem('difficulty') || 'medium';
-let seenEmailIds   = new Set(JSON.parse(localStorage.getItem('seenEmailIds') || '[]'));
-
-// ── Fallback pool ─────────────────────────────────────────────────────────────
-const fallbackPool = [
-    {
-        id: 101,
-        from: "IT Department", address: "it-support@malwareinc.com",
-        subject: "Mandatory Password Policy Update",
-        body: "Dear Employee,\n\nOur password policy has been updated. All passwords must be changed within 7 business days via intranet.malwareinc.com.\n\nContact ext. 4400 with questions.\n\nIT Department",
-        date: "3/14/2005 9:02 AM", type: "legit", difficulty: "medium"
-    },
-    {
-        id: 102,
-        from: "HR Department", address: "hr@malwareinc.com",
-        subject: "Q1 Invoice Ready for Review",
-        body: "Hello,\n\nThe Q1-2005 invoice is ready for review at finance.malwareinc.com.\n\nThank you,\nHR Department",
-        date: "3/14/2005 10:15 AM", type: "legit", difficulty: "medium"
-    },
-    {
-        id: 103,
-        from: "Facilities Dept.", address: "facilities@malwareinc.com",
-        subject: "Office Maintenance - Saturday 3/19",
-        body: "Hi everyone,\n\nRoutine HVAC maintenance will be performed this Saturday. The office will be noisy between 8AM and 2PM.\n\nFacilities Management",
-        date: "3/14/2005 2:45 PM", type: "legit", difficulty: "easy"
-    },
-    {
-        id: 104,
-        from: "Bank of America", address: "security@bankofamerica-secure.net",
-        subject: "URGENT: Your Account Has Been Suspended",
-        body: "Dear Valued Customer,\n\nYour account has been suspended. Verify immediately:\nhttp://bankofamerica-secure.net/verify\n\nBank of America Security Team",
-        date: "3/14/2005 9:47 AM", type: "phish", difficulty: "easy"
-    },
-    {
-        id: 105,
-        from: "PayPal Security", address: "security@paypa1-accounts.com",
-        subject: "Verify Your PayPal Account Now",
-        body: "Dear PayPal Customer,\n\nUnauthorized access detected. Confirm within 24 hours:\nhttp://paypa1-accounts.com/confirm\n\nPayPal Security",
-        date: "3/14/2005 12:03 PM", type: "phish", difficulty: "easy"
-    },
-    {
-        id: 106,
-        from: "IRS Refund Center", address: "refunds@irs-gov-refunds.com",
-        subject: "Tax Refund of $1,437.00 Pending",
-        body: "Your 2004 refund of $1,437.00 is pending. Submit banking info within 48 hours:\nhttp://irs-gov-refunds.com/claim\n\nInternal Revenue Service",
-        date: "3/14/2005 1:22 PM", type: "phish", difficulty: "medium"
-    },
-    {
-        id: 107,
-        from: "Mega Lottery Intl", address: "winner@mega-lottery-intl.org",
-        subject: "CONGRATULATIONS — You Have Won $850,000!",
-        body: "You have been selected as the winner of the MEGA INTERNATIONAL LOTTERY 2005! Send your full name, address, phone, and photo ID to claim your prize.",
-        date: "3/14/2005 7:18 AM", type: "spam", difficulty: "easy"
-    },
-    {
-        id: 108,
-        from: "SlimFast Solutions", address: "offers@slimfast-solutions-deals.biz",
-        subject: "Lose 30 Pounds in 30 Days — Guaranteed!",
-        body: "DOCTORS HATE HIM! Our SlimBlast formula melts fat OVERNIGHT. Buy 2 get 3 FREE! Offer expires TONIGHT.\n\nOrder: slimfast-solutions-deals.biz/order",
-        date: "3/14/2005 6:02 AM", type: "spam", difficulty: "easy"
-    }
-];
-
-// ── Seen-email tracking ───────────────────────────────────────────────────────
-function markEmailSeen(id) {
-    if (id === undefined) return;
-    seenEmailIds.add(id);
-    localStorage.setItem('seenEmailIds', JSON.stringify([...seenEmailIds]));
-    emailPool = emailPool.filter(e => e.id !== id);
-}
 
 // ── Scoring table ─────────────────────────────────────────────────────────────
 function getActionScore(emailType, action) {
@@ -113,31 +43,10 @@ function getActionScore(emailType, action) {
 
 // ── Boot ─────────────────────────────────────────────────────────────────────
 window.onload = () => {
-    username = prompt("Enter your username:") || "Anonymous";
-
-    fetch('../resources/templates/emailTemplates.json')
-        .then(r => r.json())
-        .then(data => {
-            const filtered = data.emails.filter(e => e.difficulty === gameDifficulty);
-            const pool = filtered.length > 0 ? filtered : data.emails;
-            emailPool = pool.filter(e => !seenEmailIds.has(e.id));
-            if (emailPool.length === 0) {
-                seenEmailIds.clear();
-                localStorage.removeItem('seenEmailIds');
-                emailPool = pool;
-            }
-        })
-        .catch(() => {
-            const filtered = fallbackPool.filter(e => e.difficulty === gameDifficulty);
-            const pool = filtered.length > 0 ? filtered : fallbackPool;
-            emailPool = pool.filter(e => !seenEmailIds.has(e.id));
-            if (emailPool.length === 0) {
-                seenEmailIds.clear();
-                localStorage.removeItem('seenEmailIds');
-                emailPool = pool;
-            }
-        })
-        .finally(() => startDay());
+    // Quick prompt for the backend database tracking
+    username = prompt("Enter your corporate ID (username):") || "Anonymous";
+    username = username.toLowerCase().trim(); // Sanitize for the DB
+    startDay();
 };
 
 // ── Day lifecycle ─────────────────────────────────────────────────────────────
@@ -145,7 +54,7 @@ function emailsForDay(d) {
     return Math.min(d + 2, 20);   // day 1=3, day 2=4 … day 18+=20
 }
 
-function startDay() {
+async function startDay() {
     dayEnded   = false;
     dayScore   = 0;
     dayCorrect = 0;
@@ -153,14 +62,78 @@ function startDay() {
     const count = emailsForDay(day);
     dayTotal    = count;
 
-    const shuffled = [...emailPool].sort(() => Math.random() - 0.5);
-    inbox = shuffled.slice(0, count).map(e => ({ ...e, unread: true }));
-
+    inbox = [];
     selectedIndex = null;
     hideSummary();
     switchFolder('inbox');
     updateUI();
-    setStatus('Day ' + day + ' started — ' + count + ' email(s) to process.');
+
+    setStatus('Day ' + day + ' started — Fetching secure communications...');
+
+    const list = document.getElementById('email-list');
+    if (list) list.innerHTML = '<p class="no-email-msg">Connecting to mail server... downloading emails.</p>';
+
+    // FETCH SEQUENTIALLY TO PREVENT DATABASE RACE CONDITIONS
+    const results = [];
+    for (let i = 0; i < count; i++) {
+        const targetType = Math.random() > 0.5 ? 'phishing' : 'legitimate';
+
+        try {
+            const response = await fetch('/api/generate-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    type: targetType,
+                    difficulty: gameDifficulty,
+                    user_id: username
+                })
+            });
+
+            if (response.ok) {
+                results.push(await response.json());
+            }
+        } catch (err) {
+            console.error("API Error:", err);
+        }
+    }
+
+    // Map the AI data into the frontend's expected format
+    results.forEach(aiEmail => {
+        if (aiEmail) {
+            // Safely parse "Name <email>" format
+            let fromName = aiEmail.sender;
+            let address = aiEmail.sender;
+            if (aiEmail.sender.includes('<')) {
+                fromName = aiEmail.sender.split('<')[0].trim();
+                address = aiEmail.sender.split('<')[1].replace('>', '').trim();
+            }
+
+            inbox.push({
+                id: aiEmail.id,
+                from: fromName,
+                address: address,
+                subject: aiEmail.subject,
+                body: aiEmail.body,
+                date: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                type: aiEmail.classification === 'phishing' ? 'phish' : 'legit',
+                difficulty: aiEmail.difficulty,
+                unread: true
+            });
+        }
+    });
+
+    // Shuffle the inbox so phishing and legit are mixed randomly
+    inbox = inbox.sort(() => Math.random() - 0.5);
+
+    if (inbox.length === 0) {
+        setStatus('CRITICAL: Mail server offline.');
+        if (list) list.innerHTML = '<p class="no-email-msg" style="color:red;">Cannot connect to backend API.</p>';
+        return;
+    }
+
+    setStatus('Day ' + day + ' ready — ' + inbox.length + ' email(s) to process.');
+    renderEmailList();
+    updateUI();
 }
 
 function endDay() {
@@ -392,8 +365,8 @@ function handleAction(action) {
         junkMail.push({ ...email, unread: false });
     }
 
+    // Remove from inbox
     inbox.splice(selectedIndex, 1);
-    markEmailSeen(email.id);
     selectedIndex = null;
 
     const header = document.getElementById('email-header');
@@ -408,7 +381,7 @@ function handleAction(action) {
             if (adInterval) clearInterval(adInterval);
             location.href = 'gameOver.html';
         });
-    return;
+        return;
     }
 
     checkDayEnd();
@@ -456,7 +429,7 @@ document.addEventListener('click', e => {
     }
 });
 
-//pop up ads
+// ── Pop up ads & Jumpscares ───────────────────────────────────────────────────
 function showFakeAd() {
     const roll = Math.random();
     if (roll < 0.034) {
