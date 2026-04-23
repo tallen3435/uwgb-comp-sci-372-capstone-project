@@ -17,11 +17,9 @@ CORS(app)
 
 LEADERBOARD_FILE = "leaderboard.json"
 
-# 2. Define the Structured Data Schema
-# database config
+# --- Database Configuration ---
 # define where the database will live
 # replace with absolute path in back-end to save from deployment updates (Jenkins)
-# --- Database Configuration ---
 if platform.system() == 'Windows':
     # If running locally on your laptop, save it right inside the project folder
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -66,6 +64,7 @@ def init_db():
             )
         ''')
         conn.commit()
+        
 # Initialize the database table before the server boots up
 init_db()
 
@@ -231,6 +230,7 @@ def get_leaderboard():
         return jsonify(load_leaderboard()), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+        
 @app.route("/", methods=['GET'])
 def index():
     return render_template("index.html")

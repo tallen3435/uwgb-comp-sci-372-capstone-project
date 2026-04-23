@@ -22,58 +22,75 @@ let adInterval = null;
 let adActive = false;
 
 let gameDifficulty = localStorage.getItem('difficulty') || 'medium';
+let seenEmailIds   = new Set(JSON.parse(localStorage.getItem('seenEmailIds') || '[]'));
 
 // ── Fallback pool ─────────────────────────────────────────────────────────────
 const fallbackPool = [
     {
+        id: 101,
         from: "IT Department", address: "it-support@malwareinc.com",
         subject: "Mandatory Password Policy Update",
         body: "Dear Employee,\n\nOur password policy has been updated. All passwords must be changed within 7 business days via intranet.malwareinc.com.\n\nContact ext. 4400 with questions.\n\nIT Department",
         date: "3/14/2005 9:02 AM", type: "legit", difficulty: "medium"
     },
     {
+        id: 102,
         from: "HR Department", address: "hr@malwareinc.com",
         subject: "Q1 Invoice Ready for Review",
         body: "Hello,\n\nThe Q1-2005 invoice is ready for review at finance.malwareinc.com.\n\nThank you,\nHR Department",
         date: "3/14/2005 10:15 AM", type: "legit", difficulty: "medium"
     },
     {
+        id: 103,
         from: "Facilities Dept.", address: "facilities@malwareinc.com",
         subject: "Office Maintenance - Saturday 3/19",
         body: "Hi everyone,\n\nRoutine HVAC maintenance will be performed this Saturday. The office will be noisy between 8AM and 2PM.\n\nFacilities Management",
         date: "3/14/2005 2:45 PM", type: "legit", difficulty: "easy"
     },
     {
+        id: 104,
         from: "Bank of America", address: "security@bankofamerica-secure.net",
         subject: "URGENT: Your Account Has Been Suspended",
         body: "Dear Valued Customer,\n\nYour account has been suspended. Verify immediately:\nhttp://bankofamerica-secure.net/verify\n\nBank of America Security Team",
         date: "3/14/2005 9:47 AM", type: "phish", difficulty: "easy"
     },
     {
+        id: 105,
         from: "PayPal Security", address: "security@paypa1-accounts.com",
         subject: "Verify Your PayPal Account Now",
         body: "Dear PayPal Customer,\n\nUnauthorized access detected. Confirm within 24 hours:\nhttp://paypa1-accounts.com/confirm\n\nPayPal Security",
         date: "3/14/2005 12:03 PM", type: "phish", difficulty: "easy"
     },
     {
+        id: 106,
         from: "IRS Refund Center", address: "refunds@irs-gov-refunds.com",
         subject: "Tax Refund of $1,437.00 Pending",
         body: "Your 2004 refund of $1,437.00 is pending. Submit banking info within 48 hours:\nhttp://irs-gov-refunds.com/claim\n\nInternal Revenue Service",
         date: "3/14/2005 1:22 PM", type: "phish", difficulty: "medium"
     },
     {
+        id: 107,
         from: "Mega Lottery Intl", address: "winner@mega-lottery-intl.org",
         subject: "CONGRATULATIONS — You Have Won $850,000!",
         body: "You have been selected as the winner of the MEGA INTERNATIONAL LOTTERY 2005! Send your full name, address, phone, and photo ID to claim your prize.",
         date: "3/14/2005 7:18 AM", type: "spam", difficulty: "easy"
     },
     {
+        id: 108,
         from: "SlimFast Solutions", address: "offers@slimfast-solutions-deals.biz",
         subject: "Lose 30 Pounds in 30 Days — Guaranteed!",
         body: "DOCTORS HATE HIM! Our SlimBlast formula melts fat OVERNIGHT. Buy 2 get 3 FREE! Offer expires TONIGHT.\n\nOrder: slimfast-solutions-deals.biz/order",
         date: "3/14/2005 6:02 AM", type: "spam", difficulty: "easy"
     }
 ];
+
+// ── Seen-email tracking ───────────────────────────────────────────────────────
+function markEmailSeen(id) {
+    if (id === undefined) return;
+    seenEmailIds.add(id);
+    localStorage.setItem('seenEmailIds', JSON.stringify([...seenEmailIds]));
+    emailPool = emailPool.filter(e => e.id !== id);
+}
 
 // ── Scoring table ─────────────────────────────────────────────────────────────
 function getActionScore(emailType, action) {
@@ -102,11 +119,23 @@ window.onload = () => {
         .then(r => r.json())
         .then(data => {
             const filtered = data.emails.filter(e => e.difficulty === gameDifficulty);
-            emailPool = filtered.length > 0 ? filtered : data.emails;
+            const pool = filtered.length > 0 ? filtered : data.emails;
+            emailPool = pool.filter(e => !seenEmailIds.has(e.id));
+            if (emailPool.length === 0) {
+                seenEmailIds.clear();
+                localStorage.removeItem('seenEmailIds');
+                emailPool = pool;
+            }
         })
         .catch(() => {
             const filtered = fallbackPool.filter(e => e.difficulty === gameDifficulty);
-            emailPool = filtered.length > 0 ? filtered : fallbackPool;
+            const pool = filtered.length > 0 ? filtered : fallbackPool;
+            emailPool = pool.filter(e => !seenEmailIds.has(e.id));
+            if (emailPool.length === 0) {
+                seenEmailIds.clear();
+                localStorage.removeItem('seenEmailIds');
+                emailPool = pool;
+            }
         })
         .finally(() => startDay());
 };
@@ -364,6 +393,7 @@ function handleAction(action) {
     }
 
     inbox.splice(selectedIndex, 1);
+    markEmailSeen(email.id);
     selectedIndex = null;
 
     const header = document.getElementById('email-header');
@@ -428,6 +458,20 @@ document.addEventListener('click', e => {
 
 //pop up ads
 function showFakeAd() {
+    const roll = Math.random();
+    if (roll < 0.034) {
+        showJumpscare();
+        return;
+    }
+    if (roll < 0.067) {
+        showKayneJumpscare();
+        return;
+    }
+    if (roll < 0.10) {
+        showUnderwaterJumpscare();
+        return;
+    }
+
     adActive = true;
 
     const ad = document.createElement('div');
@@ -469,6 +513,94 @@ function showFakeAd() {
     ad.appendChild(box);
     document.body.appendChild(ad);
 }
+
+function showJumpscare() {
+    adActive = true;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'jumpscare-overlay';
+
+    const img = document.createElement('img');
+    img.src = '../resources/images/Blue_Lobster.png';
+    img.id = 'jumpscare-img';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'X';
+    closeBtn.id = 'jumpscare-close';
+    closeBtn.addEventListener('click', () => {
+        overlay.remove();
+        audio.pause();
+        audio.currentTime = 0;
+        adActive = false;
+    });
+
+    const audio = new Audio('../resources/audio/BlueLobster.mp3');
+    audio.volume = 1.0;
+    audio.play().catch(() => {});
+
+    overlay.appendChild(img);
+    overlay.appendChild(closeBtn);
+    document.body.appendChild(overlay);
+}
+
+function showKayneJumpscare() {
+    adActive = true;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'kayne-overlay';
+
+    const img = document.createElement('img');
+    img.src = '../resources/images/Kayne.png';
+    img.id = 'kayne-img';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'X';
+    closeBtn.id = 'jumpscare-close';
+    closeBtn.addEventListener('click', () => {
+        overlay.remove();
+        audio.pause();
+        audio.currentTime = 0;
+        adActive = false;
+    });
+
+    const audio = new Audio('../resources/audio/marimba-ringtone.wav');
+    audio.volume = 1.0;
+    audio.play().catch(() => {});
+
+    overlay.appendChild(img);
+    overlay.appendChild(closeBtn);
+    document.body.appendChild(overlay);
+}
+
+function showUnderwaterJumpscare() {
+    adActive = true;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'underwater-overlay';
+
+    const img = document.createElement('img');
+    img.src = '../resources/images/Under_water.png';
+    img.id = 'underwater-img';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'X';
+    closeBtn.id = 'jumpscare-close';
+    closeBtn.addEventListener('click', () => {
+        overlay.remove();
+        audio.pause();
+        audio.currentTime = 0;
+        adActive = false;
+    });
+
+    const audio = new Audio('../resources/audio/hello-im-under-the-water.mp3');
+    audio.volume = 1.0;
+    audio.play().catch(() => {});
+
+    overlay.appendChild(img);
+    overlay.appendChild(closeBtn);
+    document.body.appendChild(overlay);
+}
+
 function closeFakeAd(e) {
     const ad = e.target.closest('.fake-ad');
     if (ad) ad.remove();
