@@ -23,6 +23,7 @@ let adActive = false;
 
 let gameDifficulty = localStorage.getItem('difficulty') || 'medium';
 let seenEmailIds   = new Set(JSON.parse(localStorage.getItem('seenEmailIds') || '[]'));
+const malwareLimit = gameDifficulty === 'hard' ? 10 : gameDifficulty === 'medium' ? 6 : 3;
 
 // ── Fallback pool ─────────────────────────────────────────────────────────────
 const fallbackPool = [
@@ -194,7 +195,7 @@ function showSummary() {
     document.getElementById('summaryDay').textContent       = day;
     document.getElementById('summaryTotal').textContent     = dayTotal;
     document.getElementById('summaryCorrect').textContent   = dayCorrect;
-    document.getElementById('summaryMalware').textContent   = malware + ' / 3';
+    document.getElementById('summaryMalware').textContent   = malware + ' / ' + malwareLimit;
     document.getElementById('summaryDayScore').textContent  = dayScore + ' pts';
     document.getElementById('summaryTotalScore').textContent = totalScore + ' pts';
     document.getElementById('daySummary').style.display = 'flex';
@@ -362,7 +363,7 @@ function handleAction(action) {
         if (email.type === 'phish') {
             malware++;
             updateAdSystem();
-            setStatus('WARNING: Phishing reply to ' + email.address + '! Malware installed. (' + malware + '/3)');
+            setStatus('WARNING: Phishing reply to ' + email.address + '! Malware installed. (' + malware + '/' + malwareLimit + ')');
         } else if (email.type === 'spam') {
             setStatus('Tip: Spam is best deleted, not replied to — but no harm done. (+0)');
         } else {
@@ -387,7 +388,7 @@ function handleAction(action) {
         } else {
             malware++;
             updateAdSystem();
-            setStatus('WARNING: ' + email.address + ' is a legitimate address. (' + malware + '/3)');
+            setStatus('WARNING: ' + email.address + ' is a legitimate address. (' + malware + '/' + malwareLimit + ')');
         }
         junkMail.push({ ...email, unread: false });
     }
@@ -403,7 +404,7 @@ function handleAction(action) {
 
     updateUI();
 
-    if (malware >= 3) {
+    if (malware >= malwareLimit) {
         submitScore().finally(() => {
             if (adInterval) clearInterval(adInterval);
             location.href = 'gameOver.html';
@@ -437,7 +438,7 @@ function updateUI() {
     const dayEl     = document.getElementById('day-counter');
     const malwareEl = document.getElementById('malware-counter');
     if (dayEl)     dayEl.textContent     = 'Day: ' + day;
-    if (malwareEl) malwareEl.textContent = 'Malware: ' + malware + ' / 3';
+    if (malwareEl) malwareEl.textContent = 'Malware: ' + malware + ' / ' + malwareLimit;
     updateScoreDisplay();
     updateUnreadCount();
     updateFolderCounts();
@@ -459,15 +460,15 @@ document.addEventListener('click', e => {
 //pop up ads
 function showFakeAd() {
     const roll = Math.random();
-    if (roll < 0.034) {
+    if (roll < 0.04) {
         showJumpscare();
         return;
     }
-    if (roll < 0.067) {
+    if (roll < 0.08) {
         showKayneJumpscare();
         return;
     }
-    if (roll < 0.10) {
+    if (roll < 0.12) {
         showUnderwaterJumpscare();
         return;
     }
@@ -499,19 +500,30 @@ function showFakeAd() {
 
     box.appendChild(closeBtn);
 
-    //Random position
-    const padding = 20;
-    const maxX = window.innerWidth - 260;  //box width approx
-    const maxY = window.innerHeight - 200; //box height approx
-
-    const x = Math.random() * (maxX - padding);
-    const y = Math.random() * (maxY - padding);
-
-    box.style.left = `${x}px`;
-    box.style.top = `${y}px`;
-
+    // Append hidden so the browser lays it out and we can measure the real size
+    box.style.visibility = 'hidden';
     ad.appendChild(box);
     document.body.appendChild(ad);
+
+    const padding = 20;
+
+    const applyPosition = () => {
+        const w = box.offsetWidth;
+        const h = box.offsetHeight;
+        const safeW = Math.max(0, window.innerWidth  - w - padding * 2);
+        const safeH = Math.max(0, window.innerHeight - h - padding * 2);
+        box.style.left = `${padding + Math.random() * safeW}px`;
+        box.style.top  = `${padding + Math.random() * safeH}px`;
+        box.style.visibility = 'visible';
+    };
+
+    const img = box.querySelector('img');
+    if (img && !img.complete) {
+        img.addEventListener('load',  applyPosition);
+        img.addEventListener('error', applyPosition);
+    } else {
+        requestAnimationFrame(applyPosition);
+    }
 }
 
 function showJumpscare() {
@@ -614,9 +626,15 @@ function updateAdSystem() {
     if (malware === 1) {
         intervalTime = 25000; // slow
     } else if (malware === 2) {
-        intervalTime = 12000; // frequent
-    } else if (malware >= 3) {
-        intervalTime = 6000;  // very frequent
+        intervalTime = 18000; // less frequent
+    } else if (malware === 3) {
+        intervalTime = 13000; // moderate frequency
+    } else if (malware === 4) {
+        intervalTime = 10000; 
+    } else if (malware === 5) {
+        intervalTime = 8000; // very frequent
+    } else if (malware <= malwareLimit) {
+        intervalTime = 5000;  // Ad apocalypse Only for hard mode 
     }
 
     if (!intervalTime) return;
