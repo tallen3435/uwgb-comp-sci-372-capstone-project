@@ -22,36 +22,38 @@ let adActive = false;
 
 let gameDifficulty = localStorage.getItem('difficulty') || 'medium';
 
+// Integrated from bugFixes: Scalable difficulty limits
+const malwareLimit = gameDifficulty === 'hard' ? 10 : gameDifficulty === 'medium' ? 6 : 3;
+
 // ── Scoring table ─────────────────────────────────────────────────────────────
 function getActionScore(emailType, action) {
     if (action === 'reply') {
-        if (emailType === 'legit') return 10;   // correct — replied to real email
-        return 0;                                // phish/spam reply — malware handles penalty
+        if (emailType === 'legit') return 10;
+        return 0;
     }
     if (action === 'ignore') {
-        if (emailType === 'phish') return 10;   // good — deleted a phish
-        if (emailType === 'spam')  return 5;    // fine — cleaned up spam
-        return 0;                               // deleting legit — no bonus
+        if (emailType === 'phish') return 10;
+        if (emailType === 'spam')  return 5;
+        return 0;
     }
     if (action === 'report') {
-        if (emailType === 'phish') return 15;   // best outcome — reported phish
-        if (emailType === 'spam')  return 10;   // good — reported spam
-        return 0;                               // reporting legit — malware handles penalty
+        if (emailType === 'phish') return 15;
+        if (emailType === 'spam')  return 10;
+        return 0;
     }
     return 0;
 }
 
 // ── Boot ─────────────────────────────────────────────────────────────────────
 window.onload = () => {
-    // Quick prompt for the backend database tracking
     username = prompt("Enter your corporate ID (username):") || "Anonymous";
-    username = username.toLowerCase().trim(); // Sanitize for the DB
+    username = username.toLowerCase().trim(); 
     startDay();
 };
 
 // ── Day lifecycle ─────────────────────────────────────────────────────────────
 function emailsForDay(d) {
-    return Math.min(d + 2, 20);   // day 1=3, day 2=4 … day 18+=20
+    return Math.min(d + 2, 20);
 }
 
 async function startDay() {
@@ -97,10 +99,8 @@ async function startDay() {
         }
     }
 
-    // Map the AI data into the frontend's expected format
     results.forEach(aiEmail => {
         if (aiEmail) {
-            // Safely parse "Name <email>" format
             let fromName = aiEmail.sender;
             let address = aiEmail.sender;
             if (aiEmail.sender.includes('<')) {
@@ -122,7 +122,6 @@ async function startDay() {
         }
     });
 
-    // Shuffle the inbox so phishing and legit are mixed randomly
     inbox = inbox.sort(() => Math.random() - 0.5);
 
     if (inbox.length === 0) {
@@ -167,7 +166,7 @@ function showSummary() {
     document.getElementById('summaryDay').textContent       = day;
     document.getElementById('summaryTotal').textContent     = dayTotal;
     document.getElementById('summaryCorrect').textContent   = dayCorrect;
-    document.getElementById('summaryMalware').textContent   = malware + ' / 3';
+    document.getElementById('summaryMalware').textContent   = malware + ' / ' + malwareLimit;
     document.getElementById('summaryDayScore').textContent  = dayScore + ' pts';
     document.getElementById('summaryTotalScore').textContent = totalScore + ' pts';
     document.getElementById('daySummary').style.display = 'flex';
@@ -335,7 +334,7 @@ function handleAction(action) {
         if (email.type === 'phish') {
             malware++;
             updateAdSystem();
-            setStatus('WARNING: Phishing reply to ' + email.address + '! Malware installed. (' + malware + '/3)');
+            setStatus('WARNING: Phishing reply to ' + email.address + '! Malware installed. (' + malware + '/' + malwareLimit + ')');
         } else if (email.type === 'spam') {
             setStatus('Tip: Spam is best deleted, not replied to — but no harm done. (+0)');
         } else {
@@ -360,12 +359,11 @@ function handleAction(action) {
         } else {
             malware++;
             updateAdSystem();
-            setStatus('WARNING: ' + email.address + ' is a legitimate address. (' + malware + '/3)');
+            setStatus('WARNING: ' + email.address + ' is a legitimate address. (' + malware + '/' + malwareLimit + ')');
         }
         junkMail.push({ ...email, unread: false });
     }
 
-    // Remove from inbox
     inbox.splice(selectedIndex, 1);
     selectedIndex = null;
 
@@ -376,7 +374,7 @@ function handleAction(action) {
 
     updateUI();
 
-    if (malware >= 3) {
+    if (malware >= malwareLimit) {
         submitScore().finally(() => {
             if (adInterval) clearInterval(adInterval);
             location.href = 'gameOver.html';
@@ -410,7 +408,7 @@ function updateUI() {
     const dayEl     = document.getElementById('day-counter');
     const malwareEl = document.getElementById('malware-counter');
     if (dayEl)     dayEl.textContent     = 'Day: ' + day;
-    if (malwareEl) malwareEl.textContent = 'Malware: ' + malware + ' / 3';
+    if (malwareEl) malwareEl.textContent = 'Malware: ' + malware + ' / ' + malwareLimit;
     updateScoreDisplay();
     updateUnreadCount();
     updateFolderCounts();
@@ -432,15 +430,15 @@ document.addEventListener('click', e => {
 // ── Pop up ads & Jumpscares ───────────────────────────────────────────────────
 function showFakeAd() {
     const roll = Math.random();
-    if (roll < 0.034) {
+    if (roll < 0.04) {
         showJumpscare();
         return;
     }
-    if (roll < 0.067) {
+    if (roll < 0.08) {
         showKayneJumpscare();
         return;
     }
-    if (roll < 0.10) {
+    if (roll < 0.12) {
         showUnderwaterJumpscare();
         return;
     }
@@ -467,36 +465,42 @@ function showFakeAd() {
     const closeBtn = document.createElement('button');
     closeBtn.textContent = 'Close';
 
-    // attach handler properly
     closeBtn.addEventListener('click', closeFakeAd);
 
     box.appendChild(closeBtn);
 
-    //Random position
-    const padding = 20;
-    const maxX = window.innerWidth - 260;  //box width approx
-    const maxY = window.innerHeight - 200; //box height approx
-
-    const x = Math.random() * (maxX - padding);
-    const y = Math.random() * (maxY - padding);
-
-    box.style.left = `${x}px`;
-    box.style.top = `${y}px`;
-
+    box.style.visibility = 'hidden';
     ad.appendChild(box);
     document.body.appendChild(ad);
+
+    const padding = 20;
+
+    const applyPosition = () => {
+        const w = box.offsetWidth;
+        const h = box.offsetHeight;
+        const safeW = Math.max(0, window.innerWidth  - w - padding * 2);
+        const safeH = Math.max(0, window.innerHeight - h - padding * 2);
+        box.style.left = `${padding + Math.random() * safeW}px`;
+        box.style.top  = `${padding + Math.random() * safeH}px`;
+        box.style.visibility = 'visible';
+    };
+
+    const img = box.querySelector('img');
+    if (img && !img.complete) {
+        img.addEventListener('load',  applyPosition);
+        img.addEventListener('error', applyPosition);
+    } else {
+        requestAnimationFrame(applyPosition);
+    }
 }
 
 function showJumpscare() {
     adActive = true;
-
     const overlay = document.createElement('div');
     overlay.id = 'jumpscare-overlay';
-
     const img = document.createElement('img');
     img.src = '../resources/images/Blue_Lobster.png';
     img.id = 'jumpscare-img';
-
     const closeBtn = document.createElement('button');
     closeBtn.textContent = 'X';
     closeBtn.id = 'jumpscare-close';
@@ -506,11 +510,9 @@ function showJumpscare() {
         audio.currentTime = 0;
         adActive = false;
     });
-
     const audio = new Audio('../resources/audio/BlueLobster.mp3');
     audio.volume = 1.0;
     audio.play().catch(() => {});
-
     overlay.appendChild(img);
     overlay.appendChild(closeBtn);
     document.body.appendChild(overlay);
@@ -518,14 +520,11 @@ function showJumpscare() {
 
 function showKayneJumpscare() {
     adActive = true;
-
     const overlay = document.createElement('div');
     overlay.id = 'kayne-overlay';
-
     const img = document.createElement('img');
     img.src = '../resources/images/Kayne.png';
     img.id = 'kayne-img';
-
     const closeBtn = document.createElement('button');
     closeBtn.textContent = 'X';
     closeBtn.id = 'jumpscare-close';
@@ -535,11 +534,9 @@ function showKayneJumpscare() {
         audio.currentTime = 0;
         adActive = false;
     });
-
     const audio = new Audio('../resources/audio/marimba-ringtone.wav');
     audio.volume = 1.0;
     audio.play().catch(() => {});
-
     overlay.appendChild(img);
     overlay.appendChild(closeBtn);
     document.body.appendChild(overlay);
@@ -547,14 +544,11 @@ function showKayneJumpscare() {
 
 function showUnderwaterJumpscare() {
     adActive = true;
-
     const overlay = document.createElement('div');
     overlay.id = 'underwater-overlay';
-
     const img = document.createElement('img');
     img.src = '../resources/images/Under_water.png';
     img.id = 'underwater-img';
-
     const closeBtn = document.createElement('button');
     closeBtn.textContent = 'X';
     closeBtn.id = 'jumpscare-close';
@@ -564,11 +558,9 @@ function showUnderwaterJumpscare() {
         audio.currentTime = 0;
         adActive = false;
     });
-
     const audio = new Audio('../resources/audio/hello-im-under-the-water.mp3');
     audio.volume = 1.0;
     audio.play().catch(() => {});
-
     overlay.appendChild(img);
     overlay.appendChild(closeBtn);
     document.body.appendChild(overlay);
@@ -579,35 +571,34 @@ function closeFakeAd(e) {
     if (ad) ad.remove();
     adActive = false;
 }
+
 function updateAdSystem() {
     if (adInterval) clearInterval(adInterval);
-
     let intervalTime = null;
 
     if (malware === 1) {
-        intervalTime = 25000; // slow
+        intervalTime = 25000;
     } else if (malware === 2) {
-        intervalTime = 12000; // frequent
-    } else if (malware >= 3) {
-        intervalTime = 6000;  // very frequent
+        intervalTime = 18000;
+    } else if (malware === 3) {
+        intervalTime = 13000;
+    } else if (malware === 4) {
+        intervalTime = 10000; 
+    } else if (malware === 5) {
+        intervalTime = 8000;
+    } else if (malware <= malwareLimit) {
+        intervalTime = 5000; 
     }
 
     if (!intervalTime) return;
-
     adInterval = setInterval(() => {
         showFakeAd();
     }, intervalTime);
 }
 
 const adImages = [
-    "popupad1.png",
-    "popupad2.png",
-    "popupad3.png",
-    "popupad4.png",
-    "popupad5.gif",
-    "popupad6.png",
-    "popupad7.png",
-    "popupad8.png"
+    "popupad1.png", "popupad2.png", "popupad3.png", "popupad4.png",
+    "popupad5.gif", "popupad6.png", "popupad7.png", "popupad8.png"
 ];
 
 function getRandomAdImage() {
