@@ -8,28 +8,27 @@ pipeline {
             }
         }
 
-      stage('Virtual Env with Dependencies') {
-    steps {
-        sh '''
-            # Create venv if it doesn't exist, then install
-            python3.11 -m venv .venv
-            .venv/bin/pip install -r requirements.txt
-            .venv/bin/pip install gunicorn
-        '''
-    }
-}
+        stage('Virtual Env with Dependencies') {
+            steps {
+                sh '''
+                    # Create venv if it doesn't exist, then install
+                    python3.11 -m venv .venv
+                    .venv/bin/pip install -r requirements.txt
+                    .venv/bin/pip install gunicorn
+                '''
+            }
+        }
 
-stage('Deploy') {
-    steps {
-        sh '''
-            # Kill old processes to free up the port
-             pkill -f gunicorn || true
+        stage('Deploy') {
+            steps {
+                sh '''
+                    # Kill old processes to free up the port
+                    pkill -f gunicorn || true
 
-            # The special flag tells Jenkins NOT to kill Gunicorn when the job ends
-            JENKINS_NODE_COOKIE=dontKillMe nohup .venv/bin/gunicorn -w 2 -b 127.0.0.1:8000 EmailsPlease.app:app > gunicorn.log 2>&1 &
-        '''
-    }
-}
-
+                    # Added --timeout 120 to prevent 502 Bad Gateway errors during AI generation
+                    JENKINS_NODE_COOKIE=dontKillMe nohup .venv/bin/gunicorn -w 2 --timeout 120 -b 127.0.0.1:8000 EmailsPlease.app:app > gunicorn.log 2>&1 &
+                '''
+            }
+        }
     }
 }
