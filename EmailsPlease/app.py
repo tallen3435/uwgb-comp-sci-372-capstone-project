@@ -2,6 +2,7 @@ import os
 import random
 import sqlite3
 import json
+import platform
 from flask import Flask, jsonify, request, send_from_directory, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -20,7 +21,14 @@ LEADERBOARD_FILE = "leaderboard.json"
 # database config
 # define where the database will live
 # replace with absolute path in back-end to save from deployment updates (Jenkins)
-DATABASE = 'emails_please.db'
+# --- Database Configuration ---
+if platform.system() == 'Windows':
+    # If running locally on your laptop, save it right inside the project folder
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    DATABASE = os.path.join(BASE_DIR, 'emails_please.db')
+else:
+    # If running on the EC2 Linux server, use the secure production folder
+    DATABASE = '/opt/emails_please_data/emails_please.db'
 
 # Define the Structured Data Schema
 class SimulatedEmail(BaseModel):
@@ -58,6 +66,8 @@ def init_db():
             )
         ''')
         conn.commit()
+# Initialize the database table before the server boots up
+init_db()
 
 def get_email_from_db(target_type, difficulty):
     with sqlite3.connect(DATABASE) as conn:
@@ -245,6 +255,4 @@ def serve_template(filename):
 
 # self-hosted server for debugging
 if __name__ == '__main__':
-    # Initialize the database table before the server boots up
-    init_db()
     app.run(host='0.0.0.0', port=5000, debug=True)
