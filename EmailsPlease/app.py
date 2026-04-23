@@ -16,11 +16,8 @@ CORS(app)
 
 LEADERBOARD_FILE = "leaderboard.json"
 
-# 2. Define the Structured Data Schema
 # database config
-# define where the database will live
-# replace with absolute path in back-end to save from deployment updates (Jenkins)
-DATABASE = '/opt/emails_please_data/emails_please.db'
+DATABASE = os.path.join(os.path.dirname(__file__), 'emails_please.db')
 
 # Define the Structured Data Schema
 class SimulatedEmail(BaseModel):
