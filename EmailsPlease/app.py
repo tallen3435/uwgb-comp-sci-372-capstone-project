@@ -119,8 +119,13 @@ def handle_email_generation():
             )
 
         # Call the Gemini API with Retry Logic
-        max_retries = 3
+        max_retries = 5
         new_email = None
+
+        # PROACTIVE RATE LIMITING
+        # The free Gemini API allows ~15 Requests Per Minute. 
+        # Sleeping for 3-4 seconds ensures we pace out the requests and avoid quotas.
+        time.sleep(3)
 
         for attempt in range(max_retries):
             try:
@@ -137,22 +142,20 @@ def handle_email_generation():
                     }
                 )
 
-                new_email = response.parsed.dict()
+                # Safely handle both Pydantic v1 (dict) and v2 (model_dump) that Google SDKs use
+                new_email = response.parsed.model_dump() if hasattr(response.parsed, 'model_dump') else response.parsed.dict()
                 break  # If it succeeds, break out of the retry loop!
 
             except Exception as api_error:
-                error_str = str(api_error)
-                # Check if it's a server busy (503) or rate limit (429) error
-                if "503" in error_str or "429" in error_str:
-                    if attempt < max_retries - 1:
-                        wait_time = 2 ** attempt  # Waits 1s, then 2s, then gives up
-                        print(f"⚠️ Gemini API busy. Retrying in {wait_time} seconds...")
-                        time.sleep(wait_time)
-                    else:
-                        raise Exception("Gemini API is currently overloaded. Please try again in a few minutes.")
+                # Retry on ANY API error (rate limits, quotas, or unparsed JSON)
+                if attempt < max_retries - 1:
+                    wait_time = 2 ** attempt  # Waits 1s, then 2s, then gives up
+                    print(f"⚠️ Gemini API Error (Attempt {attempt + 1}): {api_error}. Retrying in {wait_time}s...")
+                    time.sleep(wait_time)
                 else:
-                    # If it's a different error (like a bad API key), crash immediately
-                    raise api_error
+                    print(f"⚠️ All Gemini retries exhausted due to: {api_error}")
+                    # Do NOT crash. Break the loop so the static fallback emails are served smoothly!
+                    break
 
         if not new_email:
             print("⚠️ All Gemini retries failed. Serving static fallback email.")
