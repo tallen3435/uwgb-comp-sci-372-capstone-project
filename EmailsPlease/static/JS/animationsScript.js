@@ -22,6 +22,10 @@ let adActive = false;
 
 let gameDifficulty = localStorage.getItem('difficulty') || 'medium';
 
+// ── Backloading (Prefetch) State ──
+let upcomingEmails = [];
+let isPrefetching = false;
+
 // Integrated from bugFixes: Scalable difficulty limits
 const malwareLimit = gameDifficulty === 'hard' ? 10 : gameDifficulty === 'medium' ? 6 : 3;
 
@@ -89,6 +93,14 @@ async function startDay() {
         for (let i = 0; i < count; i++) {
             const targetType = dailyTypes[i]; // Pull from our shuffled deck!
 
+            // 1. Check if we already backloaded this email type in the background!
+            const prefetchIndex = upcomingEmails.findIndex(e => e.classification === targetType);
+            if (prefetchIndex !== -1) {
+                results.push(upcomingEmails.splice(prefetchIndex, 1)[0]);
+                continue; // Instant load, skip the API call for this email
+            }
+
+            // 2. Otherwise, fetch it live
             try {
                 const response = await fetch('/api/generate-email', {
                     method: 'POST',
@@ -148,6 +160,55 @@ async function startDay() {
     setStatus('Day ' + day + ' ready — ' + inbox.length + ' email(s) to process.');
     renderEmailList();
     updateUI();
+    
+    // Start backloading tomorrow's emails in the background!
+    prefetchForNextDay();
+}
+
+async function prefetchForNextDay() {
+    if (isPrefetching) return;
+    isPrefetching = true;
+    
+    const nextDayCount = emailsForDay(day + 1);
+    let neededTypes = [];
+    
+    // Calculate what types we need for tomorrow
+    for (let i = 0; i < nextDayCount; i++) {
+        neededTypes.push(i % 2 === 0 ? 'phishing' : 'legitimate');
+    }
+    
+    // Deduct the ones we already have waiting in the queue
+    upcomingEmails.forEach(email => {
+        if (email && email.classification) {
+            const idx = neededTypes.indexOf(email.classification);
+            if (idx !== -1) neededTypes.splice(idx, 1);
+        }
+    });
+    
+    // Fetch missing emails silently in the background
+    for (const targetType of neededTypes) {
+        if (dayEnded) break; // Stop prefetching if the user advances the day
+        
+        try {
+            const response = await fetch('/api/generate-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: targetType, difficulty: gameDifficulty, user_id: username })
+            });
+            
+            if (response.ok) {
+                const newEmail = await response.json();
+                if (newEmail && !newEmail.error) upcomingEmails.push(newEmail);
+            }
+        } catch (err) {
+            console.error("Background fetch error:", err);
+        }
+        
+        // Wait 4 seconds between background requests to safely respect the Gemini API limits
+        await new Promise(resolve => setTimeout(resolve, 4000));
+    }
+    
+    isPrefetching = false;
 }
 
 function endDay() {
