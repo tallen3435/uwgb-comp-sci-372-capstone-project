@@ -25,6 +25,12 @@ if platform.system() == 'Windows' or platform.system() == 'Darwin': # Darwin is 
 else: # Linux (Ubuntu/Debian-based)
     DATABASE = '/opt/emails_please_data/emails_please.db'
 
+db_dir = os.path.dirname(DATABASE)
+if db_dir and not os.path.exists(db_dir):
+    try:
+        os.makedirs(db_dir, exist_ok=True)
+    except PermissionError:
+        print(f"CRITICAL WARNING: No permission to create directory {db_dir}. The backend will likely crash.")
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
