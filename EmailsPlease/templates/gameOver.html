@@ -54,7 +54,7 @@
                 });
 
             } catch (err) {
-                list.innerHTML = '<li>Error loading leaderboard.</li>';
+                list.innerHTML = '<li>Error loading leaderboard. <button onclick="loadLeaderboard()">Retry</button></li>';
                 console.error(err);
             }
         }

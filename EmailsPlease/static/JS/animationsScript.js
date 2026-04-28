@@ -101,6 +101,12 @@ async function startDay() {
 
     results.forEach(aiEmail => {
         if (aiEmail) {
+            const cls = aiEmail.classification;
+            if (cls !== 'phishing' && cls !== 'legitimate') {
+                console.warn('Skipping email with unknown classification:', cls);
+                return;
+            }
+
             let fromName = aiEmail.sender;
             let address = aiEmail.sender;
             if (aiEmail.sender.includes('<')) {
@@ -115,7 +121,7 @@ async function startDay() {
                 subject: aiEmail.subject,
                 body: aiEmail.body,
                 date: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                type: aiEmail.classification === 'phishing' ? 'phish' : 'legit',
+                type: cls === 'phishing' ? 'phish' : 'legit',
                 difficulty: aiEmail.difficulty,
                 unread: true
             });
@@ -253,10 +259,18 @@ function renderEmailList() {
             : email.from;
         const shortDate = email.date.split(' ')[0];
 
-        row.innerHTML =
-            `<span class="email-row-from">${shortFrom}</span>` +
-            `<span class="email-row-subject">${email.subject}</span>` +
-            `<span class="email-row-date">${shortDate}</span>`;
+        const fromSpan = document.createElement('span');
+        fromSpan.className = 'email-row-from';
+        fromSpan.textContent = shortFrom;
+        const subjectSpan = document.createElement('span');
+        subjectSpan.className = 'email-row-subject';
+        subjectSpan.textContent = email.subject;
+        const dateSpan = document.createElement('span');
+        dateSpan.className = 'email-row-date';
+        dateSpan.textContent = shortDate;
+        row.appendChild(fromSpan);
+        row.appendChild(subjectSpan);
+        row.appendChild(dateSpan);
 
         row.addEventListener('click', () => selectEmail(i));
         list.appendChild(row);
@@ -272,19 +286,34 @@ function selectEmail(index) {
 
     const header = document.getElementById('email-header');
     if (header) {
-        header.innerHTML =
-            `<div class="field-row"><span class="field-label">From:</span><span>${email.from} &lt;${email.address}&gt;</span></div>` +
-            `<div class="field-row"><span class="field-label">To:</span><span>you@malwareinc.com</span></div>` +
-            `<div class="field-row"><span class="field-label">Subject:</span><span>${email.subject}</span></div>` +
-            `<div class="field-row"><span class="field-label">Date:</span><span>${email.date}</span></div>`;
+        header.innerHTML = '';
+        [
+            ['From:', email.from + ' <' + email.address + '>'],
+            ['To:', 'you@malwareinc.com'],
+            ['Subject:', email.subject],
+            ['Date:', email.date]
+        ].forEach(([label, value]) => {
+            const row = document.createElement('div');
+            row.className = 'field-row';
+            const lbl = document.createElement('span');
+            lbl.className = 'field-label';
+            lbl.textContent = label;
+            const val = document.createElement('span');
+            val.textContent = value;
+            row.appendChild(lbl);
+            row.appendChild(val);
+            header.appendChild(row);
+        });
     }
 
     const body = document.getElementById('email-container');
     if (body) {
-        body.innerHTML = email.body
-            .split('\n')
-            .map(line => line ? `<p>${line}</p>` : '<br>')
-            .join('');
+        body.innerHTML = '';
+        email.body.split('\n').forEach(line => {
+            const el = line ? document.createElement('p') : document.createElement('br');
+            if (line) el.textContent = line;
+            body.appendChild(el);
+        });
         body.dataset.type = email.type;
     }
 
@@ -405,10 +434,12 @@ function updateScoreDisplay() {
 }
 
 function updateUI() {
-    const dayEl     = document.getElementById('day-counter');
-    const malwareEl = document.getElementById('malware-counter');
-    if (dayEl)     dayEl.textContent     = 'Day: ' + day;
-    if (malwareEl) malwareEl.textContent = 'Malware: ' + malware + ' / ' + malwareLimit;
+    const dayEl        = document.getElementById('day-counter');
+    const malwareEl    = document.getElementById('malware-counter');
+    const difficultyEl = document.getElementById('difficulty-display');
+    if (dayEl)        dayEl.textContent        = 'Day: ' + day;
+    if (malwareEl)    malwareEl.textContent    = 'Malware: ' + malware + ' / ' + malwareLimit;
+    if (difficultyEl) difficultyEl.textContent = 'Difficulty: ' + gameDifficulty.charAt(0).toUpperCase() + gameDifficulty.slice(1);
     updateScoreDisplay();
     updateUnreadCount();
     updateFolderCounts();
@@ -512,7 +543,7 @@ function showJumpscare() {
     });
     const audio = new Audio('../resources/audio/BlueLobster.mp3');
     audio.volume = 1.0;
-    audio.play().catch(() => {});
+    if (localStorage.getItem('soundEnabled') !== 'false') audio.play().catch(() => {});
     overlay.appendChild(img);
     overlay.appendChild(closeBtn);
     document.body.appendChild(overlay);
@@ -536,7 +567,7 @@ function showKayneJumpscare() {
     });
     const audio = new Audio('../resources/audio/marimba-ringtone.wav');
     audio.volume = 1.0;
-    audio.play().catch(() => {});
+    if (localStorage.getItem('soundEnabled') !== 'false') audio.play().catch(() => {});
     overlay.appendChild(img);
     overlay.appendChild(closeBtn);
     document.body.appendChild(overlay);
@@ -560,7 +591,7 @@ function showUnderwaterJumpscare() {
     });
     const audio = new Audio('../resources/audio/hello-im-under-the-water.mp3');
     audio.volume = 1.0;
-    audio.play().catch(() => {});
+    if (localStorage.getItem('soundEnabled') !== 'false') audio.play().catch(() => {});
     overlay.appendChild(img);
     overlay.appendChild(closeBtn);
     document.body.appendChild(overlay);

@@ -1,4 +1,5 @@
 import os
+import json
 import random
 import time
 from flask import Flask, jsonify, request, send_from_directory, render_template
@@ -14,7 +15,10 @@ import database as db
 # Initialize Environment and Flask
 load_dotenv()  # Loads GEMINI_API_KEY from .env
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": [
+    "http://localhost:5000", "http://127.0.0.1:5000",
+    "http://localhost:8000", "http://127.0.0.1:8000"
+]}})
 
 
 # Define the Structured Data Schema for Gemini
@@ -25,6 +29,30 @@ class SimulatedEmail(BaseModel):
     classification: str
     difficulty: str
     cues: List[str]
+
+
+def get_fallback_email(target_type, difficulty):
+    templates_path = os.path.join(os.path.dirname(__file__), 'resources', 'templates', 'emailTemplates.json')
+    with open(templates_path, 'r') as f:
+        data = json.load(f)
+
+    lookup_type = 'phish' if target_type == 'phishing' else 'legit'
+    matching = [e for e in data['emails'] if e['type'] == lookup_type and e['difficulty'] == difficulty]
+    if not matching:
+        matching = [e for e in data['emails'] if e['type'] == lookup_type]
+    if not matching:
+        matching = data['emails']
+
+    chosen = random.choice(matching)
+    return {
+        'id': chosen['id'],
+        'sender': f"{chosen['from']} <{chosen['address']}>",
+        'subject': chosen['subject'],
+        'body': chosen['body'],
+        'classification': 'phishing' if chosen['type'] == 'phish' else 'legitimate',
+        'difficulty': chosen['difficulty'],
+        'cues': chosen.get('redFlags', [])
+    }
 
 
 # --- API Routes ---
@@ -50,7 +78,7 @@ def handle_email_generation():
 
         # --- STEP 2: NOT IN DB (OR ALL SEEN), GENERATE WITH GEMINI ---
         print(f"🤖 Generating new {target_type} email. User has exhausted cached pool...")
-        client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
+        client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'), http_options={'timeout': 30})
 
         if target_type == 'phishing':
             personas = [
@@ -124,7 +152,8 @@ def handle_email_generation():
                     raise api_error
 
         if not new_email:
-            raise Exception("Failed to generate email content.")
+            print("⚠️ All Gemini retries failed. Serving static fallback email.")
+            return jsonify(get_fallback_email(target_type, difficulty)), 200
 
         # --- STEP 3: SAVE TO DB AND LINK TO USER ---
         # Get the ID of the newly generated email
@@ -203,4 +232,4 @@ def serve_template(filename):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=os.getenv('FLASK_DEBUG', 'false').lower() == 'true')
