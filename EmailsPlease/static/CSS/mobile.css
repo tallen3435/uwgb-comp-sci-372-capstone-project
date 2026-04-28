@@ -1,0 +1,226 @@
+/* mobile.css — only active on screens ≤ 768px; desktop styles are untouched */
+@media (max-width: 768px) {
+
+    /* ═══════════════════════════════════════════════
+       GAME SCREEN  (gameScreen.css)
+       ═══════════════════════════════════════════════ */
+
+    /* Allow the full page to scroll vertically */
+    .win98-desktop {
+        align-items: flex-start;
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+        padding: 0;
+    }
+
+    /* Window fills the viewport */
+    .outlook-window {
+        width: 100vw;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    /* Stack the 3 panels vertically instead of side-by-side */
+    .main-panels {
+        flex-direction: column;
+        overflow: visible;
+    }
+
+    /* Folder panel becomes a horizontal scrollable tab row */
+    .folder-panel {
+        width: 100%;
+        flex-shrink: 0;
+        border-right: none;
+        border-bottom: 2px solid #808080;
+        overflow: hidden;
+    }
+
+    .folder-tree {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 0;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .folder-item {
+        white-space: nowrap;
+        padding: 10px 14px;
+        font-size: 13px;
+        flex-shrink: 0;
+    }
+
+    /* Email list: full width, capped height so reading pane is visible below */
+    .email-list-panel {
+        width: 100%;
+        flex-shrink: 0;
+        max-height: 38vh;
+        border-right: none;
+        border-bottom: 2px solid #808080;
+    }
+
+    /* Hide the date column — too narrow on mobile */
+    .col-date,
+    .email-row-date {
+        display: none;
+    }
+
+    .col-from,
+    .email-row-from {
+        width: 38%;
+        flex-shrink: 0;
+    }
+
+    /* Reading pane below the list, scrollable */
+    .reading-pane {
+        width: 100%;
+        flex: none;
+        min-height: 40vh;
+        overflow-y: auto;
+    }
+
+    /* Toolbar wraps so all buttons stay reachable */
+    .toolbar {
+        flex-wrap: wrap;
+        height: auto;
+        gap: 4px;
+        padding: 4px;
+    }
+
+    .toolbar-btn {
+        padding: 7px 10px;
+        font-size: 13px;
+        min-height: 36px;
+    }
+
+    .toolbar-sep {
+        display: none;
+    }
+
+    /* Status bar wraps rather than overflowing */
+    .statusbar {
+        flex-wrap: wrap;
+        row-gap: 2px;
+        font-size: 11px;
+    }
+
+    /* Summary dialog fits the screen */
+    .summary-dialog {
+        width: 92vw;
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       SETTINGS PAGE  (mainStyle.css)
+       ═══════════════════════════════════════════════ */
+
+    .settings-window {
+        width: 95vw;
+        margin: 8px auto;
+    }
+
+    /* Difficulty cards stack in a single column */
+    .difficulty-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .win98-btn {
+        min-height: 36px;
+        font-size: 13px;
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       INDEX / HOME PAGE  (indexStyle.css)
+       ═══════════════════════════════════════════════ */
+
+    .desktop-header {
+        top: 10px;
+        width: 92%;
+        text-align: center;
+    }
+
+    .desktop-header h1 {
+        font-size: 36px;
+    }
+
+    /* Start menu expands to nearly full width on small screens */
+    .start-menu {
+        width: calc(100vw - 12px);
+        left: 4px;
+    }
+
+    .menu-icon img,
+    .menu-icon-emoji {
+        width: 48px;
+        height: 48px;
+        font-size: 28px;
+    }
+
+    .menu-icon {
+        min-height: 44px;
+        padding: 8px 4px;
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       LEGAL / ABOUT  (legalStyle.css)
+       ═══════════════════════════════════════════════ */
+
+    .win98-dialog,
+    .about-dialog {
+        width: 95vw !important;
+        max-width: 95vw !important;
+        height: auto !important;
+        max-height: 82vh !important;
+        left: 2.5vw !important;
+        top: 10px !important;
+        position: relative !important;
+    }
+
+    .dialog-body,
+    .win98-textbox {
+        overflow-y: auto;
+        max-height: 48vh;
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       CRASH COURSE  (crashCourse.css)
+       ═══════════════════════════════════════════════ */
+
+    .crash-dialog {
+        width: 95vw !important;
+        height: auto !important;
+        max-height: 90vh !important;
+    }
+
+    .cc-panel {
+        flex-direction: column;
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       TUTORIAL  (tutorial.css)
+       ═══════════════════════════════════════════════ */
+
+    #tut-callout {
+        width: 90vw !important;
+        left: 5vw !important;
+        right: 5vw !important;
+        transform: none !important;
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       GLOBAL TOUCH TARGETS
+       ═══════════════════════════════════════════════ */
+
+    .folder-item[onclick],
+    .menu-icon,
+    .toolbar-btn,
+    .win-ctrl {
+        min-height: 36px;
+    }
+}
