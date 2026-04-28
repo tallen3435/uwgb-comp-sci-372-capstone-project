@@ -18,10 +18,7 @@ if os.path.exists('/IMPORTANT/.env'):
 else:
     load_dotenv()                   # Local development fallback
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": [
-    "http://localhost:5000", "http://127.0.0.1:5000",
-    "http://localhost:8000", "http://127.0.0.1:8000"
-]}})
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 # Define the Structured Data Schema for Gemini
