@@ -473,6 +473,22 @@ function showFakeAd() {
         showUnderwaterJumpscare();
         return;
     }
+    if (roll < 0.16) {
+        showBalkanGuyJumpscare();
+        return;
+    }
+    if (roll < 0.20) {
+        showElonJumpscare();
+        return;
+    }
+    if (roll < 0.24) {
+        showBillGatesJumpscare();
+        return;
+    }
+    if (roll < 0.28) {
+        showCharlieJumpscare();
+        return;
+    }
 
     adActive = true;
 
@@ -590,6 +606,117 @@ function showUnderwaterJumpscare() {
         adActive = false;
     });
     const audio = new Audio('../resources/audio/hello-im-under-the-water.mp3');
+    audio.volume = 1.0;
+    if (localStorage.getItem('soundEnabled') !== 'false') audio.play().catch(() => {});
+    overlay.appendChild(img);
+    overlay.appendChild(closeBtn);
+    document.body.appendChild(overlay);
+}
+
+function showCharlieJumpscare() {
+    adActive = true;
+    const overlay = document.createElement('div');
+    overlay.id = 'charlie-overlay';
+
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'overflow: hidden; line-height: 0;';
+
+    const video = document.createElement('video');
+    video.src = '../resources/videos/charile.mp4';
+    video.id = 'charlie-video';
+    video.autoplay = true;
+    video.loop = true;
+    video.muted = localStorage.getItem('soundEnabled') === 'false';
+    video.style.cssText = 'display: block; max-width: 90vw; max-height: 82vh;';
+
+    // Crop bottom 12% to hide the Vlipsy watermark
+    video.addEventListener('loadedmetadata', () => {
+        requestAnimationFrame(() => {
+            const h = video.getBoundingClientRect().height;
+            if (h > 0) wrapper.style.height = (h * 0.88) + 'px';
+        });
+    });
+
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'X';
+    closeBtn.id = 'jumpscare-close';
+    closeBtn.addEventListener('click', () => {
+        overlay.remove();
+        video.pause();
+        adActive = false;
+    });
+
+    wrapper.appendChild(video);
+    overlay.appendChild(wrapper);
+    overlay.appendChild(closeBtn);
+    document.body.appendChild(overlay);
+}
+
+function showBillGatesJumpscare() {
+    adActive = true;
+    const overlay = document.createElement('div');
+    overlay.id = 'billgates-overlay';
+    const img = document.createElement('img');
+    img.src = '../resources/images/Bill_Gates.png';
+    img.id = 'billgates-img';
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'X';
+    closeBtn.id = 'jumpscare-close';
+    closeBtn.addEventListener('click', () => {
+        overlay.remove();
+        audio.pause();
+        audio.currentTime = 0;
+        adActive = false;
+    });
+    const audio = new Audio('../resources/audio/marimba-ringtone.wav');
+    audio.volume = 1.0;
+    if (localStorage.getItem('soundEnabled') !== 'false') audio.play().catch(() => {});
+    overlay.appendChild(img);
+    overlay.appendChild(closeBtn);
+    document.body.appendChild(overlay);
+}
+
+function showElonJumpscare() {
+    adActive = true;
+    const overlay = document.createElement('div');
+    overlay.id = 'elon-overlay';
+    const img = document.createElement('img');
+    img.src = '../resources/images/Elon.png';
+    img.id = 'elon-img';
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'X';
+    closeBtn.id = 'jumpscare-close';
+    closeBtn.addEventListener('click', () => {
+        overlay.remove();
+        audio.pause();
+        audio.currentTime = 0;
+        adActive = false;
+    });
+    const audio = new Audio('../resources/audio/mixkit-siren-song-1155.mp3');
+    audio.volume = 1.0;
+    if (localStorage.getItem('soundEnabled') !== 'false') audio.play().catch(() => {});
+    overlay.appendChild(img);
+    overlay.appendChild(closeBtn);
+    document.body.appendChild(overlay);
+}
+
+function showBalkanGuyJumpscare() {
+    adActive = true;
+    const overlay = document.createElement('div');
+    overlay.id = 'balkanguy-overlay';
+    const img = document.createElement('img');
+    img.src = '../resources/images/balkanguyv2.gif';
+    img.id = 'balkanguy-img';
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'X';
+    closeBtn.id = 'jumpscare-close';
+    closeBtn.addEventListener('click', () => {
+        overlay.remove();
+        audio.pause();
+        audio.currentTime = 0;
+        adActive = false;
+    });
+    const audio = new Audio('../resources/audio/mixkit-love-is-eternal-37.mp3');
     audio.volume = 1.0;
     if (localStorage.getItem('soundEnabled') !== 'false') audio.play().catch(() => {});
     overlay.appendChild(img);
