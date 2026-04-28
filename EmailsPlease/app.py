@@ -13,7 +13,10 @@ from typing import List
 import database as db
 
 # Initialize Environment and Flask
-load_dotenv()  # Loads GEMINI_API_KEY from .env
+if os.path.exists('/IMPORTANT/.env'):
+    load_dotenv('/IMPORTANT/.env')  # Live server
+else:
+    load_dotenv()                   # Local development fallback
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": [
     "http://localhost:5000", "http://127.0.0.1:5000",
