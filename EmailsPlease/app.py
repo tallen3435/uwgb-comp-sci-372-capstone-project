@@ -53,6 +53,7 @@ def handle_email_generation():
         client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 
         if target_type == 'phishing':
+            ai_temperature = 0.85
             personas = [
                 "HR Manager demanding immediate completion of mandatory training",
                 "Company CEO requesting an urgent, confidential financial task",
@@ -71,6 +72,7 @@ def handle_email_generation():
                 f"The target company is: {company_name}"
             )
         else:
+            ai_temperature = 0.3
             personas = [
                 "The real University of Wisconsin-Green Bay Computer Science program newsletter",
                 "A standard automated reminder to complete yearly mandatory education",
@@ -83,7 +85,8 @@ def handle_email_generation():
             prompt = (
                 f"Generate a {difficulty} level legitimate corporate email for a training simulation. "
                 f"The sender is: {selected_persona}. "
-                f"CRITICAL: This email must be mundane and safe. Do not include threats, urgency, or suspicious links. "
+                f"CRITICAL: This email must be mundane and safe. Do not include threats, urgency, or suspicious links (no http). "
+                f"no need to mention anything being safe as this is implied."
                 f"The company name is: {company_name}"
             )
 
@@ -94,10 +97,10 @@ def handle_email_generation():
         for attempt in range(max_retries):
             try:
                 response = client.models.generate_content(
-                    model="gemini-2.5-flash",  # Upgraded to the stable production model
+                    model="gemini-3.1-flash-lite-preview",
                     contents=prompt,
                     config={
-                        "temperature": 0.85,
+                        "temperature": ai_temperature,
                         "response_mime_type": "application/json",
                         "response_schema": SimulatedEmail,
                         "safety_settings": [
@@ -203,4 +206,4 @@ def serve_template(filename):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True)

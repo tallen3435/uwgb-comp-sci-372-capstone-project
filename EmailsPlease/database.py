@@ -6,10 +6,10 @@ import platform
 LEADERBOARD_FILE = "leaderboard.json"
 
 # --- Database Configuration ---
-if platform.system() == 'Windows':
+if platform.system() == 'Windows' or platform.system() == 'Darwin': # Darwin is macOS
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     DATABASE = os.path.join(BASE_DIR, 'emails_please.db')
-else:
+else: # Linux (Ubuntu/Debian-based)
     DATABASE = '/opt/emails_please_data/emails_please.db'
 
 

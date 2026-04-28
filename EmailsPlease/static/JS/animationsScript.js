@@ -75,29 +75,38 @@ async function startDay() {
     const list = document.getElementById('email-list');
     if (list) list.innerHTML = '<p class="no-email-msg">Connecting to mail server... downloading emails.</p>';
 
-    // FETCH SEQUENTIALLY TO PREVENT DATABASE RACE CONDITIONS
-    const results = [];
-    for (let i = 0; i < count; i++) {
-        const targetType = Math.random() > 0.5 ? 'phishing' : 'legitimate';
-
-        try {
-            const response = await fetch('/api/generate-email', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    type: targetType,
-                    difficulty: gameDifficulty,
-                    user_id: username
-                })
-            });
-
-            if (response.ok) {
-                results.push(await response.json());
-            }
-        } catch (err) {
-            console.error("API Error:", err);
+        // Create an array that strictly alternates phishing/legitimate
+        let dailyTypes = [];
+        for (let i = 0; i < count; i++) {
+            dailyTypes.push(i % 2 === 0 ? 'phishing' : 'legitimate');
         }
-    }
+        // Shuffle the deck so the player can't predict the order
+        dailyTypes = dailyTypes.sort(() => Math.random() - 0.5);
+
+
+        // FETCH SEQUENTIALLY TO PREVENT DATABASE RACE CONDITIONS
+        const results = [];
+        for (let i = 0; i < count; i++) {
+            const targetType = dailyTypes[i]; // Pull from our shuffled deck!
+
+            try {
+                const response = await fetch('/api/generate-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: targetType,
+                        difficulty: gameDifficulty,
+                        user_id: username
+                    })
+                });
+
+                if (response.ok) {
+                    results.push(await response.json());
+                }
+            } catch (err) {
+                console.error("API Error:", err);
+            }
+        }
 
     results.forEach(aiEmail => {
         if (aiEmail) {
