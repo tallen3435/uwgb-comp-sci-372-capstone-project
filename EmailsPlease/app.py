@@ -2,6 +2,7 @@ import os
 import json
 import random
 import time
+import threading
 from flask import Flask, jsonify, request, send_from_directory, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -17,8 +18,19 @@ if os.path.exists('/IMPORTANT/.env'):
     load_dotenv('/IMPORTANT/.env')  # Live server
 else:
     load_dotenv()                   # Local development fallback
+
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+#Global AI Client
+gemini_client = None
+api_lock = threading.Lock()
+
+def get_gemini_client():
+    global gemini_client
+    if gemini_client is None:
+        gemini_client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'), http_options={'timeout': 45000})
+    return gemini_client
 
 
 # Define the Structured Data Schema for Gemini
@@ -74,11 +86,12 @@ def handle_email_generation():
 
         if existing_email:
             print(f"✅ Served a cached, unseen {target_type} email for user {user_id}!")
+            existing_email['is_cached'] = True
             return jsonify(existing_email), 200
 
         # --- STEP 2: NOT IN DB (OR ALL SEEN), GENERATE WITH GEMINI ---
         print(f"🤖 Generating new {target_type} email. User has exhausted cached pool...")
-        client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'), http_options={'timeout': 30})
+        client = get_gemini_client()
 
         if target_type == 'phishing':
             ai_temperature = 0.85
@@ -122,46 +135,52 @@ def handle_email_generation():
         max_retries = 5
         new_email = None
 
-        # PROACTIVE RATE LIMITING
-        # The free Gemini API allows ~15 Requests Per Minute. 
-        # Sleeping for 3-4 seconds ensures we pace out the requests and avoid quotas.
-        time.sleep(3)
+        # Lock the generation to ensure multiple concurrent Flask threads don't bypass the rate limit
+        with api_lock:
+            # PROACTIVE RATE LIMITING
+            # Sleeping for 3 seconds guarantees requests are spaced apart safely globally
+            time.sleep(3)
 
-        for attempt in range(max_retries):
-            try:
-                response = client.models.generate_content(
-                    model="gemini-3.1-flash-lite-preview",
-                    contents=prompt,
-                    config={
-                        "temperature": ai_temperature,
-                        "response_mime_type": "application/json",
-                        "response_schema": SimulatedEmail,
-                        "safety_settings": [
-                            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"}
-                        ]
-                    }
-                )
+            for attempt in range(max_retries):
+                try:
+                    response = client.models.generate_content(
+                        model="gemini-3.1-flash-lite-preview",
+                        contents=prompt,
+                        config={
+                            "temperature": ai_temperature,
+                            "response_mime_type": "application/json",
+                            "response_schema": SimulatedEmail,
+                            "safety_settings": [
+                                {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"}
+                            ]
+                        }
+                    )
 
-                # Safely handle both Pydantic v1 (dict) and v2 (model_dump) that Google SDKs use
-                new_email = response.parsed.model_dump() if hasattr(response.parsed, 'model_dump') else response.parsed.dict()
-                break  # If it succeeds, break out of the retry loop!
+                    # Safely handle both Pydantic v1 (dict) and v2 (model_dump) that Google SDKs use
+                    new_email = response.parsed.model_dump() if hasattr(response.parsed, 'model_dump') else response.parsed.dict()
+                    break  # If it succeeds, break out of the retry loop!
 
-            except Exception as api_error:
-                # Retry on ANY API error (rate limits, quotas, or unparsed JSON)
-                if attempt < max_retries - 1:
-                    wait_time = 2 ** attempt  # Waits 1s, then 2s, then gives up
-                    print(f"⚠️ Gemini API Error (Attempt {attempt + 1}): {api_error}. Retrying in {wait_time}s...")
-                    time.sleep(wait_time)
-                else:
-                    print(f"⚠️ All Gemini retries exhausted due to: {api_error}")
-                    # Do NOT crash. Break the loop so the static fallback emails are served smoothly!
-                    break
+                except Exception as api_error:
+                    # Retry on ANY API error (rate limits, quotas, or unparsed JSON)
+                    if attempt < max_retries - 1:
+                        wait_time = 2 ** attempt  # Waits 1s, then 2s, then gives up
+                        print(f"⚠️ Gemini API Error (Attempt {attempt + 1}): {api_error}. Retrying in {wait_time}s...")
+                        time.sleep(wait_time)
+                    else:
+                        print(f"⚠️ All Gemini retries exhausted due to: {api_error}")
+                        # Do NOT crash. Break the loop so the static fallback emails are served smoothly!
+                        break
 
         if not new_email:
             print("⚠️ All Gemini retries failed. Serving static fallback email.")
             return jsonify(get_fallback_email(target_type, difficulty)), 200
 
         # --- STEP 3: SAVE TO DB AND LINK TO USER ---
+        # 🎯 FIX: Override the AI's output to strictly match the requested variables. 
+        # This stops AI capitalization or hallucinations (e.g., "Medium level") from breaking the DB cache.
+        new_email['classification'] = target_type
+        new_email['difficulty'] = difficulty
+
         # Get the ID of the newly generated email
         new_email_id = db.save_email_to_db(target_type, new_email)
 

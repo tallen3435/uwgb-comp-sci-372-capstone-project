@@ -125,8 +125,8 @@ def get_unseen_email_from_db(target_type, difficulty, user_id):
                 "sender": row["sender"],
                 "subject": row["subject"],
                 "body": row["body"],
-                "classification": row["classification"],
-                "difficulty": row["difficulty"],
+                "classification": target_type,  # Force strict string matching for the JS frontend
+                "difficulty": difficulty,       # Force strict string matching for the JS frontend
                 "cues": json.loads(row["cues"])
             }
         return None
@@ -144,7 +144,7 @@ def save_email_to_db(target_type, email_data):
             email_data["sender"],
             email_data["subject"],
             email_data["body"],
-            email_data["classification"],
+            email_data["classification"].lower(),
             json.dumps(email_data["cues"])
         ))
         conn.commit()

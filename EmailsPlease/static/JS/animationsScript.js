@@ -169,6 +169,7 @@ async function prefetchForNextDay() {
     if (isPrefetching) return;
     isPrefetching = true;
     
+    const prefetchTargetDay = day; // Remember what day we started this loop for
     const nextDayCount = emailsForDay(day + 1);
     let neededTypes = [];
     
@@ -187,7 +188,7 @@ async function prefetchForNextDay() {
     
     // Fetch missing emails silently in the background
     for (const targetType of neededTypes) {
-        if (dayEnded) break; // Stop prefetching if the user advances the day
+        if (day !== prefetchTargetDay || dayEnded) break; // Stop prefetching if the user advanced the day
         
         try {
             const response = await fetch('/api/generate-email', {
@@ -199,13 +200,15 @@ async function prefetchForNextDay() {
             if (response.ok) {
                 const newEmail = await response.json();
                 if (newEmail && !newEmail.error) upcomingEmails.push(newEmail);
+
+                // ONLY sleep if the API had to generate a new email using Gemini
+                if (!newEmail.is_cached) {
+                    await new Promise(resolve => setTimeout(resolve, 4000));
+                }
             }
         } catch (err) {
             console.error("Background fetch error:", err);
         }
-        
-        // Wait 4 seconds between background requests to safely respect the Gemini API limits
-        await new Promise(resolve => setTimeout(resolve, 4000));
     }
     
     isPrefetching = false;
