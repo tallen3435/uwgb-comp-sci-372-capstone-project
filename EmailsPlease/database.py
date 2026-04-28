@@ -34,7 +34,7 @@ if db_dir and not os.path.exists(db_dir):
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
-    conn.execute("PRAGMA foreign_keys = ON;")
+    # conn.execute("PRAGMA foreign_keys = ON;")
     return conn
 
 def init_db():
