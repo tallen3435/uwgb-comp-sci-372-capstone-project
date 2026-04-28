@@ -3,6 +3,7 @@ import sqlite3
 import json
 import platform
 import secrets
+import hashlib
 from datetime import datetime, timedelta
 
 LEADERBOARD_FILE = "leaderboard.json"
@@ -134,12 +135,32 @@ def save_email_to_db(target_type, email_data):
         return cursor.lastrowid
 
 
+# --- Password Hashing Utilities ---
+def hash_password(password):
+    salt = secrets.token_hex(8)
+    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.encode('utf-8'), 100000)
+    return salt + ":" + key.hex()
+
+
+def verify_password(stored_password, provided_password):
+    try:
+        salt, key = stored_password.split(':')
+        new_key = hashlib.pbkdf2_hmac('sha256', provided_password.encode('utf-8'), salt.encode('utf-8'), 100000)
+        return new_key.hex() == key
+    except ValueError:
+        # Fallback to allow plaintext logins for testing data already in your DB
+        return stored_password == provided_password
+
+
 # --- Leaderboard Functions ---
 def load_leaderboard():
     if not os.path.exists(LEADERBOARD_FILE):
         return []
     with open(LEADERBOARD_FILE, "r") as f:
-        return json.load(f)
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+            return []
 
 
 def save_leaderboard(data):
@@ -152,13 +173,13 @@ def generate_token():
 
 
 def login(username, password):
+    clean_session_table()
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        clean_session_table()
-        cursor.execute("SELECT id FROM users WHERE username=? AND password=?", (username, password))
+        cursor.execute("SELECT id, password FROM users WHERE username=?", (username,))
         user = cursor.fetchone()
 
-        if user is not None:
+        if user is not None and verify_password(user[1], password):
             token = generate_token()
             # Formatted the date as a string for the TEXT column
             expiry = (datetime.now() + timedelta(minutes=5)).strftime('%Y-%m-%d %H:%M:%S')
@@ -193,8 +214,9 @@ def create_user(username, password):
         cursor = conn.cursor()
         cursor.execute("SELECT id FROM users WHERE username=?", (username,))
         if cursor.fetchone() is None:
+            hashed_pw = hash_password(password)
             # Fixed typo 'passsword' to 'password'
-            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?);", (username, password))
+            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?);", (username, hashed_pw))
 
             # Use lastrowid to get the new user's ID instantly
             new_user_id = cursor.lastrowid
@@ -203,18 +225,24 @@ def create_user(username, password):
             conn.commit()
             return 1
         return -1
+
+
 def change_password(token, new_password):
+    user_id = check_session(token)
+    if user_id == -1:
+        return False
+
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        user_id=check_session(token)
-        if(user_id == -1):
-            return False
-        else:
-            cursor.execute("UPDATE users SET password=? WHERE id=?", (new_password, user_id))
-            conn.commit()
-            return True
+        hashed_pw = hash_password(new_password)
+        cursor.execute("UPDATE users SET password=? WHERE id=?", (hashed_pw, user_id))
+        conn.commit()
+        return True
+
+
 def clean_session_table():
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute("DELETE FROM session where expires_at < ?", (datetime.now()))
+        current_time_str = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        cursor.execute("DELETE FROM session where expires_at < ?", (current_time_str,))
         conn.commit()
