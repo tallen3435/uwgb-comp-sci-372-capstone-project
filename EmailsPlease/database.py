@@ -154,6 +154,7 @@ def generate_token():
 def login(username, password):
     with get_db_connection() as conn:
         cursor = conn.cursor()
+        clean_session_table()
         cursor.execute("SELECT id FROM users WHERE username=? AND password=?", (username, password))
         user = cursor.fetchone()
 
@@ -173,6 +174,7 @@ def check_session(token):
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT user_id, id, expires_at FROM session WHERE token=?", (token,))
+        conn.commit()
         row = cursor.fetchone()
 
         if row:
@@ -201,3 +203,18 @@ def create_user(username, password):
             conn.commit()
             return 1
         return -1
+def change_password(token, new_password):
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        user_id=check_session(token)
+        if(user_id == -1):
+            return False
+        else:
+            cursor.execute("UPDATE users SET password=? WHERE id=?", (new_password, user_id))
+            conn.commit()
+            return True
+def clean_session_table():
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM session where expires_at < ?", (datetime.now()))
+        conn.commit()
