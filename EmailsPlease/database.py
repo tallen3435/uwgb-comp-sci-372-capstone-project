@@ -6,6 +6,16 @@ import secrets
 import hashlib
 from datetime import datetime, timedelta
 
+# --- Load Environment Variables (API Keys) ---
+try:
+    from dotenv import load_dotenv
+    if os.path.exists('/IMPORTANT/.env'):
+        load_dotenv('/IMPORTANT/.env')  # Live server
+    else:
+        load_dotenv()                   # Local development fallback
+except ImportError:
+    print("WARNING: python-dotenv is not installed. Run `pip install python-dotenv` to load API keys.")
+
 LEADERBOARD_FILE = "leaderboard.json"
 
 # --- Database Configuration ---
