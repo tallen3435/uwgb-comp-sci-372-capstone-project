@@ -3,6 +3,7 @@ import sqlite3
 import json
 import platform
 import secrets
+import random
 import hashlib
 from datetime import datetime, timedelta
 
@@ -33,7 +34,10 @@ if db_dir and not os.path.exists(db_dir):
         print(f"CRITICAL WARNING: No permission to create directory {db_dir}. The backend will likely crash.")
 
 def get_db_connection():
-    conn = sqlite3.connect(DATABASE)
+    conn = sqlite3.connect(DATABASE, timeout=20.0)
+    # Enable WAL mode and NORMAL synchronous for significantly faster disk I/O on live servers
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = NORMAL;")
     # conn.execute("PRAGMA foreign_keys = ON;")
     return conn
 
@@ -83,6 +87,8 @@ def init_db():
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
             FOREIGN KEY (email_id) REFERENCES emails(id) ON DELETE CASCADE  
         );
+
+        CREATE INDEX IF NOT EXISTS idx_emails_type_diff ON emails(target_type, difficulty);
         ''')
         conn.commit()
 
@@ -103,33 +109,55 @@ def mark_email_as_seen(user_id, email_id):
 
 def get_unseen_email_from_db(target_type, difficulty, user_id):
     with get_db_connection() as conn:
-        conn.row_factory = sqlite3.Row
+        # Enable manual transactions to prevent concurrent requests from picking the same email
+        conn.isolation_level = None
         cursor = conn.cursor()
+        
+        try:
+            cursor.execute("BEGIN EXCLUSIVE")
 
-        # We wrap the columns and the ? variables in LOWER()
-        # so "Hard", "HARD", and "hard" all match perfectly.
-        cursor.execute('''
-            SELECT * FROM emails
-            WHERE LOWER(target_type) = LOWER(?) AND LOWER(difficulty) = LOWER(?)
-            AND id NOT IN (
-                SELECT email_id FROM user_seen_emails WHERE user_id = ?
-            )
-            ORDER BY RANDOM() LIMIT 1
-        ''', (target_type, difficulty, user_id))
+            # Fetch ONLY the IDs to avoid SQLite's slow ORDER BY RANDOM() on large live databases
+            cursor.execute('''
+                SELECT id FROM emails
+                WHERE target_type = ? AND difficulty = ?
+                AND id NOT IN (
+                    SELECT email_id FROM user_seen_emails WHERE user_id = ?
+                )
+            ''', (target_type.lower(), difficulty.lower(), user_id))
 
-        row = cursor.fetchone()
-        if row:
-            mark_email_as_seen(user_id, row["id"])
-            return {
-                "id": row["id"],
-                "sender": row["sender"],
-                "subject": row["subject"],
-                "body": row["body"],
-                "classification": target_type,  # Force strict string matching for the JS frontend
-                "difficulty": difficulty,       # Force strict string matching for the JS frontend
-                "cues": json.loads(row["cues"])
-            }
-        return None
+            rows = cursor.fetchall()
+            if rows:
+                # Randomly select one ID incredibly fast in Python
+                selected_id = random.choice(rows)[0]
+
+                cursor.execute("SELECT sender, subject, body, cues FROM emails WHERE id = ?", (selected_id,))
+                row = cursor.fetchone()
+
+                cursor.execute('''
+                    INSERT OR IGNORE INTO user_seen_emails (user_id, email_id)
+                    VALUES (?, ?)
+                ''', (user_id, selected_id))
+                
+                cursor.execute("COMMIT")
+                return {
+                    "id": selected_id,
+                    "sender": row[0],
+                    "subject": row[1],
+                    "body": row[2],
+                    "classification": target_type,
+                    "difficulty": difficulty,
+                    "cues": json.loads(row[3]) if row[3] else []
+                }
+            
+            cursor.execute("COMMIT")
+            return None
+            
+        except Exception as e:
+            try:
+                cursor.execute("ROLLBACK")
+            except Exception:
+                pass
+            raise e
 
 
 def save_email_to_db(target_type, email_data):

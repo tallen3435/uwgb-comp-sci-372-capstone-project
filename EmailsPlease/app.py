@@ -91,7 +91,11 @@ def handle_email_generation():
 
         # --- STEP 2: NOT IN DB (OR ALL SEEN), GENERATE WITH GEMINI ---
         print(f"🤖 Generating new {target_type} email. User has exhausted cached pool...")
-        client = get_gemini_client()
+        try:
+            client = get_gemini_client()
+        except Exception as e:
+            print(f"⚠️ Gemini API failed to initialize (missing API key?): {e}")
+            return jsonify(get_fallback_email(target_type, difficulty)), 200
 
         if target_type == 'phishing':
             ai_temperature = 0.85
