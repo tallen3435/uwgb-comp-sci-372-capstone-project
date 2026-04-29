@@ -88,8 +88,10 @@ async function startDay() {
         dailyTypes = dailyTypes.sort(() => Math.random() - 0.5);
 
 
-        // FETCH SEQUENTIALLY TO PREVENT DATABASE RACE CONDITIONS
+        // FETCH CONCURRENTLY (Backend now uses BEGIN EXCLUSIVE to prevent race conditions)
         const results = [];
+        const fetchPromises = [];
+        
         for (let i = 0; i < count; i++) {
             const targetType = dailyTypes[i]; // Pull from our shuffled deck!
 
@@ -100,24 +102,26 @@ async function startDay() {
                 continue; // Instant load, skip the API call for this email
             }
 
-            // 2. Otherwise, fetch it live
-            try {
-                const response = await fetch('/api/generate-email', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        type: targetType,
-                        difficulty: gameDifficulty,
-                        user_id: username
-                    })
-                });
-
-                if (response.ok) {
-                    results.push(await response.json());
-                }
-            } catch (err) {
+            // 2. Otherwise, fetch it live concurrently
+            const req = fetch('/api/generate-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    type: targetType,
+                    difficulty: gameDifficulty,
+                    user_id: username
+                })
+            }).then(r => r.ok ? r.json() : null).catch(err => {
                 console.error("API Error:", err);
-            }
+                return null;
+            });
+            
+            fetchPromises.push(req);
+        }
+        
+        if (fetchPromises.length > 0) {
+            const fetched = await Promise.all(fetchPromises);
+            results.push(...fetched.filter(e => e && !e.error));
         }
 
     results.forEach(aiEmail => {
