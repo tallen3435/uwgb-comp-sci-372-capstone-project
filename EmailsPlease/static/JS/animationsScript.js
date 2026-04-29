@@ -1,6 +1,7 @@
 // ── State ─────────────────────────────────────────────────────────────────────
 let day           = 1;
 let malware       = 0;
+let missedWork    = 0;
 let selectedIndex = null;
 let currentFolder = 'inbox';
 let dayEnded      = false;
@@ -23,7 +24,8 @@ let adActive = false;
 let gameDifficulty = localStorage.getItem('difficulty') || 'medium';
 
 // Integrated from bugFixes: Scalable difficulty limits
-const malwareLimit = gameDifficulty === 'hard' ? 10 : gameDifficulty === 'medium' ? 6 : 3;
+const malwareLimit    = gameDifficulty === 'hard' ? 10 : gameDifficulty === 'medium' ? 6 : 3;
+const missedWorkLimit = malwareLimit;
 
 // ── Scoring table ─────────────────────────────────────────────────────────────
 function getActionScore(emailType, action) {
@@ -151,8 +153,10 @@ async function startDay() {
 }
 
 function endDay() {
-    dayEnded    = true;
-    totalScore += dayScore;
+    dayEnded      = true;
+    totalScore   += dayScore;
+    deletedItems  = [];
+    junkMail      = [];
     updateScoreDisplay();
     showSummary();
 }
@@ -181,7 +185,8 @@ function showSummary() {
     document.getElementById('summaryDay').textContent       = day;
     document.getElementById('summaryTotal').textContent     = dayTotal;
     document.getElementById('summaryCorrect').textContent   = dayCorrect;
-    document.getElementById('summaryMalware').textContent   = malware + ' / ' + malwareLimit;
+    document.getElementById('summaryMalware').textContent    = malware + ' / ' + malwareLimit;
+    document.getElementById('summaryMissedWork').textContent = missedWork + ' / ' + missedWorkLimit;
     document.getElementById('summaryDayScore').textContent  = dayScore + ' pts';
     document.getElementById('summaryTotalScore').textContent = totalScore + ' pts';
     document.getElementById('daySummary').style.display = 'flex';
@@ -386,7 +391,9 @@ function handleAction(action) {
         } else if (email.type === 'spam') {
             setStatus('Spam deleted. (+' + score + ' pts)');
         } else {
-            setStatus('Email deleted. (+' + score + ' pts)');
+            missedWork++;
+            dayScore -= missedWork * 10;
+            setStatus('WARNING: Legitimate email deleted — missed work! (' + missedWork + '/' + missedWorkLimit + ') (-' + (missedWork * 10) + ' pts)');
         }
         deletedItems.push({ ...email, unread: false });
 
@@ -396,8 +403,10 @@ function handleAction(action) {
                 ' reported! Sender: ' + email.address + ' (+' + score + ' pts)');
         } else {
             malware++;
+            missedWork++;
+            dayScore -= missedWork * 10;
             updateAdSystem();
-            setStatus('WARNING: ' + email.address + ' is a legitimate address. (' + malware + '/' + malwareLimit + ')');
+            setStatus('WARNING: ' + email.address + ' is a legitimate address. Malware: (' + malware + '/' + malwareLimit + ') Missed Work: (' + missedWork + '/' + missedWorkLimit + ') (-' + (missedWork * 10) + ' pts)');
         }
         junkMail.push({ ...email, unread: false });
     }
@@ -443,12 +452,14 @@ function updateScoreDisplay() {
 }
 
 function updateUI() {
-    const dayEl        = document.getElementById('day-counter');
-    const malwareEl    = document.getElementById('malware-counter');
-    const difficultyEl = document.getElementById('difficulty-display');
-    if (dayEl)        dayEl.textContent        = 'Day: ' + day;
-    if (malwareEl)    malwareEl.textContent    = 'Malware: ' + malware + ' / ' + malwareLimit;
-    if (difficultyEl) difficultyEl.textContent = 'Difficulty: ' + gameDifficulty.charAt(0).toUpperCase() + gameDifficulty.slice(1);
+    const dayEl          = document.getElementById('day-counter');
+    const malwareEl      = document.getElementById('malware-counter');
+    const missedWorkEl   = document.getElementById('missed-work-counter');
+    const difficultyEl   = document.getElementById('difficulty-display');
+    if (dayEl)          dayEl.textContent        = 'Day: ' + day;
+    if (malwareEl)      malwareEl.textContent    = 'Malware: ' + malware + ' / ' + malwareLimit;
+    if (missedWorkEl)   missedWorkEl.textContent = 'Missed Work: ' + missedWork + ' / ' + missedWorkLimit;
+    if (difficultyEl)   difficultyEl.textContent = 'Difficulty: ' + gameDifficulty.charAt(0).toUpperCase() + gameDifficulty.slice(1);
     updateScoreDisplay();
     updateUnreadCount();
     updateFolderCounts();
