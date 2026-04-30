@@ -497,6 +497,16 @@ function handleAction(action) {
         return;
     }
 
+    if (missedWork >= missedWorkLimit) {
+        submitScore().finally(() => {
+            if (adInterval) clearInterval(adInterval);
+            localStorage.setItem('firedScore', totalScore + dayScore);
+            localStorage.setItem('firedDays', day);
+            location.href = 'youAreFired.html';
+        });
+        return;
+    }
+
     checkDayEnd();
     renderEmailList();
 }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Fired!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/youAreFiredStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/mobile.css') }}">
+</head>
+<body>
+
+    <div class="fired-container">
+        <h1 class="big">&#128221;</h1>
+        <h1>You're Fired!</h1>
+        <p id="fired-message">You missed too much legitimate work.</p>
+        <p id="fired-score"></p>
+
+        <button onclick="location.href='gameScreen.html'">Try Again</button>
+        <button onclick="location.href='index.html'">Main Menu</button>
+
+        <h2 style="margin-top: 30px;">Leaderboard</h2>
+        <ul id="leaderboard-list" style="text-align: left; padding-left: 0; list-style: none;"></ul>
+    </div>
+
+    <script>
+        window.onload = async function () {
+            const score = localStorage.getItem('firedScore') ?? '0';
+            const days  = localStorage.getItem('firedDays')  ?? '1';
+            document.getElementById('fired-score').textContent =
+                'You survived ' + days + ' day(s) with a score of ' + score + ' pts.';
+
+            const list = document.getElementById('leaderboard-list');
+            try {
+                const res   = await fetch('/api/leaderboard');
+                const board = await res.json();
+                if (board.length === 0) {
+                    list.innerHTML = '<li>No scores yet.</li>';
+                    return;
+                }
+                const currentUser = localStorage.getItem('username');
+                board.forEach((entry, i) => {
+                    const li = document.createElement('li');
+                    li.textContent = (i + 1) + '. ' + entry.username + ' — ' + entry.score + ' pts';
+                    if (entry.username === currentUser) li.style.fontWeight = 'bold';
+                    list.appendChild(li);
+                });
+            } catch (err) {
+                list.innerHTML = '<li>Error loading leaderboard. <button onclick="location.reload()">Retry</button></li>';
+            }
+        };
+    </script>
+
+</body>
+</html>

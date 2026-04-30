@@ -1,0 +1,39 @@
+body {
+    background: #c8860a;
+    color: white;
+    font-family: GoodOldDos, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.fired-container {
+    text-align: center;
+}
+.big {
+    font-size: 70px;
+    margin: 0;
+}
+h1 {
+    margin: 8px 0;
+}
+p {
+    margin: 12px 0 24px;
+}
+button {
+    margin: 6px;
+    padding: 10px 20px;
+    font-family: GoodOldDos, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    background: #fff;
+    border: 3px solid #333;
+    color: #333;
+}
+button:hover {
+    background: #ffe;
+}
+@font-face {
+    font-family: GoodOldDos;
+    src: url('../fonts/Good Old DOS.ttf');
+}
