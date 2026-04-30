@@ -530,15 +530,19 @@ function showFakeAd() {
     const box = document.createElement('div');
     box.className = 'ad-box';
 
+    const padding = 20;
     const minSize = 150;
     const maxSize = 600;
 
-    const size = Math.random() * (maxSize - minSize) + minSize;
+    const size    = Math.random() * (maxSize - minSize) + minSize;
+    const maxW    = window.innerWidth  - padding * 2;
+    const maxH    = window.innerHeight - padding * 2;
+    const clampedW = Math.min(size, maxW);
 
     const imgSrc = getRandomAdImage();
 
     box.innerHTML = `
-        <img src="${imgSrc}" style="width:${size}px">
+        <img src="${imgSrc}" style="width:${clampedW}px; max-width:${maxW}px; max-height:${maxH}px; display:block; object-fit:contain;">
         <br>
     `;
     const closeBtn = document.createElement('button');
@@ -552,24 +556,26 @@ function showFakeAd() {
     ad.appendChild(box);
     document.body.appendChild(ad);
 
-    const padding = 20;
-
     const applyPosition = () => {
         const w = box.offsetWidth;
         const h = box.offsetHeight;
         const safeW = Math.max(0, window.innerWidth  - w - padding * 2);
         const safeH = Math.max(0, window.innerHeight - h - padding * 2);
-        box.style.left = `${padding + Math.random() * safeW}px`;
-        box.style.top  = `${padding + Math.random() * safeH}px`;
+        const left  = padding + Math.random() * safeW;
+        const top   = padding + Math.random() * safeH;
+        box.style.left = Math.min(left, window.innerWidth  - w - padding) + 'px';
+        box.style.top  = Math.min(top,  window.innerHeight - h - padding) + 'px';
         box.style.visibility = 'visible';
     };
 
+    const schedulePosition = () => requestAnimationFrame(applyPosition);
+
     const img = box.querySelector('img');
     if (img && !img.complete) {
-        img.addEventListener('load',  applyPosition);
-        img.addEventListener('error', applyPosition);
+        img.addEventListener('load',  schedulePosition);
+        img.addEventListener('error', schedulePosition);
     } else {
-        requestAnimationFrame(applyPosition);
+        requestAnimationFrame(schedulePosition);
     }
 }
 
