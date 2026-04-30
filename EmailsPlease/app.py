@@ -107,7 +107,25 @@ def handle_email_generation():
                 "Recruiter from another company offering a highly lucrative job",
                 "Spoofed coworker (Thomas Allen) asking for lunch and sharing a suspicious link to a 'menu'",
                 "Fake reminder to complete mandatory education with a 'login' link",
-                "Urgent Job Offer alert from a platform like Handshake or LinkedIn"
+                "Urgent Job Offer alert from a platform like Handshake or LinkedIn",
+                "Elon Musk offering you a free Tesla",
+                "Bill Gates offering a large amount of money from his foundation",
+                "A Nigerian prince offering you his gold stash in exchange for your PayPal",
+                "Calvin shares a suspicious new AI for you to try out",
+                "Doordash failing to verify your phone number and/or address with a suspicious link",
+                "Microsoft demanding immediate action for suspended account",
+                "'rnalware Inc' asks for your employee ID for verification",
+                "Fake vacation offer using broken english and a suspicious link",
+                "Spoofed employee asking the passcode to get into the corporate building",
+                "You win the lottery (over 1 billion dollars) but its not real",
+                "Unknown sender exclaiming that its the end of the world and demanding money",
+                "PayPal message stating that someone mistakenly sent you some amount of money",
+                "Fake charity asking you to donate money",
+                "Spoofed coworker (Bryon Cobb) asking you for confidential information",
+                "Window cleaning service urgently reminding you about their scheduled service",
+                "Free gift card giveaway from a spoofed youtube.com",
+                "Fake survey from Apple offering free gift cards as reward for filling out survey",
+                "Fake system message stating urgency of critical systems down (ransomware)"
             ]
             selected_persona = random.choice(personas)
             prompt = (
@@ -124,7 +142,11 @@ def handle_email_generation():
                 "A routine list of job postings from Handshake or LinkedIn (no urgency)",
                 "Friendly coworker (Thomas Allen) actually asking if you want to go to lunch",
                 "Automated Corporate System sending a standard payroll or Slack alert",
-                "Coworker sharing a link to a collaborative document you were expecting"
+                "Coworker sharing a link to a collaborative document you were expecting",
+                "Internal Malware Incorporated volunteer opportunities",
+                "A coworker asking for your suggestions for a legitimate project",
+                "Real message from IT following up on submitted ticket",
+                "Friendly coworker (Grafton Smith) asking if you want to go out for coffe tomorrow morning"
             ]
             selected_persona = random.choice(personas)
             prompt = (
