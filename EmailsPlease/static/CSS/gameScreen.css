@@ -482,6 +482,9 @@
     text-align: center;
     pointer-events: auto; /* clickable */
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    max-width:  calc(100vw - 40px);
+    max-height: calc(100vh - 40px);
+    overflow: hidden;
 }
 
 /* ── Blue Lobster Jumpscare ── */
