@@ -60,8 +60,13 @@
             }
         }
 
-        //Run on page load
-        window.onload = loadLeaderboard;
+        window.onload = function () {
+            const days  = localStorage.getItem('gameOverDays')  ?? '?';
+            const score = localStorage.getItem('gameOverScore') ?? '0';
+            document.getElementById('final-score').textContent =
+                'You survived ' + days + ' day(s) with a score of ' + score + ' pts.';
+            loadLeaderboard();
+        };
     </script>
 </body>
 </html>

@@ -424,6 +424,8 @@ function handleAction(action) {
     if (malware >= malwareLimit) {
         submitScore().finally(() => {
             if (adInterval) clearInterval(adInterval);
+            localStorage.setItem('gameOverScore', totalScore + dayScore);
+            localStorage.setItem('gameOverDays', day);
             location.href = 'gameOver.html';
         });
         return;
