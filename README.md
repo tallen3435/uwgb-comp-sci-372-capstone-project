@@ -88,7 +88,7 @@ python app.py
 
 You should see output like:
 ```
- * Running on http://0.0.0.0:5000
+ * Running on http://0.0.0.0:8000
 ```
 
 ---
