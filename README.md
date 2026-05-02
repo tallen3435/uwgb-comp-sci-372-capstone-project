@@ -95,6 +95,6 @@ You should see output like:
 
 ### Step 7 — Open in Your Browser
 
-Go to **[http://localhost:5000](http://localhost:5000)**
+Go to **[http://localhost:8000](http://localhost:8000)**
 
 To stop the app, press `Ctrl + C` in the terminal.
